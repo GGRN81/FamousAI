@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Carátula de Personalidad</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,400;6..96,600&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="../comun/ggr.css">
+<style>body{background:#E8E4DA} .doc{padding:26px 16px 60px} .kv td:first-child{width:32%; color:#3F6F5E; font-family:"IBM Plex Mono",monospace; font-size:10.5px; letter-spacing:.1em; text-transform:uppercase}</style>
+</head>
+<body class="doc">
+
+<div class="docbar noprint">
+  <span>Entregable estrella del Expediente Vivo · ES / EN</span>
+  <button class="btn" onclick="window.print()">Imprimir / Guardar como PDF</button>
+  <button class="btn ghost" id="toggle-fill">Ocultar resaltado</button>
+  <span class="mono" id="fill-count"></span>
+  <a class="btn ghost" href="index.html">Volver al panel</a>
+</div>
+
+<div class="page first">
+  <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:20px">
+    <div>
+      <div class="lbl">Expediente Corporativo Vivo</div>
+      <h1 style="font-size:30px; margin-top:8px">Carátula de personalidad</h1>
+    </div>
+    <div style="text-align:right">
+      <div class="mono" style="font-size:11px; color:#6C7573">Versión <span class='fill'>[N]</span><br>Corte al <span class='fill'>[dd/mm/aaaa]</span><br>Cotejada contra instrumentos</div>
+    </div>
+  </div>
+  <div class="rule"></div>
+
+  <div class="tblwrap"><table class="kv"><tbody>
+    <tr><td>Denominación y régimen</td><td><b><span class='fill'>[DENOMINACIÓN COMPLETA, S.A. DE C.V.]</span></b></td></tr>
+    <tr><td>Constitución</td><td>Escritura <span class='fill'>[núm.]</span>, volumen <span class='fill'>[núm.]</span>, de fecha <span class='fill'>[dd/mm/aaaa]</span>, ante el Lic. <span class='fill'>[nombre completo]</span>, Notario Público número <span class='fill'>[N]</span> del <span class='fill'>[demarcación]</span></td></tr>
+    <tr><td>Inscripción</td><td>Folio mercantil electrónico <span class='fill'>[N]</span>, RPPC de <span class='fill'>[ciudad]</span>, de fecha <span class='fill'>[dd/mm/aaaa]</span></td></tr>
+    <tr><td>RFC</td><td><span class='fill'>[RFC 12 caracteres]</span></td></tr>
+    <tr><td>Objeto social</td><td><span class='fill'>[una línea ejecutiva]</span> — cláusula <span class='fill'>[N]</span> de los estatutos, transcrita íntegra en la página 2</td></tr>
+    <tr><td>Duración</td><td><span class='fill'>[indefinida / N años]</span></td></tr>
+    <tr><td>Domicilio social</td><td><span class='fill'>[ciudad, estado]</span></td></tr>
+    <tr><td>Nacionalidad y extranjería</td><td>Mexicana · cláusula <span class='fill'>[de admisión / de exclusión de extranjeros]</span>, artículo <span class='fill'>[N]</span></td></tr>
+    <tr><td>Capital social</td><td>Fijo $<span class='fill'>[monto]</span> · Variable $<span class='fill'>[monto]</span> · Suscrito $<span class='fill'>[monto]</span> · Pagado $<span class='fill'>[monto]</span></td></tr>
+    <tr><td>Órgano de administración</td><td><span class='fill'>[Administrador único / Consejo de administración]</span> · vigencia <span class='fill'>[periodo]</span></td></tr>
+    <tr><td>Comisario</td><td><span class='fill'>[nombre, nacionalidad, RFC]</span></td></tr>
+    <tr><td>Beneficiario controlador</td><td><span class='fill'>[identificado y documentado / NO INTEGRADO]</span> · última actualización <span class='fill'>[dd/mm/aaaa]</span></td></tr>
+  </tbody></table></div>
+
+  <h3 style="margin-top:18px">Estructura accionaria</h3>
+  <div class="tblwrap"><table>
+    <thead><tr><th>Accionista</th><th>Nacionalidad</th><th>RFC / CURP</th><th>Serie</th><th class="num">%</th></tr></thead>
+    <tbody>
+      <tr><td><span class='fill'>[nombre]</span></td><td><span class='fill'>[nac.]</span></td><td><span class='fill'>[RFC / CURP]</span></td><td><span class='fill'>[A/B]</span></td><td class="num"><span class='fill'>[NN]</span></td></tr><tr><td><span class='fill'>[nombre]</span></td><td><span class='fill'>[nac.]</span></td><td><span class='fill'>[RFC / CURP]</span></td><td><span class='fill'>[A/B]</span></td><td class="num"><span class='fill'>[NN]</span></td></tr><tr><td><span class='fill'>[nombre]</span></td><td><span class='fill'>[nac.]</span></td><td><span class='fill'>[RFC / CURP]</span></td><td><span class='fill'>[A/B]</span></td><td class="num"><span class='fill'>[NN]</span></td></tr><tr><td><span class='fill'>[nombre]</span></td><td><span class='fill'>[nac.]</span></td><td><span class='fill'>[RFC / CURP]</span></td><td><span class='fill'>[A/B]</span></td><td class="num"><span class='fill'>[NN]</span></td></tr>
+    </tbody>
+  </table></div>
+
+  <h3 style="margin-top:16px">Integrantes del órgano de administración</h3>
+  <div class="tblwrap"><table>
+    <thead><tr><th>Nombre</th><th>Cargo</th><th>Nacionalidad</th><th>CURP / RFC</th></tr></thead>
+    <tbody>
+      <tr><td><span class='fill'>[nombre]</span></td><td><span class='fill'>[cargo]</span></td><td><span class='fill'>[nac.]</span></td><td><span class='fill'>[CURP / RFC]</span></td></tr><tr><td><span class='fill'>[nombre]</span></td><td><span class='fill'>[cargo]</span></td><td><span class='fill'>[nac.]</span></td><td><span class='fill'>[CURP / RFC]</span></td></tr><tr><td><span class='fill'>[nombre]</span></td><td><span class='fill'>[cargo]</span></td><td><span class='fill'>[nac.]</span></td><td><span class='fill'>[CURP / RFC]</span></td></tr>
+    </tbody>
+  </table></div>
+
+  <div class="foot"><span>Carátula de personalidad · <span class='fill'>[DENOMINACIÓN]</span></span><span>Página 1 de 4 · Confidencial</span></div>
+</div>
+
+<div class="page">
+  <div class="lbl">Facultades</div>
+  <h2>Transcripción literal</h2>
+  <p>Se transcribe letra por letra, con la numeración original. <b>No se parafrasea.</b> La paráfrasis de una cláusula de facultades es el defecto de forma que produce el rechazo registral.</p>
+
+  <h3>Cláusula de facultades del órgano de administración</h3>
+  <div class="quote"><span class='fill'>[TRANSCRIPCIÓN LITERAL, letra por letra, con numeración original. Incluir romanos, incisos y salvedades. Si un fragmento es ilegible, marcar [ILEGIBLE]. Si hay error en el original, [sic].]</span></div>
+
+  <h3>Límites y salvedades expresas</h3>
+  <p><span class='fill'>[Enumerar los límites que la propia cláusula impone: montos, actos que requieren acuerdo previo de asamblea o consejo, actos excluidos, plazos.]</span></p>
+
+  <h3 style="margin-top:16px">Inventario de apoderados vigentes</h3>
+  <div class="tblwrap"><table>
+    <thead><tr><th>Apoderado</th><th>Instrumento</th><th>Fecha</th><th>Alcance</th><th>Estatus</th></tr></thead>
+    <tbody>
+      <tr><td><span class='fill'>[nombre]</span></td><td><span class='fill'>[esc. / vol. / notario]</span></td><td><span class='fill'>[dd/mm/aa]</span></td><td><span class='fill'>[dominio / administración / cambiarios / pleitos]</span></td><td><span class="sev <span class='fill'>[o/w/c]</span>"><span class='fill'>[vigente]</span></span></td></tr><tr><td><span class='fill'>[nombre]</span></td><td><span class='fill'>[esc. / vol. / notario]</span></td><td><span class='fill'>[dd/mm/aa]</span></td><td><span class='fill'>[dominio / administración / cambiarios / pleitos]</span></td><td><span class="sev <span class='fill'>[o/w/c]</span>"><span class='fill'>[vigente]</span></span></td></tr><tr><td><span class='fill'>[nombre]</span></td><td><span class='fill'>[esc. / vol. / notario]</span></td><td><span class='fill'>[dd/mm/aa]</span></td><td><span class='fill'>[dominio / administración / cambiarios / pleitos]</span></td><td><span class="sev <span class='fill'>[o/w/c]</span>"><span class='fill'>[vigente]</span></span></td></tr><tr><td><span class='fill'>[nombre]</span></td><td><span class='fill'>[esc. / vol. / notario]</span></td><td><span class='fill'>[dd/mm/aa]</span></td><td><span class='fill'>[dominio / administración / cambiarios / pleitos]</span></td><td><span class="sev <span class='fill'>[o/w/c]</span>"><span class='fill'>[vigente]</span></span></td></tr><tr><td><span class='fill'>[nombre]</span></td><td><span class='fill'>[esc. / vol. / notario]</span></td><td><span class='fill'>[dd/mm/aa]</span></td><td><span class='fill'>[dominio / administración / cambiarios / pleitos]</span></td><td><span class="sev <span class='fill'>[o/w/c]</span>"><span class='fill'>[vigente]</span></span></td></tr>
+    </tbody>
+  </table></div>
+
+  <h3 style="margin-top:16px">Reformas posteriores</h3>
+  <div class="tblwrap"><table>
+    <thead><tr><th>Instrumento</th><th>Fecha</th><th>Qué reformó</th><th>Inscripción</th></tr></thead>
+    <tbody>
+      <tr><td><span class='fill'>[esc. núm.]</span></td><td><span class='fill'>[dd/mm/aa]</span></td><td><span class='fill'>[cláusulas]</span></td><td><span class='fill'>[folio / fecha]</span></td></tr><tr><td><span class='fill'>[esc. núm.]</span></td><td><span class='fill'>[dd/mm/aa]</span></td><td><span class='fill'>[cláusulas]</span></td><td><span class='fill'>[folio / fecha]</span></td></tr><tr><td><span class='fill'>[esc. núm.]</span></td><td><span class='fill'>[dd/mm/aa]</span></td><td><span class='fill'>[cláusulas]</span></td><td><span class='fill'>[folio / fecha]</span></td></tr>
+    </tbody>
+  </table></div>
+
+  <div class="flag" style="margin-top:16px">
+    <b>Banderas rojas detectadas.</b> <span class='fill'>[Enumerar: poderes en manos de personas ajenas, vigencia de órgano vencida, capital suscrito que no cuadra con la suma de participaciones, comparecientes iniciales distintos de los socios del transitorio, inscripción anterior a la autorización definitiva, ausencia de expediente de beneficiario controlador. Si no hay ninguna, escribir «Ninguna detectada en los instrumentos cotejados».]</span>
+  </div>
+
+  <div class="foot"><span>Carátula de personalidad · <span class='fill'>[DENOMINACIÓN]</span></span><span>Página 2 de 4 · Confidencial</span></div>
+</div>
+
+<div class="page">
+  <div class="lbl">Listo para pegar</div>
+  <h2>Bloque de antecedentes<br>para nuevo instrumento</h2>
+  <p>Redacción protocolaria estándar. Ajustar a la técnica del fedatario que autorice. Para Sonora, seguir la práctica local.</p>
+
+  <h3>Personalidad de la sociedad</h3>
+  <div class="quote">Acredita la existencia legal de su representada y la personalidad con que comparece, con el testimonio de la escritura pública número <span class='fill'>[N]</span>, volumen <span class='fill'>[N]</span>, otorgada con fecha <span class='fill'>[dd]</span> de <span class='fill'>[mes]</span> de <span class='fill'>[aaaa]</span>, ante la fe del Licenciado <span class='fill'>[nombre completo]</span>, Notario Público número <span class='fill'>[N]</span> del <span class='fill'>[demarcación]</span>, debidamente inscrita en el <span class='fill'>[registro competente]</span> bajo el folio <span class='fill'>[N]</span>, con fecha <span class='fill'>[dd/mm/aaaa]</span>, la cual contiene la <span class='fill'>[constitución / reforma / protocolización]</span> de <span class='fill'>[DENOMINACIÓN SOCIAL]</span>. Las facultades del compareciente constan en <span class='fill'>[referencia exacta a la cláusula o artículo y, en su caso, a la resolución transitoria]</span>, las cuales manifiesta bajo protesta de decir verdad que no le han sido revocadas, limitadas ni modificadas a la fecha del presente instrumento.</div>
+
+  <h3>Generales del compareciente</h3>
+  <div class="quote"><span class='fill'>[NOMBRE COMPLETO]</span>, de nacionalidad <span class='fill'>[nacionalidad]</span>, originario de <span class='fill'>[lugar]</span>, con Clave Única de Registro de Población <span class='fill'>[CURP]</span>, Registro Federal de Contribuyentes <span class='fill'>[RFC]</span>, de estado civil <span class='fill'>[estado civil]</span> bajo el régimen de <span class='fill'>[régimen patrimonial]</span>, de ocupación <span class='fill'>[ocupación]</span>, con domicilio en <span class='fill'>[domicilio]</span>, a quien identifico con <span class='fill'>[tipo de identificación, número y autoridad emisora]</span>, documento que tuve a la vista y del que obra agregada copia al apéndice de la presente escritura bajo el número <span class='fill'>[N]</span>.</div>
+
+  <div class="flag">
+    <b>Si el compareciente es extranjero</b>, agregar: acredita su legal estancia en el país con
+    <span class='fill'>[documento migratorio, número, autoridad y vigencia]</span>.
+  </div>
+
+  <h3 style="margin-top:14px">Verificación de consistencia interna</h3>
+  <div class="tblwrap"><table>
+    <thead><tr><th>Punto de control</th><th>Resultado</th></tr></thead>
+    <tbody>
+      <tr><td>Autorización definitiva posterior al otorgamiento</td><td><span class='fill'>[sí / no / N.A.]</span></td></tr>
+      <tr><td>Inscripción posterior a la autorización</td><td><span class='fill'>[sí / no]</span></td></tr>
+      <tr><td>Capital suscrito igual a la suma de participaciones</td><td><span class='fill'>[sí / no]</span></td></tr>
+      <tr><td>Comparecientes iniciales iguales a socios del transitorio</td><td><span class='fill'>[sí / no]</span></td></tr>
+      <tr><td>Formato de CURP (18) y RFC (13 PF / 12 PM) válido</td><td><span class='fill'>[sí / no]</span></td></tr>
+      <tr><td>Vigencia del órgano de administración a la fecha de corte</td><td><span class='fill'>[vigente / vencida]</span></td></tr>
+    </tbody>
+  </table></div>
+
+  <div class="foot"><span>Carátula de personalidad · <span class='fill'>[DENOMINACIÓN]</span></span><span>Página 3 de 4 · Confidencial</span></div>
+</div>
+
+<div class="page" lang="en">
+  <div class="lbl">English version — for foreign counterparties, banks and counsel</div>
+  <h2>Corporate standing summary</h2>
+  <p style="font-size:12.5px">Prepared for the convenience of non-Spanish-speaking counterparties. The Spanish original governs. A <em>notario público</em> is a specially licensed Mexican attorney holding public faith; an <em>escritura pública</em> is the public instrument they author.</p>
+  <div class="tblwrap" style="margin-top:12px"><table class="kv"><tbody>
+    <tr><td>Legal name / form</td><td><b><span class='fill'>[FULL NAME, S.A. DE C.V.]</span></b> — a Mexican stock corporation with variable capital</td></tr>
+    <tr><td>Incorporation</td><td>Public instrument no. <span class='fill'>[N]</span>, vol. <span class='fill'>[N]</span>, dated <span class='fill'>[date]</span>, before <span class='fill'>[name]</span>, Notary Public no. <span class='fill'>[N]</span> of <span class='fill'>[district]</span></td></tr>
+    <tr><td>Commercial registry</td><td>Electronic commercial folio <span class='fill'>[N]</span>, <span class='fill'>[city]</span>, recorded <span class='fill'>[date]</span></td></tr>
+    <tr><td>Tax ID (RFC)</td><td><span class='fill'>[RFC]</span></td></tr>
+    <tr><td>Corporate purpose</td><td><span class='fill'>[one executive line]</span> — full clause transcribed on page 2 of the Spanish original</td></tr>
+    <tr><td>Term / domicile</td><td><span class='fill'>[indefinite]</span> · <span class='fill'>[city, state]</span>, Mexico</td></tr>
+    <tr><td>Capital</td><td>Fixed MXN <span class='fill'>[amount]</span> · Variable MXN <span class='fill'>[amount]</span> · Paid-in MXN <span class='fill'>[amount]</span></td></tr>
+    <tr><td>Governing body</td><td><span class='fill'>[Sole administrator / Board of directors]</span> · term <span class='fill'>[period]</span></td></tr>
+    <tr><td>Statutory examiner</td><td><span class='fill'>[name]</span> — a <em>comisario</em>, the statutory oversight officer required of Mexican stock corporations</td></tr>
+    <tr><td>Authorized signatory</td><td><span class='fill'>[name]</span> — powers described below</td></tr>
+    <tr><td>Beneficial owner file</td><td><span class='fill'>[complete / not integrated]</span> · last updated <span class='fill'>[date]</span></td></tr>
+  </tbody></table></div>
+
+  <h3 style="margin-top:16px">Scope of authority</h3>
+  <p style="font-size:12.5px">Mexican powers of attorney are granted by categories defined in the Civil Code. The signatory holds:</p>
+  <div class="tblwrap"><table>
+    <thead><tr><th>Category</th><th>What it permits</th><th>Held</th></tr></thead>
+    <tbody>
+      <tr><td>Actos de dominio</td><td>Acts of ownership — sell, encumber, dispose of assets</td><td><span class='fill'>[yes / no]</span></td></tr>
+      <tr><td>Actos de administración</td><td>Acts of administration — ordinary management and contracting</td><td><span class='fill'>[yes / no]</span></td></tr>
+      <tr><td>Pleitos y cobranzas</td><td>Litigation and collection</td><td><span class='fill'>[yes / no]</span></td></tr>
+      <tr><td>Actos cambiarios</td><td>Negotiable instruments — issue, endorse, guarantee</td><td><span class='fill'>[yes / no]</span></td></tr>
+      <tr><td>Limits</td><td><span class='fill'>[monetary caps, acts requiring prior board or shareholder approval]</span></td><td>—</td></tr>
+    </tbody>
+  </table></div>
+
+  <p class="tiny" style="margin-top:16px; color:#6C7573">This summary is prepared from the instruments listed and is current as of the cut-off date. It is not a certificate of good standing and does not replace registry certificates. Any act executed after the cut-off date changes it.</p>
+
+  <div class="foot"><span>Corporate standing summary · <span class='fill'>[LEGAL NAME]</span></span><span>Page 4 of 4 · Confidential</span></div>
+</div>
+
+<script>
+(function(){
+  var on=true, btn=document.getElementById("toggle-fill");
+  var c=document.getElementById("fill-count");
+  if(c) c.textContent = document.querySelectorAll(".fill").length + " campos por llenar";
+  if(!btn) return;
+  btn.addEventListener("click", function(){
+    on=!on;
+    document.querySelectorAll(".fill").forEach(function(el){
+      el.style.background = on ? "" : "transparent";
+      el.style.borderBottom = on ? "" : "none";
+    });
+    btn.textContent = on ? "Ocultar resaltado" : "Mostrar resaltado";
+  });
+})();
+</script>
+</body></html>

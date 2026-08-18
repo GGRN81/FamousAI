@@ -1,0 +1,506 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Índice de Fragilidad Societaria</title>
+<meta name="description" content="Diagnóstico gratuito de tres minutos: los siete puntos donde se rompe una sociedad mexicana, y cuál de ellos es el tuyo.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,600;1,6..96,600&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="../comun/ggr.css">
+<style>
+/* ---- específico del diagnóstico ---- */
+.ifs-head{display:flex; justify-content:space-between; align-items:flex-end; gap:20px; flex-wrap:wrap; padding-bottom:18px; border-bottom:1px solid var(--line)}
+.ifs-prog{display:flex; align-items:center; gap:10px}
+.ifs-bar{width:150px; height:3px; background:var(--surface-2); border-radius:2px; overflow:hidden}
+.ifs-bar span{display:block; height:100%; background:var(--ember); width:0; transition:width .32s cubic-bezier(.4,0,.2,1)}
+.q{padding:20px 0; border-bottom:1px solid var(--line)}
+.q:last-of-type{border-bottom:none}
+.q-top{display:flex; gap:14px; align-items:baseline; min-width:0}
+.q-n{font-family:"IBM Plex Mono",monospace; font-size:11px; color:var(--fg-faint); letter-spacing:.1em; min-width:26px}
+.q-t{font-size:15.5px; color:var(--fg); font-weight:500; line-height:1.5}
+.q-f{display:block; font-family:"IBM Plex Mono",monospace; font-size:10px; letter-spacing:.14em; text-transform:uppercase; color:var(--label); margin-top:6px}
+.opts{display:flex; gap:8px; margin:14px 0 0 40px; flex-wrap:wrap}
+@media(max-width:560px){.opts{margin-left:0}}
+.opt{font-family:"IBM Plex Mono",monospace; font-size:11.5px; letter-spacing:.08em; text-transform:uppercase;
+  padding:8px 15px; border:1px solid var(--line-strong); background:transparent; color:var(--fg-dim);
+  border-radius:2px; cursor:pointer; transition:all .15s}
+.opt:hover{border-color:var(--accent); color:var(--fg)}
+.opt[aria-pressed="true"]{background:var(--accent); border-color:var(--accent); color:var(--accent-ink); font-weight:600}
+#ifs-quiz,#ifs-result{scroll-margin-top:90px}
+
+.score-hero{display:grid; grid-template-columns:auto minmax(0,1fr); gap:32px; align-items:center; padding-bottom:26px; border-bottom:1px solid var(--line)}
+@media(max-width:620px){.score-hero{grid-template-columns:minmax(0,1fr); gap:18px}}
+.dial{position:relative; width:168px; height:168px}
+.dial svg{transform:rotate(-90deg); width:168px; height:168px; display:block}
+.dial .ring-bg{fill:none; stroke:var(--surface-2); stroke-width:11}
+.dial .ring-fg{fill:none; stroke-width:11; stroke-linecap:butt; transition:stroke-dashoffset .8s cubic-bezier(.4,0,.2,1)}
+.dial .cap{position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:2px}
+.dial .cap b{font-family:"Bodoni Moda",Georgia,serif; font-size:52px; font-weight:600; line-height:1; font-variant-numeric:tabular-nums}
+.dial .cap span{font-family:"IBM Plex Mono",monospace; font-size:9.5px; letter-spacing:.2em; text-transform:uppercase; color:var(--fg-faint)}
+
+.frow{display:grid; grid-template-columns:minmax(0,1fr) minmax(120px,30%) 84px; gap:14px; align-items:center; padding:11px 0; border-bottom:1px solid var(--line)}
+.frow:last-child{border-bottom:none}
+.frow .fname{font-size:14px; color:var(--fg); font-weight:500}
+.frow .fname i{display:block; font-style:normal; font-size:12px; color:var(--fg-faint); margin-top:2px; line-height:1.45}
+.fmeter{height:5px; background:var(--surface-2); border-radius:3px; overflow:hidden}
+.fmeter span{display:block; height:100%; width:0; transition:width .7s cubic-bezier(.4,0,.2,1)}
+.fval{font-family:"IBM Plex Mono",monospace; font-size:13px; text-align:right; font-variant-numeric:tabular-nums; font-weight:600}
+@media(max-width:560px){.frow{grid-template-columns:minmax(0,1fr) 60px; row-gap:6px} .frow .fmeter{grid-column:1/-1}}
+
+.offer{border:1px solid var(--accent); border-radius:3px; overflow:hidden}
+.offer-h{background:var(--accent); color:var(--accent-ink); padding:12px 20px; font-family:"IBM Plex Mono",monospace; font-size:11px; letter-spacing:.16em; text-transform:uppercase; font-weight:600}
+.offer-b{padding:26px 22px; display:grid; grid-template-columns:minmax(0,1fr) auto; gap:26px; align-items:center}
+@media(max-width:700px){.offer-b{grid-template-columns:minmax(0,1fr)}}
+.price{font-family:"Bodoni Moda",Georgia,serif; font-size:46px; font-weight:600; line-height:1; color:var(--fg); font-variant-numeric:tabular-nums; white-space:nowrap}
+.price small{font-family:"IBM Plex Mono",monospace; font-size:12px; letter-spacing:.1em; color:var(--fg-faint); margin-left:6px}
+.capture{display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr) auto; gap:12px; align-items:end}
+@media(max-width:760px){.capture{grid-template-columns:minmax(0,1fr)}}
+.steps{counter-reset:s; display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:1px; background:var(--line); border:1px solid var(--line)}
+@media(max-width:760px){.steps{grid-template-columns:minmax(0,1fr)}}
+.step{background:var(--surface); padding:22px 20px; min-width:0}
+.step::before{counter-increment:s; content:"0" counter(s); font-family:"IBM Plex Mono",monospace; font-size:11px; letter-spacing:.18em; color:var(--ember); display:block; margin-bottom:10px}
+details{border-bottom:1px solid var(--line); padding:14px 0}
+summary{cursor:pointer; font-size:15.5px; font-weight:500; color:var(--fg); list-style:none; display:flex; justify-content:space-between; gap:16px}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"+"; font-family:"IBM Plex Mono",monospace; color:var(--ember); flex:none}
+details[open] summary::after{content:"–"}
+details p{margin-top:10px; font-size:14px; color:var(--fg-dim); max-width:70ch}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="navin">
+    <a class="navmark" href="#top">G G R</a>
+    <div class="navlinks">
+      <a href="#como">Cómo funciona</a>
+      <a href="#diagnostico">Diagnóstico</a>
+      <a href="#dictamen">El dictamen</a>
+      <a href="#preguntas">Preguntas</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero" id="top">
+  <div class="wrap">
+    <div class="lbl">Diagnóstico societario · Hermosillo, Sonora · Gratuito</div>
+    <h1>Toda sociedad<br>mexicana tiene un<br><em>punto de ruptura.</em></h1>
+    <p class="lead">
+      El Índice de Fragilidad Societaria lo localiza antes de que se rompa. Catorce preguntas, tres
+      minutos, sin subir un solo documento y sin hablar con nadie. Al final sabes cuál de los siete
+      factores es el tuyo.
+    </p>
+    <div class="row" style="margin-top:26px">
+      <a class="btn big" href="#diagnostico">Empezar el diagnóstico</a>
+      <span class="tiny">Sin registro previo · El resultado aparece en pantalla</span>
+    </div>
+    <div class="metrics">
+      <div class="metric"><div class="v">11<small>años</small></div><div class="k">Ejerciendo dentro<br>de la fe pública</div></div>
+      <div class="metric"><div class="v">7<small>factores</small></div><div class="k">Donde se rompen<br>las sociedades</div></div>
+      <div class="metric"><div class="v">3<small>min</small></div><div class="k">Lo que tarda<br>el diagnóstico</div></div>
+      <div class="metric"><div class="v">0<small>juntas</small></div><div class="k">De cortesía antes<br>de tener respuesta</div></div>
+    </div>
+  </div>
+</header>
+
+<section class="band" id="como">
+  <div class="wrap stack gap24">
+    <div class="stack gap12">
+      <div class="lbl">Cómo funciona</div>
+      <h2 class="h-sec">De un número a un plan</h2>
+    </div>
+    <div class="steps">
+      <div class="step stack gap8">
+        <div class="h-min">El diagnóstico, gratis</div>
+        <p class="small">Catorce preguntas cerradas sobre tu sociedad. Devuelve un índice de 0 a 100 y el desglose por cada uno de los siete factores. Aparece en pantalla, aquí mismo.</p>
+      </div>
+      <div class="step stack gap8">
+        <div class="h-min">El Dictamen, $6,900</div>
+        <p class="small">Subes cuatro documentos. En 72 horas hábiles recibes un peritaje de dieciséis páginas sobre tus documentos reales, con la transcripción literal de las cláusulas que producen cada factor rojo.</p>
+      </div>
+      <div class="step stack gap8">
+        <div class="h-min">El Plan de Remediación</div>
+        <p class="small">Las últimas páginas son la lista de documentos que faltan, cada uno con lo que resuelve, su plazo y su honorario. Decides qué firmar y cuándo. Sin compromiso de contratar nada.</p>
+      </div>
+    </div>
+    <div class="pull">
+      En toda catástrofe patrimonial hay un documento que no se firmó. Y el costo de ese documento
+      es inversamente proporcional al daño que habría evitado.
+    </div>
+  </div>
+</section>
+
+<section class="band" id="diagnostico" style="background:var(--surface)">
+  <div class="wrap stack gap24">
+    <div class="stack gap12">
+      <div class="lbl">Índice de Fragilidad Societaria</div>
+      <h2 class="h-sec">Siete factores. Catorce preguntas.</h2>
+      <p class="lead">Responde con lo que sabes hoy. &ldquo;No lo sé&rdquo; es una respuesta válida y, en varios factores, es la respuesta más reveladora.</p>
+    </div>
+
+    <div id="ifs-quiz" class="card" style="padding:clamp(20px,3vw,32px)">
+      <div class="ifs-head">
+        <div class="stack gap8">
+          <div class="lbl">Diagnóstico</div>
+          <div class="h-sub" style="font-size:24px">Empieza por la primera</div>
+        </div>
+        <div class="ifs-prog">
+          <span class="mono" style="font-size:12px; color:var(--fg-faint)"><b id="ifs-count">0</b>/14</span>
+          <span class="ifs-bar"><span id="ifs-fill"></span></span>
+        </div>
+      </div>
+      <div id="ifs-questions"></div>
+      <div class="row" style="padding-top:24px; border-top:1px solid var(--line)">
+        <button class="btn" id="ifs-go" disabled>Calcular mi índice</button>
+        <span class="tiny" id="ifs-hint">Responde las catorce para ver el resultado.</span>
+      </div>
+    </div>
+
+    <div id="ifs-result" class="card" hidden style="padding:clamp(20px,3vw,32px)">
+      <div class="score-hero">
+        <div class="dial">
+          <svg viewBox="0 0 168 168" aria-hidden="true">
+            <circle class="ring-bg" cx="84" cy="84" r="72"></circle>
+            <circle class="ring-fg" id="ring" cx="84" cy="84" r="72" stroke-dasharray="452.4" stroke-dashoffset="452.4"></circle>
+          </svg>
+          <div class="cap"><b id="score-n">0</b><span>IFS / 100</span></div>
+        </div>
+        <div class="stack gap12">
+          <div class="lbl">Tu resultado</div>
+          <h3 class="h-sub" id="score-band">—</h3>
+          <p class="small" id="score-copy" style="max-width:52ch"></p>
+          <div><span class="chip" id="score-chip">—</span></div>
+        </div>
+      </div>
+
+      <div style="padding:22px 0 6px">
+        <div class="lbl" style="margin-bottom:10px">Desglose por factor · 0 = blindado · 100 = frágil</div>
+        <div id="factor-rows"></div>
+      </div>
+
+      <div class="card" style="background:var(--bg); margin-bottom:20px">
+        <div class="stack gap16">
+          <div class="stack gap8">
+            <div class="h-min">Recibe el resultado en PDF</div>
+            <p class="small">Te lo mando con la explicación de cada factor rojo y qué documento lo corrige. Un correo, sin lista de difusión.</p>
+          </div>
+          <form class="capture" id="cap-form" novalidate>
+            <div><label for="cap-nombre">Nombre</label><input type="text" id="cap-nombre" name="nombre" required placeholder="Nombre y apellido"></div>
+            <div><label for="cap-correo">Correo</label><input type="email" id="cap-correo" name="correo" required placeholder="tu@empresa.com"></div>
+            <button class="btn" type="submit">Enviármelo</button>
+          </form>
+          <p class="tiny" id="cap-msg" role="status" aria-live="polite"></p>
+        </div>
+      </div>
+
+      <div class="offer" id="dictamen">
+        <div class="offer-h">Lo que este número no te dice</div>
+        <div class="offer-b">
+          <div class="stack gap12">
+            <p style="font-size:15.5px; color:var(--fg); max-width:56ch">
+              El diagnóstico localiza el punto de ruptura. No te dice qué cláusula exacta lo causa,
+              ni qué documento hay que firmar, ni cuánto cuesta. Eso está en el
+              <b>Dictamen de Fragilidad Societaria</b>: peritaje de dieciséis páginas sobre tus
+              documentos reales, en 72 horas hábiles.
+            </p>
+            <ul class="tick">
+              <li>Transcripción literal de las cláusulas que producen cada factor rojo</li>
+              <li>Inventario de poderes vigentes con apoderado, facultades y fecha</li>
+              <li>Matriz de hallazgos con severidad y consecuencia patrimonial</li>
+              <li>Plan de Remediación: qué documento falta, qué cuesta, qué evita</li>
+              <li>Resumen ejecutivo de dos páginas para llevar a la asamblea</li>
+            </ul>
+          </div>
+          <div class="stack gap12" style="align-items:flex-start">
+            <div class="price">$6,900<small>MXN</small></div>
+            <a class="btn" id="btn-pago" href="#" target="_blank" rel="noopener">Contratar el dictamen</a>
+            <a class="btn ghost" id="btn-wa" href="#" target="_blank" rel="noopener">Preguntar por WhatsApp</a>
+            <span class="tiny">Entrega en 72 h hábiles · Factura con IVA<br>Se paga en línea, sin junta previa</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="row" style="padding-top:20px">
+        <button class="btn ghost" id="ifs-again">Volver a empezar</button>
+        <span class="tiny">Tus respuestas no salen de este navegador hasta que envías el formulario.</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="band" id="preguntas">
+  <div class="wrap narrow stack gap24">
+    <div class="stack gap12">
+      <div class="lbl">Preguntas</div>
+      <h2 class="h-sec">Lo que la gente pregunta<br>antes de pagar</h2>
+    </div>
+    <div>
+      <details><summary>¿Esto es asesoría legal?</summary><p>El diagnóstico no lo es: es una herramienta de autoevaluación documental. El Dictamen sí es una opinión profesional y sale con carátula de alcance, hechos considerados, análisis, conclusión y limitaciones. En su página uno dice exactamente qué se revisó, qué no se revisó y qué no se garantiza.</p></details>
+      <details><summary>¿Qué documentos tengo que subir?</summary><p>Cuatro: acta constitutiva con sus reformas, última acta de asamblea, los poderes vigentes que conserves, y el expediente de beneficiario controlador si lo tienes integrado. Si falta alguno, el dictamen se entrega igual y la ausencia se convierte en un hallazgo, porque lo es.</p></details>
+      <details><summary>¿Me van a querer vender algo después?</summary><p>El dictamen termina con un Plan de Remediación que sí trae honorarios estimados por documento. Es información, no una obligación: puedes llevarlo con el abogado que quieras. La mayoría de los documentos que aparecen ahí los puede redactar cualquier abogado corporativo competente.</p></details>
+      <details><summary>¿Quién va a ver mis documentos?</summary><p>Solo yo. No se comparten con terceros, no se usan como ejemplo, no aparecen en contenido. Se conservan el tiempo que indica el aviso de privacidad y se destruyen a petición.</p></details>
+      <details><summary>¿Ustedes protocolizan lo que salga del dictamen?</summary><p>No. Este servicio es de estructuración y diagnóstico. Donde se cobra estructuración, la fe pública la autoriza otro notario. Es una separación deliberada y no se negocia.</p></details>
+      <details><summary>¿Sirve si mi empresa es chica?</summary><p>Sirve más. Los siete factores se rompen igual en una sociedad de dos socios que en un grupo de ocho empresas, y en la chica el daño es proporcionalmente mayor porque no hay estructura que lo absorba.</p></details>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap stack gap12">
+    <div class="lbl">Gilberto Gutiérrez Rodríguez · Abogado corporativo y notarial</div>
+    <p class="small">Torre Hermosillo, Piso 11 · Blvd. Kino 309, Col. Country Club · Hermosillo, Sonora<br>
+      <span class="mono" id="foot-mail">ggr@notaria81.com</span> · <span class="mono">+52 662 405 2022</span></p>
+    <p class="tiny" style="max-width:72ch">
+      El Índice de Fragilidad Societaria es una herramienta de autoevaluación. Su resultado no
+      constituye asesoría jurídica ni sustituye la revisión de los documentos de la sociedad.
+      Servicios de estructuración y opinión; la instrumentación notarial la autoriza el fedatario
+      que corresponda. <a href="../comun/aviso-privacidad.md">Aviso de privacidad</a>
+    </p>
+  </div>
+</footer>
+
+<script>
+/* ══════════════════════════════════════════════════════════════════
+   CONFIGURACIÓN — EDITA ESTAS SEIS LÍNEAS Y LA PÁGINA QUEDA EN VIVO
+   ══════════════════════════════════════════════════════════════════ */
+const CONFIG = {
+  precio:      6900,
+  ligaPago:    "https://buy.stripe.com/PEGA_AQUI_TU_LIGA",   // Stripe Payment Link o Mercado Pago
+  endpoint:    "",                                           // Formspree / Tally / webhook de Make. Vacío = abre el correo.
+  correo:      "ggr@notaria81.com",
+  whatsapp:    "5216624052022",                              // sin +, sin espacios
+  guardarLocal:true                                          // conserva el último resultado en este navegador
+};
+/* ══════════════════════════════════════════════════════════════════ */
+
+(function(){
+  "use strict";
+
+  var FACTORS = [
+    {id:"F1", w:15, name:"Pacto parasocial",             note:"Existencia y vigencia de un convenio entre socios distinto de los estatutos"},
+    {id:"F2", w:12, name:"Quórums y desempate",          note:"Mecanismo para decidir cuando el capital se bloquea"},
+    {id:"F3", w:15, name:"Deadlock y salida",            note:"Cómo sale un socio, a qué precio y quién lo calcula"},
+    {id:"F4", w:18, name:"Previsión sucesoria del socio",note:"Qué pasa con las acciones el día que uno se muere"},
+    {id:"F5", w:15, name:"Control de poderes",           note:"Quién puede obligar hoy a la sociedad, y desde cuándo"},
+    {id:"F6", w:15, name:"Beneficiario controlador",     note:"Expediente vigente conforme al art. 32-B Ter del CFF"},
+    {id:"F7", w:10, name:"Separación patrimonial",       note:"Dónde termina el socio y dónde empieza la sociedad"}
+  ];
+
+  var Q = [
+    {f:0, t:"¿Existe un convenio entre socios firmado, distinto de los estatutos?",
+     o:[["Sí, firmado por todos",0],["Se redactó, no lo firmaron todos",65],["No existe",100]]},
+    {f:0, t:"¿Se revisó o actualizó ese convenio en los últimos 36 meses?",
+     o:[["Sí",0],["No, pero existe",55],["No hay convenio que revisar",100]]},
+    {f:1, t:"¿Los estatutos prevén cómo se decide cuando hay empate o bloqueo?",
+     o:[["Sí, mecanismo definido",0],["Existe algo, no sé si funciona",60],["No",100]]},
+    {f:1, t:"¿Alguna decisión relevante exige unanimidad de los socios?",
+     o:[["No, todo se resuelve por mayoría",10],["Sí, una o dos decisiones",60],["Varias, o no lo sé",100]]},
+    {f:2, t:"¿Hay cláusula de salida con método de valuación escrito?",
+     o:[["Sí, con fórmula definida",0],["Hay salida sin método de valuación",70],["No",100]]},
+    {f:2, t:"¿Existe un mecanismo de ruptura pactado —opción cruzada, compra forzosa, buy-sell?",
+     o:[["Sí, está escrito",0],["Se ha hablado, no está escrito",75],["No",100]]},
+    {f:3, t:"¿Todos los socios tienen testamento vigente que disponga expresamente de sus acciones?",
+     o:[["Todos",0],["Algunos",60],["Ninguno, o no lo sé",100]]},
+    {f:3, t:"¿Los estatutos o el pacto regulan qué pasa cuando muere un socio?",
+     o:[["Sí: quién entra, quién no, y a qué precio",0],["Se menciona, sin mecanismo",65],["No",100]]},
+    {f:4, t:"¿Tiene un inventario actualizado de todos los poderes otorgados?",
+     o:[["Sí, actualizado este año",0],["Existe, pero desactualizado",55],["No existe",100]]},
+    {f:4, t:"¿Hay poderes vigentes en manos de personas que ya no están en la empresa?",
+     o:[["No, se revocaron todos",0],["Sí, al menos uno",100],["No lo sé",85]]},
+    {f:5, t:"¿Tiene integrado el expediente de beneficiario controlador de cada persona física que controla?",
+     o:[["Sí, completo y documentado",0],["Se integró una vez, sin actualizar",60],["No",100]]},
+    {f:5, t:"¿Se actualizó ese expediente después del último cambio en la estructura accionaria?",
+     o:[["Sí",0],["No ha habido cambios",25],["Hubo cambios y no se actualizó, o no lo sé",100]]},
+    {f:6, t:"¿Corren préstamos o gastos personales de socios por la sociedad?",
+     o:[["No",0],["Sí, documentados con contrato",50],["Sí, sin documentar, o no lo sé",100]]},
+    {f:6, t:"¿Los inmuebles y activos clave están en la misma sociedad que opera y contrata?",
+     o:[["No, están en vehículo separado",0],["Parcialmente",55],["Sí, todo en la misma",100]]}
+  ];
+
+  var BANDS = [
+    {max:24, name:"Fragilidad contenida", chip:"o", label:"Riesgo bajo",
+     copy:"Tu sociedad está por encima de la media mexicana, que es un estándar bajo. Los puntos abiertos son de mantenimiento, no de ruptura. Se degradan solos si nadie los vigila."},
+    {max:49, name:"Fragilidad expuesta", chip:"w", label:"Riesgo medio",
+     copy:"Hay al menos un factor que, ante un desacuerdo real, se convierte en el problema principal. Todavía se corrige barato y en frío. Después de la discusión ya no."},
+    {max:74, name:"Sociedad frágil", chip:"c", label:"Riesgo alto",
+     copy:"El punto de ruptura ya está localizado y no depende de la voluntad de nadie: depende de un documento que no está firmado. Si mañana un socio se enferma, se enoja o se muere, esto se convierte en litigio."},
+    {max:100, name:"Fragilidad crítica", chip:"c", label:"Riesgo crítico",
+     copy:"Varios factores rojos simultáneos. En esta configuración la sociedad no sobrevive a un evento sucesorio ni a una salida no acordada, y una operación de venta o de crédito se cae en la primera diligencia de la contraparte."}
+  ];
+
+  var answers = new Array(Q.length).fill(null);
+  var ultimo  = null;
+
+  var qWrap   = document.getElementById("ifs-questions");
+  var countEl = document.getElementById("ifs-count");
+  var fillEl  = document.getElementById("ifs-fill");
+  var goBtn   = document.getElementById("ifs-go");
+  var hintEl  = document.getElementById("ifs-hint");
+  var quizEl  = document.getElementById("ifs-quiz");
+  var resEl   = document.getElementById("ifs-result");
+
+  function tone(v){ return v < 25 ? "ok" : (v < 60 ? "warn" : "crit"); }
+  function toneVar(v){ return "var(--" + tone(v) + ")"; }
+
+  function build(){
+    var html = "";
+    for (var i = 0; i < Q.length; i++){
+      var q = Q[i];
+      html += '<div class="q"><div class="q-top">'
+           +  '<span class="q-n">' + (i < 9 ? "0" : "") + (i+1) + '</span>'
+           +  '<span><span class="q-t">' + q.t + '</span>'
+           +  '<span class="q-f">' + FACTORS[q.f].id + " · " + FACTORS[q.f].name + '</span></span>'
+           +  '</div><div class="opts">';
+      for (var j = 0; j < q.o.length; j++){
+        html += '<button type="button" class="opt" aria-pressed="false" data-q="' + i + '" data-o="' + j + '">' + q.o[j][0] + '</button>';
+      }
+      html += '</div></div>';
+    }
+    qWrap.innerHTML = html;
+  }
+
+  qWrap.addEventListener("click", function(e){
+    var b = e.target.closest(".opt");
+    if (!b) return;
+    var siblings = b.parentNode.querySelectorAll(".opt");
+    for (var k = 0; k < siblings.length; k++) siblings[k].setAttribute("aria-pressed","false");
+    b.setAttribute("aria-pressed","true");
+    answers[+b.dataset.q] = +b.dataset.o;
+    refresh();
+  });
+
+  function answered(){ var n=0; for (var i=0;i<answers.length;i++) if (answers[i]!==null) n++; return n; }
+
+  function refresh(){
+    var n = answered();
+    countEl.textContent = n;
+    fillEl.style.width = (n / Q.length * 100) + "%";
+    goBtn.disabled = n !== Q.length;
+    hintEl.textContent = n === Q.length
+      ? "Listo. El cálculo usa la ponderación de los siete factores."
+      : "Faltan " + (Q.length - n) + " de 14.";
+  }
+
+  function compute(){
+    var sums = FACTORS.map(function(){ return {s:0,c:0}; });
+    for (var i=0;i<Q.length;i++){ sums[Q[i].f].s += Q[i].o[answers[i]][1]; sums[Q[i].f].c++; }
+    var scores = sums.map(function(x){ return Math.round(x.s/x.c); });
+    var total = 0;
+    for (var f=0; f<FACTORS.length; f++) total += scores[f]*FACTORS[f].w;
+    return {factors:scores, global:Math.round(total/100)};
+  }
+
+  goBtn.addEventListener("click", function(){
+    var r = compute();
+    ultimo = r;
+    var band = BANDS.find(function(b){ return r.global <= b.max; });
+
+    document.getElementById("score-band").textContent = band.name;
+    document.getElementById("score-copy").textContent = band.copy;
+    var chip = document.getElementById("score-chip");
+    chip.className = "chip " + band.chip;
+    chip.textContent = band.label + " · IFS " + r.global;
+
+    var rows = "";
+    for (var f=0; f<FACTORS.length; f++){
+      var v = r.factors[f];
+      rows += '<div class="frow"><span class="fname">' + FACTORS[f].name + '<i>' + FACTORS[f].note + '</i></span>'
+           +  '<span class="fmeter"><span data-w="' + v + '" style="background:' + toneVar(v) + '"></span></span>'
+           +  '<span class="fval" style="color:' + toneVar(v) + '">' + v + ' / 100</span></div>';
+    }
+    document.getElementById("factor-rows").innerHTML = rows;
+
+    quizEl.hidden = true;
+    resEl.hidden = false;
+    resEl.scrollIntoView({behavior:"smooth", block:"start"});
+
+    var ring = document.getElementById("ring"), C = 2*Math.PI*72;
+    ring.setAttribute("stroke-dasharray", C.toFixed(1));
+    ring.setAttribute("stroke-dashoffset", C.toFixed(1));
+    ring.style.stroke = toneVar(r.global);
+    var nEl = document.getElementById("score-n");
+    nEl.style.color = toneVar(r.global);
+
+    requestAnimationFrame(function(){ setTimeout(function(){
+      ring.setAttribute("stroke-dashoffset", (C*(1-r.global/100)).toFixed(1));
+      var bars = document.querySelectorAll("#factor-rows .fmeter span");
+      for (var i=0;i<bars.length;i++) bars[i].style.width = bars[i].dataset.w + "%";
+    }, 60); });
+
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches){ nEl.textContent = r.global; }
+    else {
+      var t0=null;
+      requestAnimationFrame(function step(ts){
+        if(!t0) t0=ts;
+        var p=Math.min((ts-t0)/850,1);
+        nEl.textContent = Math.round(r.global*(1-Math.pow(1-p,3)));
+        if(p<1) requestAnimationFrame(step);
+      });
+    }
+
+    if (CONFIG.guardarLocal){
+      try{ localStorage.setItem("ifs_ultimo", JSON.stringify({fecha:new Date().toISOString(), r:r, a:answers})); }catch(e){}
+    }
+  });
+
+  document.getElementById("ifs-again").addEventListener("click", function(){
+    answers = new Array(Q.length).fill(null);
+    build(); refresh();
+    resEl.hidden = true; quizEl.hidden = false;
+    quizEl.scrollIntoView({behavior:"smooth", block:"start"});
+  });
+
+  /* ---- captura de correo ---- */
+  document.getElementById("cap-form").addEventListener("submit", function(e){
+    e.preventDefault();
+    var nombre = document.getElementById("cap-nombre").value.trim();
+    var correo = document.getElementById("cap-correo").value.trim();
+    var msg = document.getElementById("cap-msg");
+    if (!nombre || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(correo)){
+      msg.textContent = "Falta el nombre o el correo no tiene formato válido.";
+      msg.style.color = "var(--crit)";
+      return;
+    }
+    var payload = {
+      nombre: nombre, correo: correo,
+      ifs: ultimo ? ultimo.global : null,
+      factores: ultimo ? FACTORS.map(function(f,i){ return f.id + "=" + ultimo.factors[i]; }).join(" ") : "",
+      respuestas: answers.join(","),
+      fecha: new Date().toISOString()
+    };
+    if (CONFIG.endpoint){
+      fetch(CONFIG.endpoint, {
+        method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify(payload)
+      }).then(function(){
+        msg.textContent = "Listo. Te llega en unos minutos.";
+        msg.style.color = "var(--ok)";
+      }).catch(function(){
+        msg.textContent = "No se pudo enviar. Escríbeme a " + CONFIG.correo + ".";
+        msg.style.color = "var(--crit)";
+      });
+    } else {
+      var cuerpo = "Nombre: " + nombre + "%0D%0ACorreo: " + correo
+                 + "%0D%0AIFS: " + payload.ifs + "%0D%0AFactores: " + payload.factores
+                 + "%0D%0ARespuestas: " + payload.respuestas;
+      window.location.href = "mailto:" + CONFIG.correo + "?subject=Resultado%20IFS%20-%20" + encodeURIComponent(nombre) + "&body=" + cuerpo;
+      msg.textContent = "Se abrió tu correo con el resultado. Envíalo y te contesto con el PDF.";
+      msg.style.color = "var(--ok)";
+    }
+  });
+
+  /* ---- ligas configurables ---- */
+  document.getElementById("btn-pago").href = CONFIG.ligaPago;
+  document.getElementById("btn-wa").href =
+    "https://wa.me/" + CONFIG.whatsapp + "?text=" + encodeURIComponent("Hola. Hice el diagnóstico IFS y quiero el Dictamen de Fragilidad Societaria.");
+  document.getElementById("foot-mail").textContent = CONFIG.correo;
+  document.querySelectorAll(".price").forEach(function(p){
+    p.innerHTML = "$" + CONFIG.precio.toLocaleString("es-MX") + "<small>MXN</small>";
+  });
+
+  build(); refresh();
+})();
+</script>
+</body>
+</html>

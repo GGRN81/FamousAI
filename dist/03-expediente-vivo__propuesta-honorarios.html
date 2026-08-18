@@ -1,0 +1,399 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Propuesta — Expediente Corporativo Vivo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,400;6..96,600&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap">
+<style>
+/* comun/ggr.css incrustado por build.sh */
+/* ═══════════════════════════════════════════════════════════════
+   GGR — Hoja de estilos común de los tres productos digitales
+   EDITA LOS TOKENS DE ABAJO Y CAMBIA LOS TRES PRODUCTOS A LA VEZ.
+   ═══════════════════════════════════════════════════════════════ */
+
+:root{
+  /* ---- MARCA (tomados del brochure) ---- */
+  --ink:#0D191B;         /* verde-negro profundo */
+  --bone:#EDE8DF;        /* crema */
+  --ember:#C4712F;       /* naranja quemado */
+  --verdigris:#7FA394;   /* verde de las etiquetas */
+
+  /* ---- SUPERFICIES Y TEXTO (tema oscuro por defecto) ---- */
+  --bg:#0D191B;
+  --surface:#132427;
+  --surface-2:#1B3034;
+  --line:rgba(237,232,223,.14);
+  --line-strong:rgba(237,232,223,.28);
+  --fg:#E9E4DB;
+  --fg-dim:#A9B3B0;
+  --fg-faint:#77837F;
+  --accent:#D9924F;
+  --accent-ink:#0D191B;
+  --label:#7FA394;
+
+  /* ---- SEMÁFORO (independiente del acento) ---- */
+  --crit:#DE6153; --warn:#D2A32B; --ok:#3CA97C;
+  --crit-bg:rgba(222,97,83,.14); --warn-bg:rgba(210,163,43,.14); --ok-bg:rgba(60,169,124,.14);
+
+  /* ---- HERO: mundo único, igual en ambos temas ---- */
+  --hero-bg:#0D191B; --hero-fg:#EDE8DF; --hero-dim:#94A29E;
+  --hero-accent:#D9924F; --hero-label:#7FA394;
+
+  --shadow:0 1px 0 rgba(237,232,223,.05), 0 18px 40px -24px rgba(0,0,0,.7);
+  --maxw:1180px;
+}
+@media (prefers-color-scheme: light){
+  :root:not([data-theme="dark"]){
+    --bg:#F2EEE6; --surface:#FBF9F5; --surface-2:#E8E2D6;
+    --line:rgba(13,25,27,.14); --line-strong:rgba(13,25,27,.30);
+    --fg:#14262A; --fg-dim:#4B5A5C; --fg-faint:#7C8886;
+    --accent:#A85A1E; --accent-ink:#FBF9F5; --label:#3F6F5E;
+    --crit:#A82014; --warn:#B8860B; --ok:#0F7048;
+    --crit-bg:rgba(168,32,20,.10); --warn-bg:rgba(184,134,11,.13); --ok-bg:rgba(15,112,72,.10);
+    --shadow:0 1px 0 rgba(13,25,27,.04), 0 16px 34px -26px rgba(13,25,27,.45);
+  }
+}
+:root[data-theme="light"]{
+  --bg:#F2EEE6; --surface:#FBF9F5; --surface-2:#E8E2D6;
+  --line:rgba(13,25,27,.14); --line-strong:rgba(13,25,27,.30);
+  --fg:#14262A; --fg-dim:#4B5A5C; --fg-faint:#7C8886;
+  --accent:#A85A1E; --accent-ink:#FBF9F5; --label:#3F6F5E;
+  --crit:#A82014; --warn:#B8860B; --ok:#0F7048;
+  --crit-bg:rgba(168,32,20,.10); --warn-bg:rgba(184,134,11,.13); --ok-bg:rgba(15,112,72,.10);
+  --shadow:0 1px 0 rgba(13,25,27,.04), 0 16px 34px -26px rgba(13,25,27,.45);
+}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0; background:var(--bg); color:var(--fg);
+  font-family:"IBM Plex Sans",ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
+  font-size:16px; line-height:1.62; -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3,h4{text-wrap:balance; margin:0}
+p{margin:0}
+a{color:var(--accent)}
+img{max-width:100%}
+:focus-visible{outline:2px solid var(--accent); outline-offset:3px; border-radius:2px}
+@media (prefers-reduced-motion:reduce){*{animation:none!important; transition:none!important}}
+
+/* ---- primitivas ---- */
+.wrap{max-width:var(--maxw); margin:0 auto; padding:0 28px}
+@media(max-width:640px){.wrap{padding:0 18px}}
+.narrow{max-width:820px}
+
+.lbl{font-family:"IBM Plex Mono",ui-monospace,monospace; font-size:11px; font-weight:500;
+     letter-spacing:.22em; text-transform:uppercase; color:var(--label)}
+.mono{font-family:"IBM Plex Mono",ui-monospace,monospace; font-variant-numeric:tabular-nums}
+.serif{font-family:"Bodoni Moda",Georgia,"Times New Roman",serif}
+
+.h-sec{font-family:"Bodoni Moda",Georgia,serif; font-weight:600; font-size:clamp(30px,4.2vw,46px); line-height:1.08; letter-spacing:-.01em}
+.h-sub{font-family:"Bodoni Moda",Georgia,serif; font-weight:600; font-size:clamp(22px,2.6vw,30px); line-height:1.14}
+.h-min{font-size:15px; font-weight:600}
+.lead{font-size:clamp(16px,1.5vw,18.5px); color:var(--fg-dim); max-width:66ch}
+.small{font-size:13.5px; color:var(--fg-dim)}
+.tiny{font-size:12px; color:var(--fg-faint)}
+
+.band{border-top:1px solid var(--line); padding:clamp(48px,6vw,84px) 0}
+.card{background:var(--surface); border:1px solid var(--line); border-radius:3px; padding:22px 24px; box-shadow:var(--shadow); min-width:0}
+.grid{display:grid; gap:18px}
+.grid>*{min-width:0}
+.g2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.g3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.g4{grid-template-columns:repeat(4,minmax(0,1fr))}
+@media(max-width:900px){.g3,.g4{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:620px){.g2,.g3,.g4{grid-template-columns:minmax(0,1fr)}}
+.stack{display:flex; flex-direction:column; min-width:0}
+.gap8{gap:8px} .gap12{gap:12px} .gap16{gap:16px} .gap24{gap:24px} .gap36{gap:36px} .gap48{gap:48px}
+.row{display:flex; gap:12px; flex-wrap:wrap; align-items:center}
+
+.tblwrap{overflow-x:auto; border:1px solid var(--line); border-radius:3px; background:var(--surface)}
+table{border-collapse:collapse; width:100%; min-width:520px; font-size:14px}
+th{text-align:left; font-family:"IBM Plex Mono",monospace; font-size:10.5px; letter-spacing:.16em;
+   text-transform:uppercase; color:var(--label); font-weight:500; padding:12px 16px; border-bottom:1px solid var(--line-strong)}
+td{padding:12px 16px; border-bottom:1px solid var(--line); vertical-align:top; color:var(--fg-dim)}
+td:first-child{color:var(--fg); font-weight:500}
+tr:last-child td{border-bottom:none}
+td.num,th.num{text-align:right; font-family:"IBM Plex Mono",monospace; font-variant-numeric:tabular-nums; white-space:nowrap}
+
+.chip{display:inline-flex; align-items:center; gap:6px; font-family:"IBM Plex Mono",monospace;
+      font-size:10.5px; letter-spacing:.12em; text-transform:uppercase; padding:3px 9px; border-radius:2px;
+      border:1px solid currentColor; white-space:normal; max-width:100%; line-height:1.5}
+.chip.c{color:var(--crit); background:var(--crit-bg)}
+.chip.w{color:var(--warn); background:var(--warn-bg)}
+.chip.o{color:var(--ok); background:var(--ok-bg)}
+.chip.n{color:var(--fg-faint)}
+td .chip,.carat-h .chip{white-space:nowrap}
+
+.pull{border-left:3px solid var(--ember); padding:6px 0 6px 20px; font-size:17px; color:var(--fg); max-width:62ch}
+.warnnote{border-left:3px solid var(--warn); background:var(--warn-bg); padding:12px 16px; border-radius:0 3px 3px 0; font-size:13.5px; color:var(--fg-dim)}
+
+ul.tick{list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:9px}
+ul.tick li{position:relative; padding-left:20px; font-size:14.5px; color:var(--fg-dim)}
+ul.tick li::before{content:""; position:absolute; left:0; top:9px; width:7px; height:7px; background:var(--ember); border-radius:1px}
+ul.tick li b{color:var(--fg); font-weight:600}
+
+.btn{font-family:"IBM Plex Mono",monospace; font-size:12px; letter-spacing:.14em; text-transform:uppercase; font-weight:600;
+     padding:14px 26px; border-radius:2px; border:1px solid var(--accent); background:var(--accent); color:var(--accent-ink);
+     cursor:pointer; transition:opacity .15s; text-decoration:none; display:inline-block; text-align:center}
+.btn:hover{opacity:.86}
+.btn[disabled]{opacity:.32; cursor:not-allowed}
+.btn.ghost{background:transparent; color:var(--fg-dim); border-color:var(--line-strong)}
+.btn.ghost:hover{color:var(--fg); border-color:var(--fg-dim); opacity:1}
+.btn.big{padding:17px 34px; font-size:13px}
+
+input[type=text],input[type=email],input[type=tel],select,textarea{
+  font-family:inherit; font-size:15px; color:var(--fg); background:var(--bg);
+  border:1px solid var(--line-strong); border-radius:2px; padding:12px 14px; width:100%}
+input::placeholder,textarea::placeholder{color:var(--fg-faint)}
+label{font-family:"IBM Plex Mono",monospace; font-size:10.5px; letter-spacing:.14em;
+      text-transform:uppercase; color:var(--label); display:block; margin-bottom:6px}
+
+/* ---- nav ---- */
+nav{position:sticky; top:0; z-index:60; background:color-mix(in srgb, var(--bg) 88%, transparent);
+    backdrop-filter:blur(12px); border-bottom:1px solid var(--line)}
+.navin{max-width:var(--maxw); margin:0 auto; padding:11px 28px; display:flex; align-items:center; gap:22px; flex-wrap:wrap}
+.navmark{font-family:"IBM Plex Mono",monospace; font-size:12px; letter-spacing:.3em; color:var(--fg); font-weight:600; text-decoration:none}
+.navlinks{display:flex; gap:18px; flex-wrap:wrap; margin-left:auto; align-items:center}
+.navlinks a{font-family:"IBM Plex Mono",monospace; font-size:11px; letter-spacing:.14em; text-transform:uppercase;
+            color:var(--fg-dim); text-decoration:none; padding:3px 0; border-bottom:1px solid transparent}
+.navlinks a:hover{color:var(--fg); border-bottom-color:var(--ember)}
+@media(max-width:640px){.navin{padding:10px 18px; gap:12px} .navlinks{gap:12px; margin-left:0; width:100%}}
+section[id]{scroll-margin-top:76px}
+
+/* ---- hero ---- */
+.hero{background:var(--hero-bg); color:var(--hero-fg); padding:clamp(56px,8vw,104px) 0 clamp(44px,5vw,68px); position:relative; overflow:hidden}
+.hero::after{content:""; position:absolute; inset:0; pointer-events:none;
+  background:radial-gradient(760px 420px at 84% 8%, rgba(217,146,79,.16), transparent 62%)}
+.hero .wrap{position:relative; z-index:1}
+.hero .lbl{color:var(--hero-label)}
+.hero h1{font-family:"Bodoni Moda",Georgia,serif; font-weight:600;
+  font-size:clamp(38px,6.4vw,74px); line-height:1.0; letter-spacing:-.02em; color:var(--hero-fg); margin:18px 0 0}
+.hero h1 em{font-style:italic; color:var(--hero-accent)}
+.hero .lead{color:var(--hero-dim); max-width:58ch; margin-top:20px}
+.hero .small,.hero .tiny{color:var(--hero-dim)}
+
+.metrics{display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); margin-top:clamp(36px,4vw,56px); border-top:1px solid rgba(237,232,223,.16)}
+.metric{padding:20px 22px 4px; border-right:1px solid rgba(237,232,223,.12); min-width:0}
+.metric:last-child{border-right:none}
+.metric .v{font-family:"Bodoni Moda",Georgia,serif; font-size:clamp(26px,3.2vw,38px); font-weight:600; color:var(--hero-fg); line-height:1; font-variant-numeric:tabular-nums}
+.metric .v small{font-family:"IBM Plex Mono",monospace; font-size:12px; letter-spacing:.1em; color:var(--hero-accent); margin-left:6px; font-weight:500}
+.metric .k{font-family:"IBM Plex Mono",monospace; font-size:10.5px; letter-spacing:.16em; text-transform:uppercase; color:var(--hero-dim); margin-top:10px; line-height:1.5}
+@media(max-width:900px){.metrics{grid-template-columns:repeat(2,minmax(0,1fr))} .metric{border-bottom:1px solid rgba(237,232,223,.12)} .metric:nth-child(2){border-right:none}}
+@media(max-width:520px){.metrics{grid-template-columns:minmax(0,1fr)} .metric{border-right:none}}
+
+footer{border-top:1px solid var(--line); padding:40px 0 56px; background:var(--surface)}
+
+/* ═══ DOCUMENTOS IMPRIMIBLES (dictamen, reporte, carátula, propuesta) ═══ */
+.doc{background:#FFFFFF; color:#14262A; font-size:14px; line-height:1.6}
+.doc .page{
+  max-width:820px; margin:0 auto 26px; background:#FFF; padding:56px 62px 64px;
+  border:1px solid #D8D2C6; position:relative; min-height:1040px;
+}
+.doc .page.first{border-top:5px solid var(--ember)}
+.doc h1,.doc h2,.doc h3{font-family:"Bodoni Moda",Georgia,serif; color:#0D191B}
+.doc h1{font-size:34px; font-weight:600; line-height:1.1}
+.doc h2{font-size:23px; font-weight:600; line-height:1.15; margin:0 0 14px}
+.doc h3{font-size:17px; font-weight:600; margin:0 0 8px}
+.doc p{margin:0 0 11px; color:#2C3A3C}
+.doc .lbl{color:#3F6F5E}
+.doc .foot{position:absolute; left:62px; right:62px; bottom:26px; display:flex; justify-content:space-between;
+  font-family:"IBM Plex Mono",monospace; font-size:9.5px; letter-spacing:.12em; text-transform:uppercase; color:#8A938F;
+  border-top:1px solid #E4DED2; padding-top:9px}
+.doc table{min-width:0; font-size:12.5px}
+.doc th{color:#3F6F5E; border-bottom:1px solid #B9B2A3; padding:8px 10px}
+.doc td{color:#2C3A3C; border-bottom:1px solid #E4DED2; padding:8px 10px}
+.doc td:first-child{color:#0D191B}
+.doc .tblwrap{border:1px solid #D8D2C6; background:#FFF}
+.doc .quote{border-left:3px solid #B9B2A3; background:#F7F4EE; padding:12px 16px; font-family:"IBM Plex Mono",monospace;
+  font-size:12px; line-height:1.65; color:#2C3A3C; white-space:pre-wrap; margin:0 0 12px}
+.doc .flag{border-left:3px solid var(--ember); background:#FBF3EA; padding:11px 15px; margin:0 0 12px; font-size:13px}
+.doc .fill{background:#FFF4DC; border-bottom:1px solid #D9A93E; padding:0 3px; font-family:"IBM Plex Mono",monospace; font-size:12px}
+.doc .sev{display:inline-block; font-family:"IBM Plex Mono",monospace; font-size:9.5px; letter-spacing:.12em;
+  text-transform:uppercase; padding:2px 8px; border:1px solid currentColor; border-radius:2px}
+.doc .sev.c{color:#A82014; background:#FBEDEB} .doc .sev.w{color:#8A5F0B; background:#FBF3E0} .doc .sev.o{color:#0F7048; background:#EAF4EE}
+.doc .rule{height:1px; background:#D8D2C6; margin:20px 0}
+.docbar{position:sticky; top:0; z-index:50; background:var(--ink); color:var(--bone); padding:10px 20px;
+  display:flex; gap:14px; align-items:center; flex-wrap:wrap; font-family:"IBM Plex Mono",monospace; font-size:11px; letter-spacing:.12em; text-transform:uppercase}
+.docbar .btn{padding:8px 16px; font-size:10.5px}
+.docbar .btn.ghost{color:#CBD3D0; border-color:rgba(237,232,223,.38)}
+.docbar .btn.ghost:hover{color:#EDE8DF; border-color:#EDE8DF}
+@media(max-width:720px){.doc .page{padding:32px 24px 54px; min-height:0} .doc .foot{left:24px; right:24px}}
+
+@media print{
+  .docbar,nav,.noprint{display:none!important}
+  body{background:#FFF}
+  .doc .page{border:none; margin:0; padding:0; min-height:auto; max-width:none; page-break-after:always}
+  .doc .page:last-child{page-break-after:auto}
+  .doc .foot{position:static; margin-top:24px}
+  @page{size:letter; margin:18mm 16mm}
+}
+
+</style>
+<style>body{background:#E8E4DA} .doc{padding:26px 16px 60px} .kv td:first-child{width:32%; color:#3F6F5E; font-family:"IBM Plex Mono",monospace; font-size:10.5px; letter-spacing:.1em; text-transform:uppercase}</style>
+</head>
+<body class="doc">
+
+<div class="docbar noprint">
+  <span>Propuesta de honorarios · suscripción</span>
+  <button class="btn" onclick="window.print()">Imprimir / Guardar como PDF</button>
+  <button class="btn ghost" id="toggle-fill">Ocultar resaltado</button>
+  <span class="mono" id="fill-count"></span>
+</div>
+
+<div class="page first">
+  <div style="display:flex; flex-direction:column; height:920px">
+    <div class="lbl">Gutiérrez Rodríguez Abogados · Hermosillo, Sonora</div>
+    <div style="margin-top:auto">
+      <div class="lbl" style="margin-bottom:14px">Confidencial · Propuesta <span class='fill'>[PROP-2026-000]</span></div>
+      <h1 style="font-size:40px; line-height:1.06">Expediente<br>Corporativo Vivo</h1>
+      <p style="margin-top:14px; max-width:52ch; font-size:15px">Vigilancia documental por suscripción. El expediente de la sociedad, vivo y verificable, todos los días del año.</p>
+      <div class="rule"></div>
+      <table class="kv"><tbody>
+        <tr><td>Dirigida a</td><td><span class='fill'>[nombre y cargo]</span></td></tr>
+        <tr><td>Grupo</td><td><span class='fill'>[nombre del grupo]</span></td></tr>
+        <tr><td>Sociedades en alcance</td><td><span class='fill'>[N]</span></td></tr>
+        <tr><td>Fecha</td><td><span class='fill'>[dd de mes de aaaa]</span></td></tr>
+        <tr><td>Vigencia de la propuesta</td><td>30 días naturales</td></tr>
+      </tbody></table>
+    </div>
+    <div style="margin-top:auto"><p class="tiny" style="color:#6C7573">Documento confidencial. Su contenido no puede compartirse con terceros sin consentimiento escrito.</p></div>
+  </div>
+  <div class="foot"><span>Gilberto Gutiérrez Rodríguez · Abogado corporativo y notarial</span><span>Página 1 de 4</span></div>
+</div>
+
+<div class="page">
+  <div class="lbl">I</div>
+  <h2>El problema que resuelve</h2>
+  <p>Una sociedad viva con expediente muerto. El costo real no es la multa: es la operación que se cae.</p>
+  <div class="tblwrap" style="margin-top:12px"><table>
+    <thead><tr><th>Lo que pasa</th><th>Lo que cuesta</th></tr></thead>
+    <tbody>
+      <tr><td>El crédito no se firma el viernes porque el poder venció</td><td>El costo del retraso, más la posición negociadora perdida</td></tr>
+      <tr><td>El comprador descubre en diligencia que faltan tres actas</td><td>Descuento sobre precio, o la operación entera</td></tr>
+      <tr><td>Rechazo registral por defecto de forma o personalidad</td><td>Semanas, y el acto queda sin oponibilidad mientras tanto</td></tr>
+      <tr><td>Expediente de beneficiario controlador inexistente</td><td>Sanción por cada beneficiario, y la cuenta bancaria en riesgo <span class="sev w">⚠ cotejar CFF</span></td></tr>
+      <tr><td>Tres ejercicios sin asamblea anual celebrada</td><td>Regularización hacia atrás, a un múltiplo de lo que costaba hacerlo a tiempo</td></tr>
+      <tr><td>Poderes vigentes en manos de quien ya se fue</td><td>Actos oponibles a la sociedad frente a terceros de buena fe</td></tr>
+    </tbody>
+  </table></div>
+
+  <h2 style="margin-top:22px">II · Alcance del servicio</h2>
+  <h3>Qué incluye</h3>
+  <div class="tblwrap"><table>
+    <thead><tr><th>Componente</th><th>Entrega</th><th>Frecuencia</th></tr></thead>
+    <tbody>
+      <tr><td>Carátula de personalidad</td><td>PDF en español e inglés, con transcripción literal de facultades y bloque de antecedentes listo para instrumento</td><td>Permanente; se reemite en 24 h a solicitud</td></tr>
+      <tr><td>Semáforo de poderes</td><td>Inventario con apoderado, alcance, fecha y estatus</td><td>Mensual</td></tr>
+      <tr><td>Calendario corporativo</td><td>Asamblea anual, renovación de órganos, vencimientos, actualización de beneficiario controlador, aviso al RNIE</td><td>Alerta a 60, 30 y 7 días</td></tr>
+      <tr><td>Bóveda documental</td><td>Expediente versionado con liga de acceso para banco, notario o contraparte</td><td>Permanente</td></tr>
+      <tr><td>Índice de Fragilidad</td><td>Recálculo con delta contra el trimestre anterior</td><td>Trimestral</td></tr>
+      <tr><td>Reporte mensual</td><td>PDF de estado con lo que cambió y lo que viene</td><td>Mensual</td></tr>
+      <tr><td>Llamada de coordinación</td><td>30 minutos</td><td>Mensual</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3 style="margin-top:14px">Qué no incluye</h3>
+  <p>Redacción de instrumentos, actas o contratos; representación en litigio; contabilidad y declaraciones fiscales; derechos, gastos registrales y honorarios del fedatario; auditoría legal. Todo eso se cotiza por separado y con precio preferente para cuentas activas.</p>
+
+  <div class="foot"><span>Propuesta · Expediente Corporativo Vivo</span><span>Página 2 de 4</span></div>
+</div>
+
+<div class="page">
+  <div class="lbl">III</div>
+  <h2>Honorarios</h2>
+  <div class="tblwrap" style="margin-top:12px"><table>
+    <thead><tr><th>Plan</th><th>Alcance</th><th class="num">Mensual</th><th class="num">Anual pagado por adelantado</th></tr></thead>
+    <tbody>
+      <tr><td><b>Vigilancia</b></td><td>Una sociedad</td><td class="num">$2,900</td><td class="num">$29,000</td></tr>
+      <tr><td><b>Grupo</b></td><td>Hasta tres sociedades</td><td class="num">$4,900</td><td class="num">$49,000</td></tr>
+      <tr><td><b>Corredor</b></td><td>Grupo más vehículo extranjero: calendario de agente residente, RNIE, beneficiario controlador de la cadena completa</td><td class="num">$7,900</td><td class="num">$79,000</td></tr>
+    </tbody>
+  </table></div>
+  <p class="tiny" style="margin-top:8px">Cifras en pesos mexicanos, más IVA. La anualidad equivale a diez mensualidades: dos meses sin costo a cambio del pago anticipado. Sociedad adicional dentro de un plan: $<span class='fill'>[1,400]</span> al mes.</p>
+
+  <h3 style="margin-top:18px">Recomendación para este grupo</h3>
+  <div class="flag">
+    <b>Plan <span class='fill'>[Grupo]</span> · $<span class='fill'>[4,900]</span> al mes.</b> <span class='fill'>[Una o dos líneas explicando por qué ese plan y no el de arriba ni el de abajo, ancladas a un hecho concreto de este grupo.]</span>
+  </div>
+
+  <h3>Condiciones</h3>
+  <ul style="margin:0; padding-left:18px; font-size:13px; color:#2C3A3C">
+    <li>Prueba de 30 días sin costo y sin tarjeta. La prueba es la carátula de personalidad entregada en 24 horas.</li>
+    <li>Facturación mensual el día <span class='fill'>[N]</span>. Sin plazo forzoso: se cancela con aviso de 30 días.</li>
+    <li>Alta inicial del expediente incluida cuando se contrata plan anual. En plan mensual: $<span class='fill'>[6,900]</span> por sociedad, por única vez.</li>
+    <li>Tiempo de respuesta comprometido: carátula en 24 horas hábiles; consultas documentales el mismo día hábil.</li>
+  </ul>
+
+  <h2 style="margin-top:22px">IV · Puesta en marcha</h2>
+  <div class="tblwrap"><table>
+    <thead><tr><th>Semana</th><th>Qué ocurre</th><th>Quién</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td>Recepción de instrumentos y armado del expediente base</td><td>Sociedad</td></tr>
+      <tr><td>1</td><td>Carátula de personalidad v1, en español e inglés</td><td>Despacho</td></tr>
+      <tr><td>2</td><td>Inventario de poderes y verificación de consistencia interna</td><td>Despacho</td></tr>
+      <tr><td>2</td><td>Calendario corporativo cargado con alertas</td><td>Despacho</td></tr>
+      <tr><td>3</td><td>Índice de Fragilidad inicial y reporte de banderas rojas</td><td>Despacho</td></tr>
+      <tr><td>4</td><td>Primera llamada mensual y entrega del primer reporte</td><td>Ambos</td></tr>
+    </tbody>
+  </table></div>
+
+  <div class="foot"><span>Propuesta · Expediente Corporativo Vivo</span><span>Página 3 de 4</span></div>
+</div>
+
+<div class="page">
+  <div class="lbl">V</div>
+  <h2>Condiciones generales</h2>
+
+  <h3>Naturaleza del servicio</h3>
+  <p>Vigilancia documental y mantenimiento del expediente corporativo. No constituye auditoría legal, asesoría fiscal ni contable, y no sustituye las constancias que expiden los registros públicos.</p>
+
+  <h3>Independencia de la función notarial</h3>
+  <p>Los servicios se prestan en el carácter de abogado corporativo. La fe pública que requiera la instrumentación de cualquier acto será otorgada por el fedatario que las partes elijan, distinto del prestador. Donde el despacho cobra estructuración, la fe pública la autoriza otro notario.</p>
+
+  <h3>Confidencialidad y datos personales</h3>
+  <p>Los documentos e información se tratan como confidenciales, no se comparten con terceros y no se utilizan como ejemplo ni material de referencia. El tratamiento de datos personales se rige por el aviso de privacidad que se acompaña, incluida la política de conservación y destrucción.</p>
+
+  <h3>Identificación del cliente</h3>
+  <p>La contratación requiere integrar expediente de identificación del cliente y, en su caso, de su beneficiario controlador. ⚠ Debe cotejarse contra texto vigente si el servicio, por su alcance, actualiza alguno de los supuestos del artículo 17 de la LFPIORPI.</p>
+
+  <h3>Conflicto de interés</h3>
+  <p>Se declara que a la fecha no existe conflicto de interés conocido respecto de <span class='fill'>[grupo]</span>. De surgir, se notificará por escrito de inmediato.</p>
+
+  <h3>Limitación</h3>
+  <p>El servicio se presta sobre los documentos que la sociedad proporcione. Un instrumento no proporcionado no aparece en el expediente y sigue produciendo efectos.</p>
+
+  <div class="rule" style="margin-top:30px"></div>
+  <h3>Aceptación</h3>
+  <div style="display:grid; grid-template-columns:1fr 1fr; gap:40px; margin-top:56px">
+    <div style="border-top:1px solid #0D191B; padding-top:9px; text-align:center">
+      <b><span class='fill'>[NOMBRE Y CARGO]</span></b><br><span class="tiny" style="color:#6C7573">Por <span class='fill'>[DENOMINACIÓN]</span></span>
+    </div>
+    <div style="border-top:1px solid #0D191B; padding-top:9px; text-align:center">
+      <b>Gilberto Gutiérrez Rodríguez</b><br><span class="tiny" style="color:#6C7573">Abogado corporativo y notarial</span>
+    </div>
+  </div>
+
+  <div class="foot"><span>Propuesta · Expediente Corporativo Vivo</span><span>Página 4 de 4</span></div>
+</div>
+
+<script>
+(function(){
+  var on=true, btn=document.getElementById("toggle-fill");
+  var c=document.getElementById("fill-count");
+  if(c) c.textContent = document.querySelectorAll(".fill").length + " campos por llenar";
+  if(!btn) return;
+  btn.addEventListener("click", function(){
+    on=!on;
+    document.querySelectorAll(".fill").forEach(function(el){
+      el.style.background = on ? "" : "transparent";
+      el.style.borderBottom = on ? "" : "none";
+    });
+    btn.textContent = on ? "Ocultar resaltado" : "Mostrar resaltado";
+  });
+})();
+</script>
+</body></html>

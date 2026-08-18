@@ -1,0 +1,769 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Expediente Corporativo Vivo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,400;6..96,600&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap">
+<style>
+/* comun/ggr.css incrustado por build.sh */
+/* ═══════════════════════════════════════════════════════════════
+   GGR — Hoja de estilos común de los tres productos digitales
+   EDITA LOS TOKENS DE ABAJO Y CAMBIA LOS TRES PRODUCTOS A LA VEZ.
+   ═══════════════════════════════════════════════════════════════ */
+
+:root{
+  /* ---- MARCA (tomados del brochure) ---- */
+  --ink:#0D191B;         /* verde-negro profundo */
+  --bone:#EDE8DF;        /* crema */
+  --ember:#C4712F;       /* naranja quemado */
+  --verdigris:#7FA394;   /* verde de las etiquetas */
+
+  /* ---- SUPERFICIES Y TEXTO (tema oscuro por defecto) ---- */
+  --bg:#0D191B;
+  --surface:#132427;
+  --surface-2:#1B3034;
+  --line:rgba(237,232,223,.14);
+  --line-strong:rgba(237,232,223,.28);
+  --fg:#E9E4DB;
+  --fg-dim:#A9B3B0;
+  --fg-faint:#77837F;
+  --accent:#D9924F;
+  --accent-ink:#0D191B;
+  --label:#7FA394;
+
+  /* ---- SEMÁFORO (independiente del acento) ---- */
+  --crit:#DE6153; --warn:#D2A32B; --ok:#3CA97C;
+  --crit-bg:rgba(222,97,83,.14); --warn-bg:rgba(210,163,43,.14); --ok-bg:rgba(60,169,124,.14);
+
+  /* ---- HERO: mundo único, igual en ambos temas ---- */
+  --hero-bg:#0D191B; --hero-fg:#EDE8DF; --hero-dim:#94A29E;
+  --hero-accent:#D9924F; --hero-label:#7FA394;
+
+  --shadow:0 1px 0 rgba(237,232,223,.05), 0 18px 40px -24px rgba(0,0,0,.7);
+  --maxw:1180px;
+}
+@media (prefers-color-scheme: light){
+  :root:not([data-theme="dark"]){
+    --bg:#F2EEE6; --surface:#FBF9F5; --surface-2:#E8E2D6;
+    --line:rgba(13,25,27,.14); --line-strong:rgba(13,25,27,.30);
+    --fg:#14262A; --fg-dim:#4B5A5C; --fg-faint:#7C8886;
+    --accent:#A85A1E; --accent-ink:#FBF9F5; --label:#3F6F5E;
+    --crit:#A82014; --warn:#B8860B; --ok:#0F7048;
+    --crit-bg:rgba(168,32,20,.10); --warn-bg:rgba(184,134,11,.13); --ok-bg:rgba(15,112,72,.10);
+    --shadow:0 1px 0 rgba(13,25,27,.04), 0 16px 34px -26px rgba(13,25,27,.45);
+  }
+}
+:root[data-theme="light"]{
+  --bg:#F2EEE6; --surface:#FBF9F5; --surface-2:#E8E2D6;
+  --line:rgba(13,25,27,.14); --line-strong:rgba(13,25,27,.30);
+  --fg:#14262A; --fg-dim:#4B5A5C; --fg-faint:#7C8886;
+  --accent:#A85A1E; --accent-ink:#FBF9F5; --label:#3F6F5E;
+  --crit:#A82014; --warn:#B8860B; --ok:#0F7048;
+  --crit-bg:rgba(168,32,20,.10); --warn-bg:rgba(184,134,11,.13); --ok-bg:rgba(15,112,72,.10);
+  --shadow:0 1px 0 rgba(13,25,27,.04), 0 16px 34px -26px rgba(13,25,27,.45);
+}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0; background:var(--bg); color:var(--fg);
+  font-family:"IBM Plex Sans",ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
+  font-size:16px; line-height:1.62; -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3,h4{text-wrap:balance; margin:0}
+p{margin:0}
+a{color:var(--accent)}
+img{max-width:100%}
+:focus-visible{outline:2px solid var(--accent); outline-offset:3px; border-radius:2px}
+@media (prefers-reduced-motion:reduce){*{animation:none!important; transition:none!important}}
+
+/* ---- primitivas ---- */
+.wrap{max-width:var(--maxw); margin:0 auto; padding:0 28px}
+@media(max-width:640px){.wrap{padding:0 18px}}
+.narrow{max-width:820px}
+
+.lbl{font-family:"IBM Plex Mono",ui-monospace,monospace; font-size:11px; font-weight:500;
+     letter-spacing:.22em; text-transform:uppercase; color:var(--label)}
+.mono{font-family:"IBM Plex Mono",ui-monospace,monospace; font-variant-numeric:tabular-nums}
+.serif{font-family:"Bodoni Moda",Georgia,"Times New Roman",serif}
+
+.h-sec{font-family:"Bodoni Moda",Georgia,serif; font-weight:600; font-size:clamp(30px,4.2vw,46px); line-height:1.08; letter-spacing:-.01em}
+.h-sub{font-family:"Bodoni Moda",Georgia,serif; font-weight:600; font-size:clamp(22px,2.6vw,30px); line-height:1.14}
+.h-min{font-size:15px; font-weight:600}
+.lead{font-size:clamp(16px,1.5vw,18.5px); color:var(--fg-dim); max-width:66ch}
+.small{font-size:13.5px; color:var(--fg-dim)}
+.tiny{font-size:12px; color:var(--fg-faint)}
+
+.band{border-top:1px solid var(--line); padding:clamp(48px,6vw,84px) 0}
+.card{background:var(--surface); border:1px solid var(--line); border-radius:3px; padding:22px 24px; box-shadow:var(--shadow); min-width:0}
+.grid{display:grid; gap:18px}
+.grid>*{min-width:0}
+.g2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.g3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.g4{grid-template-columns:repeat(4,minmax(0,1fr))}
+@media(max-width:900px){.g3,.g4{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:620px){.g2,.g3,.g4{grid-template-columns:minmax(0,1fr)}}
+.stack{display:flex; flex-direction:column; min-width:0}
+.gap8{gap:8px} .gap12{gap:12px} .gap16{gap:16px} .gap24{gap:24px} .gap36{gap:36px} .gap48{gap:48px}
+.row{display:flex; gap:12px; flex-wrap:wrap; align-items:center}
+
+.tblwrap{overflow-x:auto; border:1px solid var(--line); border-radius:3px; background:var(--surface)}
+table{border-collapse:collapse; width:100%; min-width:520px; font-size:14px}
+th{text-align:left; font-family:"IBM Plex Mono",monospace; font-size:10.5px; letter-spacing:.16em;
+   text-transform:uppercase; color:var(--label); font-weight:500; padding:12px 16px; border-bottom:1px solid var(--line-strong)}
+td{padding:12px 16px; border-bottom:1px solid var(--line); vertical-align:top; color:var(--fg-dim)}
+td:first-child{color:var(--fg); font-weight:500}
+tr:last-child td{border-bottom:none}
+td.num,th.num{text-align:right; font-family:"IBM Plex Mono",monospace; font-variant-numeric:tabular-nums; white-space:nowrap}
+
+.chip{display:inline-flex; align-items:center; gap:6px; font-family:"IBM Plex Mono",monospace;
+      font-size:10.5px; letter-spacing:.12em; text-transform:uppercase; padding:3px 9px; border-radius:2px;
+      border:1px solid currentColor; white-space:normal; max-width:100%; line-height:1.5}
+.chip.c{color:var(--crit); background:var(--crit-bg)}
+.chip.w{color:var(--warn); background:var(--warn-bg)}
+.chip.o{color:var(--ok); background:var(--ok-bg)}
+.chip.n{color:var(--fg-faint)}
+td .chip,.carat-h .chip{white-space:nowrap}
+
+.pull{border-left:3px solid var(--ember); padding:6px 0 6px 20px; font-size:17px; color:var(--fg); max-width:62ch}
+.warnnote{border-left:3px solid var(--warn); background:var(--warn-bg); padding:12px 16px; border-radius:0 3px 3px 0; font-size:13.5px; color:var(--fg-dim)}
+
+ul.tick{list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:9px}
+ul.tick li{position:relative; padding-left:20px; font-size:14.5px; color:var(--fg-dim)}
+ul.tick li::before{content:""; position:absolute; left:0; top:9px; width:7px; height:7px; background:var(--ember); border-radius:1px}
+ul.tick li b{color:var(--fg); font-weight:600}
+
+.btn{font-family:"IBM Plex Mono",monospace; font-size:12px; letter-spacing:.14em; text-transform:uppercase; font-weight:600;
+     padding:14px 26px; border-radius:2px; border:1px solid var(--accent); background:var(--accent); color:var(--accent-ink);
+     cursor:pointer; transition:opacity .15s; text-decoration:none; display:inline-block; text-align:center}
+.btn:hover{opacity:.86}
+.btn[disabled]{opacity:.32; cursor:not-allowed}
+.btn.ghost{background:transparent; color:var(--fg-dim); border-color:var(--line-strong)}
+.btn.ghost:hover{color:var(--fg); border-color:var(--fg-dim); opacity:1}
+.btn.big{padding:17px 34px; font-size:13px}
+
+input[type=text],input[type=email],input[type=tel],select,textarea{
+  font-family:inherit; font-size:15px; color:var(--fg); background:var(--bg);
+  border:1px solid var(--line-strong); border-radius:2px; padding:12px 14px; width:100%}
+input::placeholder,textarea::placeholder{color:var(--fg-faint)}
+label{font-family:"IBM Plex Mono",monospace; font-size:10.5px; letter-spacing:.14em;
+      text-transform:uppercase; color:var(--label); display:block; margin-bottom:6px}
+
+/* ---- nav ---- */
+nav{position:sticky; top:0; z-index:60; background:color-mix(in srgb, var(--bg) 88%, transparent);
+    backdrop-filter:blur(12px); border-bottom:1px solid var(--line)}
+.navin{max-width:var(--maxw); margin:0 auto; padding:11px 28px; display:flex; align-items:center; gap:22px; flex-wrap:wrap}
+.navmark{font-family:"IBM Plex Mono",monospace; font-size:12px; letter-spacing:.3em; color:var(--fg); font-weight:600; text-decoration:none}
+.navlinks{display:flex; gap:18px; flex-wrap:wrap; margin-left:auto; align-items:center}
+.navlinks a{font-family:"IBM Plex Mono",monospace; font-size:11px; letter-spacing:.14em; text-transform:uppercase;
+            color:var(--fg-dim); text-decoration:none; padding:3px 0; border-bottom:1px solid transparent}
+.navlinks a:hover{color:var(--fg); border-bottom-color:var(--ember)}
+@media(max-width:640px){.navin{padding:10px 18px; gap:12px} .navlinks{gap:12px; margin-left:0; width:100%}}
+section[id]{scroll-margin-top:76px}
+
+/* ---- hero ---- */
+.hero{background:var(--hero-bg); color:var(--hero-fg); padding:clamp(56px,8vw,104px) 0 clamp(44px,5vw,68px); position:relative; overflow:hidden}
+.hero::after{content:""; position:absolute; inset:0; pointer-events:none;
+  background:radial-gradient(760px 420px at 84% 8%, rgba(217,146,79,.16), transparent 62%)}
+.hero .wrap{position:relative; z-index:1}
+.hero .lbl{color:var(--hero-label)}
+.hero h1{font-family:"Bodoni Moda",Georgia,serif; font-weight:600;
+  font-size:clamp(38px,6.4vw,74px); line-height:1.0; letter-spacing:-.02em; color:var(--hero-fg); margin:18px 0 0}
+.hero h1 em{font-style:italic; color:var(--hero-accent)}
+.hero .lead{color:var(--hero-dim); max-width:58ch; margin-top:20px}
+.hero .small,.hero .tiny{color:var(--hero-dim)}
+
+.metrics{display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); margin-top:clamp(36px,4vw,56px); border-top:1px solid rgba(237,232,223,.16)}
+.metric{padding:20px 22px 4px; border-right:1px solid rgba(237,232,223,.12); min-width:0}
+.metric:last-child{border-right:none}
+.metric .v{font-family:"Bodoni Moda",Georgia,serif; font-size:clamp(26px,3.2vw,38px); font-weight:600; color:var(--hero-fg); line-height:1; font-variant-numeric:tabular-nums}
+.metric .v small{font-family:"IBM Plex Mono",monospace; font-size:12px; letter-spacing:.1em; color:var(--hero-accent); margin-left:6px; font-weight:500}
+.metric .k{font-family:"IBM Plex Mono",monospace; font-size:10.5px; letter-spacing:.16em; text-transform:uppercase; color:var(--hero-dim); margin-top:10px; line-height:1.5}
+@media(max-width:900px){.metrics{grid-template-columns:repeat(2,minmax(0,1fr))} .metric{border-bottom:1px solid rgba(237,232,223,.12)} .metric:nth-child(2){border-right:none}}
+@media(max-width:520px){.metrics{grid-template-columns:minmax(0,1fr)} .metric{border-right:none}}
+
+footer{border-top:1px solid var(--line); padding:40px 0 56px; background:var(--surface)}
+
+/* ═══ DOCUMENTOS IMPRIMIBLES (dictamen, reporte, carátula, propuesta) ═══ */
+.doc{background:#FFFFFF; color:#14262A; font-size:14px; line-height:1.6}
+.doc .page{
+  max-width:820px; margin:0 auto 26px; background:#FFF; padding:56px 62px 64px;
+  border:1px solid #D8D2C6; position:relative; min-height:1040px;
+}
+.doc .page.first{border-top:5px solid var(--ember)}
+.doc h1,.doc h2,.doc h3{font-family:"Bodoni Moda",Georgia,serif; color:#0D191B}
+.doc h1{font-size:34px; font-weight:600; line-height:1.1}
+.doc h2{font-size:23px; font-weight:600; line-height:1.15; margin:0 0 14px}
+.doc h3{font-size:17px; font-weight:600; margin:0 0 8px}
+.doc p{margin:0 0 11px; color:#2C3A3C}
+.doc .lbl{color:#3F6F5E}
+.doc .foot{position:absolute; left:62px; right:62px; bottom:26px; display:flex; justify-content:space-between;
+  font-family:"IBM Plex Mono",monospace; font-size:9.5px; letter-spacing:.12em; text-transform:uppercase; color:#8A938F;
+  border-top:1px solid #E4DED2; padding-top:9px}
+.doc table{min-width:0; font-size:12.5px}
+.doc th{color:#3F6F5E; border-bottom:1px solid #B9B2A3; padding:8px 10px}
+.doc td{color:#2C3A3C; border-bottom:1px solid #E4DED2; padding:8px 10px}
+.doc td:first-child{color:#0D191B}
+.doc .tblwrap{border:1px solid #D8D2C6; background:#FFF}
+.doc .quote{border-left:3px solid #B9B2A3; background:#F7F4EE; padding:12px 16px; font-family:"IBM Plex Mono",monospace;
+  font-size:12px; line-height:1.65; color:#2C3A3C; white-space:pre-wrap; margin:0 0 12px}
+.doc .flag{border-left:3px solid var(--ember); background:#FBF3EA; padding:11px 15px; margin:0 0 12px; font-size:13px}
+.doc .fill{background:#FFF4DC; border-bottom:1px solid #D9A93E; padding:0 3px; font-family:"IBM Plex Mono",monospace; font-size:12px}
+.doc .sev{display:inline-block; font-family:"IBM Plex Mono",monospace; font-size:9.5px; letter-spacing:.12em;
+  text-transform:uppercase; padding:2px 8px; border:1px solid currentColor; border-radius:2px}
+.doc .sev.c{color:#A82014; background:#FBEDEB} .doc .sev.w{color:#8A5F0B; background:#FBF3E0} .doc .sev.o{color:#0F7048; background:#EAF4EE}
+.doc .rule{height:1px; background:#D8D2C6; margin:20px 0}
+.docbar{position:sticky; top:0; z-index:50; background:var(--ink); color:var(--bone); padding:10px 20px;
+  display:flex; gap:14px; align-items:center; flex-wrap:wrap; font-family:"IBM Plex Mono",monospace; font-size:11px; letter-spacing:.12em; text-transform:uppercase}
+.docbar .btn{padding:8px 16px; font-size:10.5px}
+.docbar .btn.ghost{color:#CBD3D0; border-color:rgba(237,232,223,.38)}
+.docbar .btn.ghost:hover{color:#EDE8DF; border-color:#EDE8DF}
+@media(max-width:720px){.doc .page{padding:32px 24px 54px; min-height:0} .doc .foot{left:24px; right:24px}}
+
+@media print{
+  .docbar,nav,.noprint{display:none!important}
+  body{background:#FFF}
+  .doc .page{border:none; margin:0; padding:0; min-height:auto; max-width:none; page-break-after:always}
+  .doc .page:last-child{page-break-after:auto}
+  .doc .foot{position:static; margin-top:24px}
+  @page{size:letter; margin:18mm 16mm}
+}
+
+</style>
+<style>
+.appbar{position:sticky; top:0; z-index:60; background:var(--ink); color:var(--bone); border-bottom:1px solid rgba(237,232,223,.16)}
+.appbar-in{max-width:1280px; margin:0 auto; padding:11px 24px; display:flex; gap:14px; align-items:center; flex-wrap:wrap}
+.appbar .navmark{color:var(--bone)}
+.appbar select{width:auto; min-width:230px; background:#182D31; color:var(--bone); border-color:rgba(237,232,223,.26); padding:8px 12px; font-size:14px}
+.appbar .btn{padding:9px 16px; font-size:10.5px}
+.appbar .btn.ghost{color:#C3CCC9; border-color:rgba(237,232,223,.3)}
+.shell{max-width:1280px; margin:0 auto; padding:26px 24px 70px}
+@media(max-width:640px){.shell,.appbar-in{padding-left:16px; padding-right:16px}}
+
+.head{display:flex; justify-content:space-between; align-items:flex-start; gap:18px; flex-wrap:wrap; padding-bottom:18px; border-bottom:1px solid var(--line)}
+.head input.t{font-family:"Bodoni Moda",Georgia,serif; font-size:28px; font-weight:600; border:none; background:none; padding:2px 0; color:var(--fg); width:100%}
+.head .meta{display:flex; gap:10px; flex-wrap:wrap; align-items:center}
+.head .meta input,.head .meta select{width:auto; padding:5px 9px; font-size:12.5px; font-family:"IBM Plex Mono",monospace}
+
+.kpi{display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:1px; background:var(--line); border:1px solid var(--line); margin:20px 0}
+@media(max-width:820px){.kpi{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:460px){.kpi{grid-template-columns:minmax(0,1fr)}}
+.kpi>div{background:var(--surface); padding:15px 17px; min-width:0}
+.kpi .k{font-family:"IBM Plex Mono",monospace; font-size:9.5px; letter-spacing:.16em; text-transform:uppercase; color:var(--label)}
+.kpi .v{font-family:"Bodoni Moda",Georgia,serif; font-size:32px; font-weight:600; line-height:1.1; margin-top:7px; font-variant-numeric:tabular-nums}
+.kpi .d{font-size:12px; color:var(--fg-faint); margin-top:3px}
+
+.panel{border:1px solid var(--line); background:var(--surface); border-radius:3px; margin-bottom:20px; overflow:hidden}
+.panel-h{display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap; padding:13px 18px; border-bottom:1px solid var(--line); background:var(--surface-2)}
+.panel-h .t{font-family:"IBM Plex Mono",monospace; font-size:10.5px; letter-spacing:.18em; text-transform:uppercase; color:var(--label)}
+.panel-b{padding:16px 18px}
+.cols{display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:20px}
+@media(max-width:900px){.cols{grid-template-columns:minmax(0,1fr)}}
+
+.rowgrid{display:grid; gap:8px; align-items:center; padding:9px 0; border-bottom:1px solid var(--line)}
+.rowgrid:last-child{border-bottom:none}
+.rp{grid-template-columns:minmax(90px,1.1fr) minmax(80px,.9fr) minmax(110px,1.4fr) 108px 132px 30px}
+.rc{grid-template-columns:132px minmax(120px,1.5fr) minmax(90px,1fr) 86px 30px}
+.ri{grid-template-columns:132px 88px minmax(0,1fr) 30px}
+@media(max-width:900px){.rp,.rc,.ri{grid-template-columns:minmax(0,1fr) 30px}}
+.rowgrid input,.rowgrid select{padding:7px 9px; font-size:13px; min-width:0}
+.rowgrid .del{background:none; border:1px solid var(--line-strong); color:var(--fg-faint); cursor:pointer;
+  width:26px; height:26px; border-radius:2px; font-size:15px; line-height:1; padding:0}
+.rowgrid .del:hover{color:var(--crit); border-color:var(--crit)}
+.hdr{display:grid; gap:8px; padding-bottom:7px; border-bottom:1px solid var(--line-strong)}
+.hdr span{font-family:"IBM Plex Mono",monospace; font-size:9.5px; letter-spacing:.14em; text-transform:uppercase; color:var(--label)}
+@media(max-width:900px){.hdr{display:none}}
+
+.spark{position:relative}
+.spark svg{display:block; width:100%; height:110px; overflow:visible}
+.tip{position:absolute; pointer-events:none; background:var(--ink); color:var(--bone); border:1px solid rgba(237,232,223,.24);
+  padding:6px 10px; border-radius:2px; font-family:"IBM Plex Mono",monospace; font-size:11px; white-space:nowrap;
+  transform:translate(-50%,-130%); opacity:0; transition:opacity .12s}
+.spark .tip.on{opacity:1}
+
+.caratbox{border:1px solid var(--line-strong); border-radius:3px; overflow:hidden}
+.caratbox .ch{padding:11px 16px; background:var(--surface-2); border-bottom:1px solid var(--line); display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap; align-items:center}
+.caratbox .cb{padding:14px 16px; display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:2px 22px}
+@media(max-width:640px){.caratbox .cb{grid-template-columns:minmax(0,1fr)}}
+.cf{padding:7px 0; border-bottom:1px dotted var(--line)}
+.cf b{display:block; font-family:"IBM Plex Mono",monospace; font-size:9.5px; letter-spacing:.14em; text-transform:uppercase; color:var(--label); font-weight:500; margin-bottom:3px}
+.cf input{padding:5px 0; border:none; background:none; font-size:13.5px}
+
+.toast{position:fixed; left:50%; bottom:26px; transform:translateX(-50%) translateY(20px); background:var(--ink); color:var(--bone);
+  border:1px solid rgba(237,232,223,.3); padding:11px 20px; border-radius:2px; font-family:"IBM Plex Mono",monospace;
+  font-size:11.5px; letter-spacing:.1em; opacity:0; transition:all .22s; z-index:200}
+.toast.on{opacity:1; transform:translateX(-50%) translateY(0)}
+
+@media print{
+  .appbar,.noprint,.del,.rowgrid .del{display:none!important}
+  body{background:#fff; color:#111}
+  input,select{border:none!important; background:none!important; color:#111!important; -webkit-appearance:none; appearance:none}
+  .panel,.kpi>div,.caratbox{background:#fff; border-color:#CFC9BC}
+  .panel-h,.caratbox .ch{background:#F4F1EA}
+  .shell{padding:0}
+  @page{size:letter; margin:14mm}
+}
+</style>
+</head>
+<body>
+
+<div class="appbar noprint">
+  <div class="appbar-in">
+    <span class="navmark">G G R</span>
+    <select id="sel-cuenta" aria-label="Cuenta"></select>
+    <button class="btn ghost" id="b-nueva">Nueva cuenta</button>
+    <div style="margin-left:auto; display:flex; gap:9px; flex-wrap:wrap">
+      <button class="btn ghost" id="b-export">Exportar</button>
+      <button class="btn ghost" id="b-import">Importar</button>
+      <button class="btn ghost" id="b-print">PDF mensual</button>
+      <button class="btn" id="b-carat">Generar carátula</button>
+    </div>
+    <input type="file" id="file-import" accept="application/json" hidden>
+  </div>
+</div>
+
+<div class="shell">
+
+  <div class="head">
+    <div class="stack gap8" style="flex:1; min-width:240px">
+      <div class="lbl">Expediente Corporativo Vivo</div>
+      <input class="t" id="f-nombre" placeholder="Nombre del grupo o sociedad">
+      <div class="meta">
+        <select id="f-plan">
+          <option value="Vigilancia">Plan Vigilancia · $2,900</option>
+          <option value="Grupo">Plan Grupo · $4,900</option>
+          <option value="Corredor">Plan Corredor · $7,900</option>
+        </select>
+        <input id="f-soc" type="text" size="3" placeholder="3"> <span class="tiny">sociedades</span>
+        <label style="display:flex; align-items:center; gap:6px; margin:0; text-transform:none; letter-spacing:0; font-family:inherit; font-size:12.5px; color:var(--fg-dim)">
+          <input type="checkbox" id="f-ext" style="width:auto"> vehículo extranjero
+        </label>
+        <input id="f-corte" type="date">
+      </div>
+    </div>
+  </div>
+
+  <div class="kpi" id="kpis"></div>
+
+  <div class="cols">
+    <div>
+      <div class="panel">
+        <div class="panel-h">
+          <span class="t">Semáforo de poderes</span>
+          <button class="btn ghost noprint" id="b-add-poder" style="padding:6px 12px; font-size:10px">Agregar</button>
+        </div>
+        <div class="panel-b">
+          <div class="hdr rp"><span>Apoderado</span><span>Cargo</span><span>Alcance</span><span>Otorgado</span><span>Estatus</span><span></span></div>
+          <div id="lista-poderes"></div>
+          <p class="tiny" id="nota-poderes" style="margin-top:12px"></p>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-h">
+          <span class="t">Índice de Fragilidad — serie trimestral</span>
+          <button class="btn ghost noprint" id="b-add-ifs" style="padding:6px 12px; font-size:10px">Registrar</button>
+        </div>
+        <div class="panel-b">
+          <div class="spark" id="spark"><div class="tip" id="tip"></div></div>
+          <div class="hdr ri" style="margin-top:14px"><span>Fecha</span><span>IFS</span><span>Nota</span><span></span></div>
+          <div id="lista-ifs"></div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="panel">
+        <div class="panel-h">
+          <span class="t">Calendario corporativo</span>
+          <button class="btn ghost noprint" id="b-add-cal" style="padding:6px 12px; font-size:10px">Agregar</button>
+        </div>
+        <div class="panel-b">
+          <div class="hdr rc"><span>Fecha</span><span>Acto</span><span>Responsable</span><span>Faltan</span><span></span></div>
+          <div id="lista-cal"></div>
+          <p class="tiny" style="margin-top:12px">Rojo bajo 30 días, ámbar bajo 60. ⚠ La asamblea anual ordinaria debe celebrarse dentro del plazo que fija la LGSM; cotejar contra texto vigente.</p>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-h">
+          <span class="t">Carátula de personalidad</span>
+          <span class="mono tiny" id="carat-ver"></span>
+        </div>
+        <div class="panel-b">
+          <div class="caratbox">
+            <div class="ch">
+              <span class="mono" style="font-size:12px; color:var(--fg)" id="carat-den">—</span>
+              <span style="display:flex; gap:8px"><span class="chip o">Cotejada</span><span class="chip n">ES / EN</span></span>
+            </div>
+            <div class="cb" id="carat-campos"></div>
+          </div>
+          <p class="tiny" style="margin-top:12px">La transcripción de facultades es literal por diseño. Una paráfrasis es el defecto de forma que produce el rechazo registral. <a href="caratula-personalidad.html">Abrir plantilla imprimible</a></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <p class="tiny noprint" style="margin-top:8px">
+    Todo se guarda solo, en este navegador. Nada sale de aquí hasta que exportas.
+    Respalda con <b>Exportar</b> antes de limpiar el navegador.
+  </p>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+(function(){
+"use strict";
+
+/* ═════ CONFIGURACIÓN ═════ */
+var PLANES = { "Vigilancia":2900, "Grupo":4900, "Corredor":7900 };
+var CLAVE   = "ggr_expediente_v1";
+
+var CAMPOS_CARATULA = [
+  ["denominacion","Denominación y régimen"],
+  ["constitucion","Constitución"],
+  ["inscripcion","Inscripción"],
+  ["objeto","Objeto social"],
+  ["duracion","Duración y domicilio"],
+  ["capital","Capital fijo y variable"],
+  ["organo","Órgano de administración"],
+  ["facultades","Facultades — transcripción literal"],
+  ["reformas","Reformas posteriores"],
+  ["bc","Beneficiario controlador"]
+];
+
+function demo(){
+  var hoy = new Date();
+  var mas = function(d){ var x=new Date(hoy); x.setDate(x.getDate()+d); return x.toISOString().slice(0,10); };
+  return {
+    nombre:"Grupo Agrícola del Noroeste", plan:"Grupo", sociedades:"3", extranjero:true,
+    corte: hoy.toISOString().slice(0,10), caratulas:9,
+    poderes:[
+      {nombre:"[Nombre 1]", cargo:"Director general",     alcance:"Dominio, administración, cambiarios", fecha:"2021-04-12", estatus:"vigente"},
+      {nombre:"[Nombre 2]", cargo:"Ex dir. de finanzas",  alcance:"Administración, cambiarios",          fecha:"2019-08-02", estatus:"revocar"},
+      {nombre:"[Nombre 3]", cargo:"Socio saliente",       alcance:"Pleitos y cobranzas, dominio",        fecha:"2018-02-20", estatus:"revocar"},
+      {nombre:"[Nombre 4]", cargo:"Contralor",            alcance:"Administración limitada a $[____]",   fecha:"2023-11-09", estatus:"cotejar"},
+      {nombre:"[Nombre 5]", cargo:"Apoderado laboral",    alcance:"Representación patronal",             fecha:"2024-06-01", estatus:"vigente"}
+    ],
+    calendario:[
+      {fecha:mas(16), titulo:"Revocación de dos poderes",            responsable:"Despacho", nota:"Requiere sesión de consejo previa"},
+      {fecha:mas(44), titulo:"Actualización de beneficiario controlador", responsable:"Sociedad", nota:"Cambió la estructura accionaria"},
+      {fecha:mas(59), titulo:"Aviso al RNIE",                        responsable:"Despacho", nota:"Vehículo extranjero con participación"},
+      {fecha:mas(240),titulo:"Asamblea anual ordinaria",             responsable:"Sociedad", nota:"⚠ cotejar plazo LGSM"}
+    ],
+    ifs:[
+      {fecha:"2025-09-30", valor:71, nota:"Diagnóstico inicial"},
+      {fecha:"2025-12-31", valor:64, nota:"Convenio entre socios firmado"},
+      {fecha:"2026-03-31", valor:53, nota:"Cláusula de valuación y salida"},
+      {fecha:"2026-06-30", valor:41, nota:"Testamentos y cláusula sucesoria"}
+    ],
+    caratula:{
+      denominacion:"Agrícola del Noroeste, S.A. de C.V.",
+      constitucion:"Escritura [____], vol. [____], ante Notario Público No. [____]",
+      inscripcion:"Folio mercantil electrónico [____], RPPC Hermosillo",
+      objeto:"[Transcripción literal de la cláusula]",
+      duracion:"Indefinida · Hermosillo, Sonora",
+      capital:"Fijo $[____] · Variable $[____]",
+      organo:"Consejo de administración · Vigencia [____]",
+      facultades:"[Transcripción literal — no paráfrasis]",
+      reformas:"3 actas protocolizadas · última [____]",
+      bc:"Identificado y documentado · actualizado [____]"
+    }
+  };
+}
+
+var S = cargar();
+function cargar(){
+  try{
+    var raw = localStorage.getItem(CLAVE);
+    if (raw){ var p = JSON.parse(raw); if (p && p.cuentas && p.cuentas.length) return p; }
+  }catch(e){}
+  return {v:1, activa:0, cuentas:[demo()]};
+}
+var guardarT;
+function guardar(){
+  clearTimeout(guardarT);
+  guardarT = setTimeout(function(){
+    try{ localStorage.setItem(CLAVE, JSON.stringify(S)); }catch(e){}
+  }, 220);
+}
+function C(){ return S.cuentas[S.activa]; }
+
+function toast(t){
+  var el = document.getElementById("toast");
+  el.textContent = t; el.classList.add("on");
+  clearTimeout(el._t); el._t = setTimeout(function(){ el.classList.remove("on"); }, 2100);
+}
+function dias(f){
+  if(!f) return null;
+  var hoy = new Date(); hoy.setHours(0,0,0,0);
+  return Math.round((new Date(f+"T00:00:00") - hoy) / 86400000);
+}
+function tono(v){ return v < 25 ? "ok" : (v < 60 ? "warn" : "crit"); }
+function esc(s){ return String(s==null?"":s).replace(/[&<>"]/g, function(c){
+  return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]; }); }
+
+/* ───────── render ───────── */
+function pintarSelector(){
+  var sel = document.getElementById("sel-cuenta");
+  sel.innerHTML = S.cuentas.map(function(c,i){
+    return '<option value="'+i+'"'+(i===S.activa?' selected':'')+'>'+esc(c.nombre||"Sin nombre")+'</option>';
+  }).join("");
+}
+
+function pintarCabecera(){
+  var c = C();
+  document.getElementById("f-nombre").value = c.nombre || "";
+  document.getElementById("f-plan").value   = c.plan || "Vigilancia";
+  document.getElementById("f-soc").value    = c.sociedades || "";
+  document.getElementById("f-ext").checked  = !!c.extranjero;
+  document.getElementById("f-corte").value  = c.corte || "";
+}
+
+function pintarKPIs(){
+  var c = C();
+  var serie = (c.ifs||[]).slice().sort(function(a,b){ return a.fecha < b.fecha ? -1 : 1; });
+  var act = serie.length ? serie[serie.length-1].valor : null;
+  var ant = serie.length > 1 ? serie[serie.length-2].valor : null;
+  var delta = (act!=null && ant!=null) ? act-ant : null;
+
+  var vig = (c.poderes||[]).filter(function(p){ return p.estatus==="vigente"; }).length;
+  var rev = (c.poderes||[]).filter(function(p){ return p.estatus==="revocar"; }).length;
+  var pend = (c.calendario||[]).filter(function(a){ var d=dias(a.fecha); return d!=null && d>=0 && d<=60; });
+
+  document.getElementById("kpis").innerHTML =
+    '<div><div class="k">IFS del grupo</div><div class="v" style="color:var(--'+(act!=null?tono(act):"fg")+')">'+(act!=null?act:"—")+'</div>'+
+      '<div class="d">'+(delta!=null ? (delta<0 ? "Bajó "+Math.abs(delta)+" puntos" : (delta>0 ? "Subió "+delta+" puntos" : "Sin cambio"))+" este trimestre" : "Registra el primer índice")+'</div></div>' +
+    '<div><div class="k">Poderes vigentes</div><div class="v">'+((c.poderes||[]).length)+'</div>'+
+      '<div class="d">'+(rev ? '<span style="color:var(--crit)">'+rev+' por revocar</span>' : vig+" en orden")+'</div></div>' +
+    '<div><div class="k">Actos por vencer &lt; 60 d</div><div class="v" style="color:var(--'+(pend.length?"crit":"fg")+')">'+pend.length+'</div>'+
+      '<div class="d">'+(pend.length ? esc(pend[0].titulo) : "Nada en el horizonte")+'</div></div>' +
+    '<div><div class="k">Carátulas emitidas</div><div class="v">'+(c.caratulas||0)+'</div>'+
+      '<div class="d">Plan '+esc(c.plan||"—")+' · $'+(PLANES[c.plan]||0).toLocaleString("es-MX")+' al mes</div></div>';
+}
+
+function pintarPoderes(){
+  var c = C(), L = document.getElementById("lista-poderes");
+  L.innerHTML = (c.poderes||[]).map(function(p,i){
+    return '<div class="rowgrid rp">'
+      + '<input data-t="p" data-i="'+i+'" data-k="nombre"  value="'+esc(p.nombre)+'" title="'+esc(p.nombre)+'" placeholder="Nombre">'
+      + '<input data-t="p" data-i="'+i+'" data-k="cargo"   value="'+esc(p.cargo)+'" title="'+esc(p.cargo)+'" placeholder="Cargo">'
+      + '<input data-t="p" data-i="'+i+'" data-k="alcance" value="'+esc(p.alcance)+'" title="'+esc(p.alcance)+'" placeholder="Facultades">'
+      + '<input data-t="p" data-i="'+i+'" data-k="fecha" type="date" value="'+esc(p.fecha)+'">'
+      + '<select data-t="p" data-i="'+i+'" data-k="estatus">'
+      +   '<option value="vigente"'+(p.estatus==="vigente"?" selected":"")+'>Vigente</option>'
+      +   '<option value="cotejar"'+(p.estatus==="cotejar"?" selected":"")+'>Cotejar</option>'
+      +   '<option value="revocar"'+(p.estatus==="revocar"?" selected":"")+'>Revocar ya</option>'
+      + '</select>'
+      + '<button class="del noprint" data-del="p" data-i="'+i+'" title="Eliminar" aria-label="Eliminar">&times;</button>'
+      + '</div>';
+  }).join("") || '<p class="tiny">Sin poderes registrados. La ausencia de inventario es, por sí sola, el hallazgo.</p>';
+
+  var rev = (c.poderes||[]).filter(function(p){ return p.estatus==="revocar"; }).length;
+  document.getElementById("nota-poderes").innerHTML = rev
+    ? '<b style="color:var(--crit)">'+rev+' persona'+(rev>1?"s":"")+' que ya no debería'+(rev>1?"n":"")+' poder obligar a la sociedad, todavía puede'+(rev>1?"n":"")+'.</b> Un poder no caduca porque la relación se acabe.'
+    : 'Inventario en orden a la fecha de corte. Se revisa cada mes.';
+}
+
+function pintarCalendario(){
+  var c = C(), L = document.getElementById("lista-cal");
+  var ord = (c.calendario||[]).map(function(a,i){ return {a:a,i:i}; })
+    .sort(function(x,y){ return (x.a.fecha||"9999") < (y.a.fecha||"9999") ? -1 : 1; });
+  L.innerHTML = ord.map(function(o){
+    var a=o.a, d=dias(a.fecha);
+    var cls = d==null ? "n" : (d<0 ? "c" : (d<=30 ? "c" : (d<=60 ? "w" : "o")));
+    var txt = d==null ? "—" : (d<0 ? Math.abs(d)+" d vencido" : d+" días");
+    return '<div class="rowgrid rc">'
+      + '<input data-t="c" data-i="'+o.i+'" data-k="fecha" type="date" value="'+esc(a.fecha)+'">'
+      + '<input data-t="c" data-i="'+o.i+'" data-k="titulo" value="'+esc(a.titulo)+'" title="'+esc(a.titulo)+(a.nota?' — '+esc(a.nota):'')+'" placeholder="Acto">'
+      + '<input data-t="c" data-i="'+o.i+'" data-k="responsable" value="'+esc(a.responsable)+'" placeholder="Responsable">'
+      + '<span class="chip '+cls+'">'+txt+'</span>'
+      + '<button class="del noprint" data-del="c" data-i="'+o.i+'" title="Eliminar" aria-label="Eliminar">&times;</button>'
+      + '</div>';
+  }).join("") || '<p class="tiny">Sin actos programados.</p>';
+}
+
+function pintarIFS(){
+  var c = C(), L = document.getElementById("lista-ifs");
+  var ord = (c.ifs||[]).map(function(a,i){ return {a:a,i:i}; })
+    .sort(function(x,y){ return (x.a.fecha||"") < (y.a.fecha||"") ? -1 : 1; });
+  L.innerHTML = ord.map(function(o){
+    return '<div class="rowgrid ri">'
+      + '<input data-t="i" data-i="'+o.i+'" data-k="fecha" type="date" value="'+esc(o.a.fecha)+'">'
+      + '<input data-t="i" data-i="'+o.i+'" data-k="valor" type="number" min="0" max="100" value="'+esc(o.a.valor)+'">'
+      + '<input data-t="i" data-i="'+o.i+'" data-k="nota" value="'+esc(o.a.nota)+'" placeholder="Qué cambió">'
+      + '<button class="del noprint" data-del="i" data-i="'+o.i+'" title="Eliminar" aria-label="Eliminar">&times;</button>'
+      + '</div>';
+  }).join("") || '<p class="tiny">Sin registros.</p>';
+  pintarSpark(ord.map(function(o){ return o.a; }));
+}
+
+/* Serie única de cambio en el tiempo. Sin leyenda: el título la nombra.
+   Línea 2px, punto final enfatizado, cuadrícula recesiva, tooltip por punto. */
+function pintarSpark(serie){
+  var box = document.getElementById("spark");
+  var tip = document.getElementById("tip");
+  box.querySelectorAll("svg").forEach(function(n){ n.remove(); });
+  if (serie.length < 2){
+    var p = document.createElement("p");
+    p.className = "tiny"; p.textContent = "Registra al menos dos trimestres para ver la tendencia.";
+    box.appendChild(p); return;
+  }
+  var W=560, H=110, PT=14, PB=22, PL=6, PR=34;
+  var n = serie.length;
+  var x = function(i){ return PL + i*(W-PL-PR)/(n-1); };
+  var y = function(v){ return PT + (100-v)/100*(H-PT-PB); };
+
+  var css = getComputedStyle(document.body);
+  var col = function(t){ return css.getPropertyValue("--"+t).trim() || "#888"; };
+  var ultimo = serie[n-1].valor;
+  var stroke = col(tono(ultimo));
+  var linea = col("line"), faint = col("fg-faint");
+
+  var pts = serie.map(function(d,i){ return x(i)+","+y(d.valor); }).join(" ");
+  var area = "M"+x(0)+","+y(serie[0].valor)+" L"+pts.split(" ").join(" L")+" L"+x(n-1)+","+(H-PB)+" L"+x(0)+","+(H-PB)+" Z";
+
+  var svg = '<svg viewBox="0 0 '+W+' '+H+'" preserveAspectRatio="none" role="img" aria-label="Índice de fragilidad por trimestre">'
+    + '<line x1="'+PL+'" y1="'+y(50)+'" x2="'+(W-PR)+'" y2="'+y(50)+'" stroke="'+linea+'" stroke-width="1" stroke-dasharray="3 4"/>'
+    + '<line x1="'+PL+'" y1="'+(H-PB)+'" x2="'+(W-PR)+'" y2="'+(H-PB)+'" stroke="'+linea+'" stroke-width="1"/>'
+    + '<path d="'+area+'" fill="'+stroke+'" opacity=".10"/>'
+    + '<polyline points="'+pts+'" fill="none" stroke="'+stroke+'" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>'
+    + serie.map(function(d,i){
+        var esUlt = i===n-1;
+        return '<circle cx="'+x(i)+'" cy="'+y(d.valor)+'" r="'+(esUlt?5:3.5)+'" fill="'+stroke+'" stroke="'+css.getPropertyValue("--surface").trim()+'" stroke-width="2"/>'
+             + '<circle class="hit" cx="'+x(i)+'" cy="'+y(d.valor)+'" r="16" fill="transparent" data-i="'+i+'"/>';
+      }).join("")
+    + '<text x="'+(x(n-1)+11)+'" y="'+(y(ultimo)+4)+'" fill="'+stroke+'" font-family="IBM Plex Mono,monospace" font-size="13" font-weight="600">'+ultimo+'</text>'
+    + '<text x="'+PL+'" y="'+(H-6)+'" fill="'+faint+'" font-family="IBM Plex Mono,monospace" font-size="10">'+esc(serie[0].fecha)+'</text>'
+    + '<text x="'+(W-PR)+'" y="'+(H-6)+'" text-anchor="end" fill="'+faint+'" font-family="IBM Plex Mono,monospace" font-size="10">'+esc(serie[n-1].fecha)+'</text>'
+    + '</svg>';
+  box.insertAdjacentHTML("afterbegin", svg);
+
+  box.querySelectorAll(".hit").forEach(function(h){
+    h.addEventListener("mouseenter", function(){
+      var d = serie[+h.dataset.i], r = box.getBoundingClientRect(), hr = h.getBoundingClientRect();
+      tip.innerHTML = d.fecha + " · IFS " + d.valor + (d.nota ? "<br>"+esc(d.nota) : "");
+      tip.classList.add("on");
+      var mitad = tip.offsetWidth/2 + 4;
+      var cx = hr.left - r.left + hr.width/2;
+      tip.style.left = Math.max(mitad, Math.min(r.width - mitad, cx)) + "px";
+      tip.style.top  = Math.max(tip.offsetHeight*1.3, hr.top - r.top) + "px";
+    });
+    h.addEventListener("mouseleave", function(){ tip.classList.remove("on"); });
+  });
+}
+
+function pintarCaratula(){
+  var c = C(), k = c.caratula || {};
+  document.getElementById("carat-den").textContent = k.denominacion || "Sin denominación";
+  document.getElementById("carat-ver").textContent = "v" + (c.caratulas||0) + " · corte " + (c.corte||"—");
+  document.getElementById("carat-campos").innerHTML = CAMPOS_CARATULA.map(function(f){
+    return '<div class="cf"><b>'+f[1]+'</b><input data-t="k" data-k="'+f[0]+'" value="'+esc(k[f[0]])+'" title="'+esc(k[f[0]])+'" placeholder="[____]"></div>';
+  }).join("");
+}
+
+function pintar(){
+  pintarSelector(); pintarCabecera(); pintarKPIs();
+  pintarPoderes(); pintarCalendario(); pintarIFS(); pintarCaratula();
+}
+
+/* ───────── eventos ───────── */
+document.addEventListener("input", function(e){
+  var el = e.target, c = C();
+  if (el.dataset.t){
+    var k = el.dataset.k, v = el.value;
+    if (el.dataset.t==="p") c.poderes[+el.dataset.i][k] = v;
+    if (el.dataset.t==="c") c.calendario[+el.dataset.i][k] = v;
+    if (el.dataset.t==="i") c.ifs[+el.dataset.i][k] = (k==="valor" ? Math.max(0, Math.min(100, +v||0)) : v);
+    if (el.dataset.t==="k"){ c.caratula = c.caratula||{}; c.caratula[k] = v; }
+    guardar();
+    if (el.dataset.t==="i") { pintarKPIs(); pintarIFS(); }
+    if (el.dataset.t==="p") { pintarKPIs(); pintarPoderes(); }
+    if (el.dataset.t==="c") { pintarKPIs(); pintarCalendario(); }
+    if (el.dataset.t==="k") pintarCaratula();
+    return;
+  }
+  switch(el.id){
+    case "f-nombre": c.nombre = el.value; guardar(); pintarSelector(); break;
+    case "f-soc":    c.sociedades = el.value; guardar(); break;
+    case "f-corte":  c.corte = el.value; guardar(); pintarCaratula(); break;
+  }
+});
+
+document.addEventListener("change", function(e){
+  var el = e.target, c = C();
+  if (el.id === "f-plan"){ c.plan = el.value; guardar(); pintarKPIs(); }
+  if (el.id === "f-ext"){ c.extranjero = el.checked; guardar(); }
+  if (el.id === "sel-cuenta"){ S.activa = +el.value; guardar(); pintar(); }
+});
+
+document.addEventListener("click", function(e){
+  var b = e.target.closest("[data-del]");
+  if (b){
+    var c = C(), i = +b.dataset.i;
+    if (b.dataset.del==="p") c.poderes.splice(i,1);
+    if (b.dataset.del==="c") c.calendario.splice(i,1);
+    if (b.dataset.del==="i") c.ifs.splice(i,1);
+    guardar(); pintar(); return;
+  }
+});
+
+document.getElementById("b-add-poder").addEventListener("click", function(){
+  C().poderes.push({nombre:"",cargo:"",alcance:"",fecha:"",estatus:"cotejar"});
+  guardar(); pintarPoderes(); pintarKPIs();
+});
+document.getElementById("b-add-cal").addEventListener("click", function(){
+  C().calendario.push({fecha:new Date(Date.now()+2592e6).toISOString().slice(0,10), titulo:"", responsable:"", nota:""});
+  guardar(); pintarCalendario(); pintarKPIs();
+});
+document.getElementById("b-add-ifs").addEventListener("click", function(){
+  C().ifs.push({fecha:new Date().toISOString().slice(0,10), valor:50, nota:""});
+  guardar(); pintarIFS(); pintarKPIs();
+});
+document.getElementById("b-nueva").addEventListener("click", function(){
+  var n = prompt("Nombre del grupo o sociedad:");
+  if (!n) return;
+  S.cuentas.push({nombre:n, plan:"Vigilancia", sociedades:"1", extranjero:false,
+    corte:new Date().toISOString().slice(0,10), caratulas:0,
+    poderes:[], calendario:[], ifs:[], caratula:{denominacion:n}});
+  S.activa = S.cuentas.length-1;
+  guardar(); pintar(); toast("Cuenta creada");
+});
+document.getElementById("b-carat").addEventListener("click", function(){
+  var c = C(); c.caratulas = (c.caratulas||0)+1;
+  guardar(); pintarKPIs(); pintarCaratula();
+  toast("Carátula v"+c.caratulas+" emitida · abre la plantilla para imprimirla");
+});
+document.getElementById("b-print").addEventListener("click", function(){ window.print(); });
+document.getElementById("b-export").addEventListener("click", function(){
+  var blob = new Blob([JSON.stringify(S,null,2)], {type:"application/json"});
+  var a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = "expediente-" + new Date().toISOString().slice(0,10) + ".json";
+  a.click(); URL.revokeObjectURL(a.href);
+  toast("Respaldo descargado");
+});
+document.getElementById("b-import").addEventListener("click", function(){ document.getElementById("file-import").click(); });
+document.getElementById("file-import").addEventListener("change", function(e){
+  var f = e.target.files[0]; if (!f) return;
+  var fr = new FileReader();
+  fr.onload = function(){
+    try{
+      var p = JSON.parse(fr.result);
+      if (!p || !p.cuentas || !p.cuentas.length) throw 0;
+      S = p; S.activa = 0; guardar(); pintar(); toast("Respaldo cargado");
+    }catch(err){ toast("El archivo no tiene el formato del expediente"); }
+  };
+  fr.readAsText(f);
+  e.target.value = "";
+});
+
+pintar();
+})();
+</script>
+</body>
+</html>

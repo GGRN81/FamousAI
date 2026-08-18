@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Los Tres MVPs</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,600;1,6..96,600&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="comun/ggr.css">
+<style>
+.prod{border:1px solid var(--line); border-radius:3px; background:var(--surface); overflow:hidden; margin-bottom:22px}
+.prod-h{display:grid; grid-template-columns:56px minmax(0,1fr) auto; gap:18px; align-items:center;
+  padding:20px 22px; border-bottom:1px solid var(--line); background:var(--surface-2)}
+@media(max-width:640px){.prod-h{grid-template-columns:minmax(0,1fr); gap:10px}}
+.prod-n{font-family:"IBM Plex Mono",monospace; font-size:13px; letter-spacing:.16em; color:var(--ember)}
+.prod-t{font-family:"Bodoni Moda",Georgia,serif; font-size:26px; font-weight:600; line-height:1.12}
+.prod-t i{display:block; font-style:normal; font-family:"IBM Plex Sans",sans-serif; font-size:13.5px;
+  font-weight:400; color:var(--fg-dim); margin-top:4px}
+.prod-p{font-family:"Bodoni Moda",Georgia,serif; font-size:26px; font-weight:600; white-space:nowrap; font-variant-numeric:tabular-nums}
+.prod-p small{font-family:"IBM Plex Mono",monospace; font-size:11px; letter-spacing:.1em; color:var(--fg-faint); margin-left:5px}
+.files{display:grid; grid-template-columns:repeat(2,minmax(0,1fr))}
+@media(max-width:760px){.files{grid-template-columns:minmax(0,1fr)}}
+.file{display:grid; grid-template-columns:auto minmax(0,1fr); gap:14px; align-items:start;
+  padding:15px 22px; border-bottom:1px solid var(--line); border-right:1px solid var(--line); text-decoration:none; color:inherit}
+.file:hover{background:var(--surface-2)}
+.file .ic{font-family:"IBM Plex Mono",monospace; font-size:9px; letter-spacing:.1em; padding:3px 7px;
+  border:1px solid var(--line-strong); border-radius:2px; color:var(--fg-faint); margin-top:2px; white-space:nowrap}
+.file .ic.live{color:var(--accent); border-color:var(--accent)}
+.file b{font-size:14.5px; font-weight:600; display:block; color:var(--fg)}
+.file span{font-size:12.5px; color:var(--fg-dim); display:block; margin-top:3px; line-height:1.5}
+.file[data-no] {cursor:default}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="navin">
+    <span class="navmark">G G R</span>
+    <div class="navlinks">
+      <a href="#p1">01 · IFS</a>
+      <a href="#p2">02 · Corredor</a>
+      <a href="#p3">03 · Expediente</a>
+      <a href="#comun">Transversal</a>
+      <a href="mvps/index.html">La estrategia</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="lbl">Tres productos digitales · Construidos · Listos para publicar y cobrar</div>
+    <h1>Tres MVPs<br><em>completos.</em></h1>
+    <p class="lead">
+      Cada uno con su página de venta funcionando, su plantilla de entregable lista para
+      imprimir, el prompt maestro que la produce, el intake, la secuencia de correos y el
+      contenido que le da tráfico. Nada de esto vende actos notariales. Todo vive en la capa
+      pre-notarial.
+    </p>
+    <div class="metrics">
+      <div class="metric"><div class="v">24<small>archivos</small></div><div class="k">Entregables construidos,<br>no descritos</div></div>
+      <div class="metric"><div class="v">37<small>páginas</small></div><div class="k">De plantillas<br>listas para imprimir</div></div>
+      <div class="metric"><div class="v">9<small>posts</small></div><div class="k">De LinkedIn,<br>tres semanas de cadencia</div></div>
+      <div class="metric"><div class="v">$12,800<small>MXN</small></div><div class="k">Bruto semanal objetivo<br>para netear $10,000</div></div>
+    </div>
+  </div>
+</header>
+
+<section class="band">
+  <div class="wrap">
+
+    <div class="stack gap16" style="margin-bottom:34px">
+      <div class="lbl">Cómo se usa esto</div>
+      <div class="grid g3 gap16">
+        <div class="card stack gap8">
+          <div class="h-min">Todo abre con doble clic</div>
+          <p class="small">Ningún archivo necesita servidor ni instalación. Las páginas de venta y el panel funcionan en cualquier navegador. Las plantillas se imprimen a PDF desde el mismo botón.</p>
+        </div>
+        <div class="card stack gap8">
+          <div class="h-min">Editas en un solo lugar</div>
+          <p class="small">Colores y tipografía viven en <span class="mono">comun/ggr.css</span>. Precios, ligas de pago y correos, en el bloque <span class="mono">CONFIG</span> al inicio del script de cada página de venta.</p>
+        </div>
+        <div class="card stack gap8">
+          <div class="h-min">Los corchetes son tuyos</div>
+          <p class="small">Todo <span class="mono">[____]</span> es un dato que solo tú tienes. Todo <b style="color:var(--warn)">⚠</b> requiere cotejo contra texto vigente antes de ponerse por escrito frente a un cliente.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 01 -->
+    <div class="prod" id="p1">
+      <div class="prod-h">
+        <div class="prod-n">01</div>
+        <div class="prod-t">Dictamen de Fragilidad Societaria<i>Transaccional · español · mercado local · 2 por semana</i></div>
+        <div class="prod-p">$6,900<small>MXN</small></div>
+      </div>
+      <div class="files">
+        <a class="file" href="01-dictamen-ifs/index.html">
+          <span class="ic live">En vivo</span>
+          <span><b>Página de venta y autodiagnóstico</b><span>Las 14 preguntas calculando el índice de verdad, con captura de correo y liga de pago. Es lo que ve el prospecto.</span></span></a>
+        <a class="file" href="01-dictamen-ifs/dictamen-plantilla.html">
+          <span class="ic">16 pág</span>
+          <span><b>Plantilla del dictamen</b><span>El entregable completo: carátula, resumen ejecutivo, un capítulo por factor, matriz de hallazgos, plan de remediación, anexo de poderes y limitaciones.</span></span></a>
+        <a class="file" href="01-dictamen-ifs/prompt-maestro.md">
+          <span class="ic">Prompt</span>
+          <span><b>Prompt maestro</b><span>Lo que convierte cuatro documentos en un borrador en 50 minutos. Con la etapa de preguntas y la lista de verificación que no se delega.</span></span></a>
+        <a class="file" href="01-dictamen-ifs/intake.md">
+          <span class="ic">Intake</span>
+          <span><b>Qué se le pide al cliente</b><span>Los cuatro documentos, el expediente de identificación, la carta de encargo y el correo de solicitud, redactado.</span></span></a>
+        <a class="file" href="01-dictamen-ifs/secuencia-correos.md">
+          <span class="ic">5 correos</span>
+          <span><b>Secuencia del embudo</b><span>Del resultado del diagnóstico a la oferta. Los primeros tres no venden nada.</span></span></a>
+        <a class="file" href="contenido/lote-linkedin.md">
+          <span class="ic">9 posts</span>
+          <span><b>Lote de LinkedIn</b><span>Tres semanas lunes/miércoles/viernes. Cinco del corredor, cuatro locales. Alimenta los dos embudos.</span></span></a>
+      </div>
+    </div>
+
+    <!-- 02 -->
+    <div class="prod" id="p2">
+      <div class="prod-h">
+        <div class="prod-n">02</div>
+        <div class="prod-t">Sonora Closing File<i>Transaccional · inglés · dólares · 1.5 por semana</i></div>
+        <div class="prod-p">$449<small>USD</small></div>
+      </div>
+      <div class="files">
+        <a class="file" href="02-sonora-closing-file/index.html">
+          <span class="ic live">En vivo</span>
+          <span><b>Página de venta en inglés</b><span>Los seis modos de falla, los doce puntos, tres SKU y el formulario de pedido funcionando.</span></span></a>
+        <a class="file" href="02-sonora-closing-file/checklist-12-puntos.html">
+          <span class="ic">2 pág</span>
+          <span><b>The 12-Point Checklist</b><span>El imán de captura. Una hoja que el comprador imprime y lleva al cierre, con seis preguntas para hacer en voz alta.</span></span></a>
+        <a class="file" href="02-sonora-closing-file/report-template.html">
+          <span class="ic">11 pág</span>
+          <span><b>Plantilla del reporte</b><span>El entregable en inglés: alcance, resumen ejecutivo, cinco hallazgos, lista de acciones y apéndice de cláusulas traducidas.</span></span></a>
+        <a class="file" href="02-sonora-closing-file/master-prompt.md">
+          <span class="ic">Prompt</span>
+          <span><b>Master prompt</b><span>Incluye la regla de registro: no se redacta en español y se traduce. Y la prohibición de inflar hallazgos.</span></span></a>
+        <a class="file" href="02-sonora-closing-file/intake.md">
+          <span class="ic">Intake</span>
+          <span><b>Intake en inglés</b><span>Documentos, los hechos del comprador que cambian la respuesta, y el correo de solicitud.</span></span></a>
+        <a class="file" href="02-sonora-closing-file/email-sequence.md">
+          <span class="ic">4 correos</span>
+          <span><b>Secuencia y respuestas de grupo</b><span>La secuencia del checklist a la oferta. Ver también las cinco respuestas tipo para grupos de expatriados.</span></span></a>
+        <a class="file" href="02-sonora-closing-file/community-replies.md">
+          <span class="ic">Canal</span>
+          <span><b>Community replies</b><span>Cinco respuestas completas para Rocky Point Rocks, San Carlos y Reddit. La regla absoluta: nunca vender en el hilo.</span></span></a>
+      </div>
+    </div>
+
+    <!-- 03 -->
+    <div class="prod" id="p3">
+      <div class="prod-h">
+        <div class="prod-n">03</div>
+        <div class="prod-t">Expediente Corporativo Vivo<i>Suscripción · español · 16 cuentas objetivo</i></div>
+        <div class="prod-p">$2,900<small>/mes</small></div>
+      </div>
+      <div class="files">
+        <a class="file" href="03-expediente-vivo/index.html">
+          <span class="ic live">Funcional</span>
+          <span><b>El panel del cliente</b><span>Datos editables que se guardan solos: poderes, calendario, serie del índice, carátula. Exporta e importa respaldo. Imprime el reporte mensual.</span></span></a>
+        <a class="file" href="03-expediente-vivo/caratula-personalidad.html">
+          <span class="ic">4 pág</span>
+          <span><b>Carátula de personalidad</b><span>La función estrella: carátula ejecutiva, transcripción literal de facultades, bloque de antecedentes listo para pegar en instrumento, y versión en inglés.</span></span></a>
+        <a class="file" href="03-expediente-vivo/propuesta-honorarios.html">
+          <span class="ic">4 pág</span>
+          <span><b>Propuesta de honorarios</b><span>Los tres planes, el problema traducido a costo, puesta en marcha en cuatro semanas y condiciones generales.</span></span></a>
+        <a class="file" href="03-expediente-vivo/contrato-suscripcion.md">
+          <span class="ic">Contrato</span>
+          <span><b>Contrato de suscripción</b><span>Veinte cláusulas, con la de independencia de la función notarial y la limitación por documento no proporcionado.</span></span></a>
+        <a class="file" href="03-expediente-vivo/guion-venta.md">
+          <span class="ic">Playbook</span>
+          <span><b>Guion de venta</b><span>Ficha de combate, tesis comercial, Cialdini y Munger aplicados, guion minuto a minuto, siete objeciones y el protocolo posterior.</span></span></a>
+      </div>
+    </div>
+
+    <!-- transversal -->
+    <div class="prod" id="comun">
+      <div class="prod-h">
+        <div class="prod-n">00</div>
+        <div class="prod-t">Transversal<i>Lo que aplica a los tres y no puede saltarse</i></div>
+        <div class="prod-p" style="font-size:15px; font-family:'IBM Plex Mono',monospace; letter-spacing:.1em">Antes del día 9</div>
+      </div>
+      <div class="files">
+        <a class="file" href="mvps/index.html">
+          <span class="ic live">Estrategia</span>
+          <span><b>El documento de estrategia</b><span>La aritmética de los $10,000 netos, audiencias, embudos con conversiones, plan de catorce días y cómo se alimentan los tres entre sí.</span></span></a>
+        <a class="file" href="comun/alcance-y-limitaciones.md">
+          <span class="ic">Legal</span>
+          <span><b>Alcance y limitaciones</b><span>Los cinco bloques por nivel de entregable, incluida la independencia de la función notarial que va en los cuatro.</span></span></a>
+        <a class="file" href="comun/aviso-privacidad.md">
+          <span class="ic">Legal</span>
+          <span><b>Aviso de privacidad</b><span>Integral, simplificado para formularios, y versión corta en inglés. Con política de conservación y destrucción.</span></span></a>
+        <a class="file" href="comun/kyc-lfpiorpi.md">
+          <span class="ic">Legal</span>
+          <span><b>Expediente de identificación</b><span>Qué se pide por producto, dónde puede haber actividad vulnerable, señales que obligan a detenerse, y cómo pedirlo sin que nadie objete.</span></span></a>
+        <a class="file" href="comun/ggr.css">
+          <span class="ic">Estilos</span>
+          <span><b>La hoja común</b><span>Colores, tipografía y estilos de impresión de los ocho documentos. Edita los tokens del inicio y cambian los tres productos.</span></span></a>
+        <a class="file" href="build.sh">
+          <span class="ic">Script</span>
+          <span><b>build.sh</b><span>Genera <span class="mono">dist/</span> con versiones autocontenidas para subir a cualquier hosting o mandar por correo.</span></span></a>
+      </div>
+    </div>
+
+    <div class="warnnote" style="margin-top:26px">
+      <b>Lo que falta y no puedo poner yo.</b> Tres cosas cierran casi todos los corchetes: el
+      tipo de cambio y tu régimen fiscal, que mueven los tres precios a la vez; tres casos
+      compuestos con la cifra real desviada, uno por producto; y los seis nombres de tu red a
+      quienes se les regala la carátula entre los días 9 y 11 — de ahí salen las primeras cuatro
+      suscripciones.
+    </div>
+
+  </div>
+</section>
+
+<footer>
+  <div class="wrap stack gap12">
+    <div class="lbl">Gilberto Gutiérrez Rodríguez · Abogado corporativo y notarial · Hermosillo, Sonora</div>
+    <p class="tiny" style="max-width:74ch">
+      Materiales de trabajo internos. Importes, plazos y conversiones son estimaciones de
+      diseño, no proyecciones garantizadas. Todo lo marcado <b style="color:var(--warn)">⚠</b>
+      requiere cotejo contra texto vigente antes de ponerse por escrito frente a un cliente o
+      publicarse. Ningún producto de este conjunto vende, promete ni empaqueta el acto notarial.
+    </p>
+  </div>
+</footer>
+
+</body>
+</html>

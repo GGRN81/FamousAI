@@ -1,0 +1,1570 @@
+<title>Tres Máquinas de Diez Mil</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,400;6..96,600;6..96,700&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap">
+
+<style>
+/* ============ TOKENS — dark-first, invertido consistentemente ============ */
+:root{
+  --ink:#0D191B; --ink-2:#132427; --ink-3:#1B3034;
+  --bone:#EDE8DF; --bone-2:#E2DCD0;
+  --ember:#C4712F; --ember-soft:#D9924F;
+  --verdigris:#7FA394;
+
+  /* ground + text (dark base) */
+  --bg:#0D191B;
+  --surface:#132427;
+  --surface-2:#1B3034;
+  --line:rgba(237,232,223,.14);
+  --line-strong:rgba(237,232,223,.28);
+  --fg:#E9E4DB;
+  --fg-dim:#A9B3B0;
+  --fg-faint:#77837F;
+  --accent:#D9924F;
+  --accent-ink:#0D191B;
+  --label:#7FA394;
+
+  /* semánticos — independientes del acento */
+  --crit:#DE6153; --warn:#D2A32B; --ok:#3CA97C;
+  --crit-bg:rgba(222,97,83,.14); --warn-bg:rgba(210,163,43,.14); --ok-bg:rgba(60,169,124,.14);
+
+  /* hero: mundo único, idéntico en ambos temas */
+  --hero-bg:#0D191B; --hero-fg:#EDE8DF; --hero-dim:#94A29E; --hero-accent:#D9924F; --hero-label:#7FA394;
+
+  --shadow:0 1px 0 rgba(237,232,223,.05), 0 18px 40px -24px rgba(0,0,0,.7);
+  --maxw:1180px;
+}
+@media (prefers-color-scheme: light){
+  :root:not([data-theme="dark"]){
+    --bg:#F2EEE6; --surface:#FBF9F5; --surface-2:#E8E2D6;
+    --line:rgba(13,25,27,.14); --line-strong:rgba(13,25,27,.30);
+    --fg:#14262A; --fg-dim:#4B5A5C; --fg-faint:#7C8886;
+    --accent:#A85A1E; --accent-ink:#FBF9F5; --label:#3F6F5E;
+    --crit:#A82014; --warn:#B8860B; --ok:#0F7048;
+    --crit-bg:rgba(168,32,20,.10); --warn-bg:rgba(184,134,11,.13); --ok-bg:rgba(15,112,72,.10);
+    --shadow:0 1px 0 rgba(13,25,27,.04), 0 16px 34px -26px rgba(13,25,27,.45);
+  }
+}
+:root[data-theme="light"]{
+  --bg:#F2EEE6; --surface:#FBF9F5; --surface-2:#E8E2D6;
+  --line:rgba(13,25,27,.14); --line-strong:rgba(13,25,27,.30);
+  --fg:#14262A; --fg-dim:#4B5A5C; --fg-faint:#7C8886;
+  --accent:#A85A1E; --accent-ink:#FBF9F5; --label:#3F6F5E;
+  --crit:#A82014; --warn:#B8860B; --ok:#0F7048;
+  --crit-bg:rgba(168,32,20,.10); --warn-bg:rgba(184,134,11,.13); --ok-bg:rgba(15,112,72,.10);
+  --shadow:0 1px 0 rgba(13,25,27,.04), 0 16px 34px -26px rgba(13,25,27,.45);
+}
+
+*{box-sizing:border-box}
+body{
+  margin:0; background:var(--bg); color:var(--fg);
+  font-family:"IBM Plex Sans",ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
+  font-size:16px; line-height:1.62; -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3,h4{text-wrap:balance; margin:0}
+p{margin:0}
+a{color:var(--accent)}
+:focus-visible{outline:2px solid var(--accent); outline-offset:3px; border-radius:2px}
+@media (prefers-reduced-motion:reduce){*{animation:none!important; transition:none!important}}
+
+/* ============ PRIMITIVAS ============ */
+.wrap{max-width:var(--maxw); margin:0 auto; padding:0 28px}
+@media(max-width:640px){.wrap{padding:0 18px}}
+
+.lbl{
+  font-family:"IBM Plex Mono",ui-monospace,monospace; font-size:11px; font-weight:500;
+  letter-spacing:.22em; text-transform:uppercase; color:var(--label);
+}
+.mono{font-family:"IBM Plex Mono",ui-monospace,monospace; font-variant-numeric:tabular-nums}
+.serif{font-family:"Bodoni Moda",Georgia,"Times New Roman",serif}
+
+.h-sec{font-family:"Bodoni Moda",Georgia,serif; font-weight:600; font-size:clamp(30px,4.2vw,46px); line-height:1.08; letter-spacing:-.01em}
+.h-sub{font-family:"Bodoni Moda",Georgia,serif; font-weight:600; font-size:clamp(22px,2.6vw,30px); line-height:1.14}
+.h-min{font-size:15px; font-weight:600; letter-spacing:.01em}
+.lead{font-size:clamp(16px,1.5vw,18.5px); color:var(--fg-dim); max-width:66ch}
+.small{font-size:13.5px; color:var(--fg-dim)}
+.tiny{font-size:12px; color:var(--fg-faint)}
+
+/* riel numerado */
+.band{border-top:1px solid var(--line); padding:clamp(56px,7vw,96px) 0}
+.rail{display:grid; grid-template-columns:64px minmax(0,1fr); gap:0}
+.rail-n{font-family:"IBM Plex Mono",monospace; font-size:12px; letter-spacing:.18em; color:var(--ember); padding-top:6px}
+@media(max-width:760px){.rail{grid-template-columns:minmax(0,1fr)} .rail-n{padding-bottom:14px}}
+
+.card{background:var(--surface); border:1px solid var(--line); border-radius:3px; padding:22px 24px; box-shadow:var(--shadow); min-width:0}
+.grid{display:grid; gap:18px}
+.grid>*{min-width:0}
+.g2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.g3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.g4{grid-template-columns:repeat(4,minmax(0,1fr))}
+@media(max-width:900px){.g3,.g4{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:620px){.g2,.g3,.g4{grid-template-columns:minmax(0,1fr)}}
+
+.stack{display:flex; flex-direction:column; min-width:0}
+.gap8{gap:8px} .gap12{gap:12px} .gap16{gap:16px} .gap24{gap:24px} .gap36{gap:36px} .gap48{gap:48px}
+
+.tblwrap{overflow-x:auto; border:1px solid var(--line); border-radius:3px; background:var(--surface)}
+table{border-collapse:collapse; width:100%; min-width:560px; font-size:14px}
+th{
+  text-align:left; font-family:"IBM Plex Mono",monospace; font-size:10.5px; letter-spacing:.16em;
+  text-transform:uppercase; color:var(--label); font-weight:500; padding:12px 16px; border-bottom:1px solid var(--line-strong);
+}
+td{padding:12px 16px; border-bottom:1px solid var(--line); vertical-align:top; color:var(--fg-dim)}
+td:first-child{color:var(--fg); font-weight:500}
+tr:last-child td{border-bottom:none}
+td.num,th.num{text-align:right; font-family:"IBM Plex Mono",monospace; font-variant-numeric:tabular-nums; white-space:nowrap}
+
+.chip{
+  display:inline-flex; align-items:center; gap:6px; font-family:"IBM Plex Mono",monospace;
+  font-size:10.5px; letter-spacing:.12em; text-transform:uppercase; padding:3px 9px; border-radius:2px;
+  border:1px solid currentColor; white-space:normal; max-width:100%; line-height:1.5;
+}
+td .chip, .tl-i .chip, .carat-h .chip{white-space:nowrap}
+.chip.c{color:var(--crit); background:var(--crit-bg)}
+.chip.w{color:var(--warn); background:var(--warn-bg)}
+.chip.o{color:var(--ok); background:var(--ok-bg)}
+.chip.n{color:var(--fg-faint); background:transparent}
+
+.pull{border-left:3px solid var(--ember); padding:6px 0 6px 20px; font-size:17px; color:var(--fg); max-width:62ch}
+.warnnote{border-left:3px solid var(--warn); background:var(--warn-bg); padding:12px 16px; border-radius:0 3px 3px 0; font-size:13.5px; color:var(--fg-dim)}
+
+ul.tick{list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:9px}
+ul.tick li{position:relative; padding-left:20px; font-size:14.5px; color:var(--fg-dim)}
+ul.tick li::before{content:""; position:absolute; left:0; top:9px; width:7px; height:7px; background:var(--ember); border-radius:1px}
+ul.tick li b{color:var(--fg); font-weight:600}
+
+/* ============ NAV ============ */
+section[id],#ifs-quiz,#ifs-result{scroll-margin-top:76px}
+nav{
+  position:sticky; top:0; z-index:60; background:color-mix(in srgb, var(--bg) 88%, transparent);
+  backdrop-filter:blur(12px); border-bottom:1px solid var(--line);
+}
+.navin{max-width:var(--maxw); margin:0 auto; padding:11px 28px; display:flex; align-items:center; gap:22px; flex-wrap:wrap}
+.navmark{font-family:"IBM Plex Mono",monospace; font-size:12px; letter-spacing:.3em; color:var(--fg); font-weight:600}
+.navlinks{display:flex; gap:18px; flex-wrap:wrap; margin-left:auto}
+.navlinks a{
+  font-family:"IBM Plex Mono",monospace; font-size:11px; letter-spacing:.14em; text-transform:uppercase;
+  color:var(--fg-dim); text-decoration:none; padding:3px 0; border-bottom:1px solid transparent;
+}
+.navlinks a:hover{color:var(--fg); border-bottom-color:var(--ember)}
+@media(max-width:640px){.navin{padding:10px 18px; gap:12px} .navlinks{gap:12px; margin-left:0; width:100%}}
+
+/* ============ HERO ============ */
+.hero{background:var(--hero-bg); color:var(--hero-fg); padding:clamp(64px,9vw,120px) 0 clamp(48px,6vw,76px); position:relative; overflow:hidden}
+.hero::after{
+  content:""; position:absolute; inset:0; pointer-events:none;
+  background:radial-gradient(760px 420px at 84% 8%, rgba(217,146,79,.16), transparent 62%);
+}
+.hero .wrap{position:relative; z-index:1}
+.hero .lbl{color:var(--hero-label)}
+.hero h1{
+  font-family:"Bodoni Moda",Georgia,serif; font-weight:600;
+  font-size:clamp(42px,7.4vw,86px); line-height:.98; letter-spacing:-.02em; color:var(--hero-fg); margin:18px 0 0;
+}
+.hero h1 em{font-style:italic; color:var(--hero-accent)}
+.hero .lead{color:var(--hero-dim); max-width:60ch; margin-top:22px}
+.hero-grid{display:grid; grid-template-columns:minmax(0,1fr) 296px; gap:clamp(32px,5vw,68px); align-items:end}
+.hero-copy{min-width:0}
+.hero-index{min-width:0; display:flex; flex-direction:column; gap:14px; padding-left:26px; border-left:1px solid rgba(237,232,223,.18)}
+.hi-row{display:grid; grid-template-columns:34px minmax(0,1fr); gap:10px; align-items:baseline}
+.hi-n{font-family:"IBM Plex Mono",monospace; font-size:12px; color:var(--hero-accent); letter-spacing:.14em}
+.hi-t{font-size:15px; font-weight:600; color:var(--hero-fg); line-height:1.3}
+.hi-t i{display:block; font-style:normal; font-family:"IBM Plex Mono",monospace; font-size:11.5px; font-weight:400; color:var(--hero-dim); letter-spacing:.04em; margin-top:4px}
+@media(max-width:980px){.hero-grid{grid-template-columns:minmax(0,1fr)} .hero-index{padding-left:0; border-left:none; border-top:1px solid rgba(237,232,223,.18); padding-top:24px}}
+.metrics{display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:0; margin-top:clamp(40px,5vw,64px); border-top:1px solid rgba(237,232,223,.16)}
+.metric{padding:22px 24px 4px; border-right:1px solid rgba(237,232,223,.12)}
+.metric:last-child{border-right:none}
+.metric .v{font-family:"Bodoni Moda",Georgia,serif; font-size:clamp(28px,3.4vw,40px); font-weight:600; color:var(--hero-fg); line-height:1; font-variant-numeric:tabular-nums}
+.metric .v small{font-family:"IBM Plex Mono",monospace; font-size:12px; letter-spacing:.1em; color:var(--hero-accent); margin-left:6px; font-weight:500}
+.metric .k{font-family:"IBM Plex Mono",monospace; font-size:10.5px; letter-spacing:.16em; text-transform:uppercase; color:var(--hero-dim); margin-top:10px; line-height:1.5}
+@media(max-width:900px){.metrics{grid-template-columns:repeat(2,1fr)} .metric{border-bottom:1px solid rgba(237,232,223,.12)} .metric:nth-child(2){border-right:none}}
+@media(max-width:520px){.metrics{grid-template-columns:minmax(0,1fr)} .metric{border-right:none}}
+
+/* ============ MARCO DE PROTOTIPO ============ */
+.proto{border:1px solid var(--line-strong); border-radius:5px; overflow:hidden; background:var(--surface); box-shadow:var(--shadow)}
+.proto-bar{
+  display:flex; align-items:center; gap:10px; padding:9px 14px; background:var(--surface-2);
+  border-bottom:1px solid var(--line);
+}
+.dots{display:flex; gap:6px}
+.dots i{width:9px; height:9px; border-radius:50%; background:var(--line-strong); display:block}
+.proto-url{
+  font-family:"IBM Plex Mono",monospace; font-size:11px; color:var(--fg-faint); background:var(--bg);
+  border:1px solid var(--line); border-radius:3px; padding:3px 10px; flex:1; min-width:0; text-align:center;
+  white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+}
+.proto-tag{font-family:"IBM Plex Mono",monospace; font-size:9.5px; letter-spacing:.16em; text-transform:uppercase; color:var(--ember)}
+.proto-body{padding:clamp(20px,3vw,34px)}
+
+/* ============ IFS — DIAGNÓSTICO INTERACTIVO ============ */
+.ifs-head{display:flex; justify-content:space-between; align-items:flex-end; gap:20px; flex-wrap:wrap; padding-bottom:18px; border-bottom:1px solid var(--line)}
+.ifs-prog{display:flex; align-items:center; gap:10px}
+.ifs-bar{width:150px; height:3px; background:var(--surface-2); border-radius:2px; overflow:hidden}
+.ifs-bar span{display:block; height:100%; background:var(--ember); width:0; transition:width .32s cubic-bezier(.4,0,.2,1)}
+
+.q{padding:20px 0; border-bottom:1px solid var(--line)}
+.q:last-of-type{border-bottom:none}
+.q-top{display:flex; gap:14px; align-items:baseline; min-width:0}
+.q-n{font-family:"IBM Plex Mono",monospace; font-size:11px; color:var(--fg-faint); letter-spacing:.1em; min-width:26px}
+.q-t{font-size:15.5px; color:var(--fg); font-weight:500; line-height:1.5}
+.q-f{font-family:"IBM Plex Mono",monospace; font-size:10px; letter-spacing:.14em; text-transform:uppercase; color:var(--label); margin-top:6px}
+.opts{display:flex; gap:8px; margin:14px 0 0 40px; flex-wrap:wrap}
+@media(max-width:560px){.opts{margin-left:0}}
+.opt{
+  font-family:"IBM Plex Mono",monospace; font-size:11.5px; letter-spacing:.08em; text-transform:uppercase;
+  padding:8px 15px; border:1px solid var(--line-strong); background:transparent; color:var(--fg-dim);
+  border-radius:2px; cursor:pointer; transition:all .15s;
+}
+.opt:hover{border-color:var(--accent); color:var(--fg)}
+.opt[aria-pressed="true"]{background:var(--accent); border-color:var(--accent); color:var(--accent-ink); font-weight:600}
+
+.btn{
+  font-family:"IBM Plex Mono",monospace; font-size:12px; letter-spacing:.14em; text-transform:uppercase; font-weight:600;
+  padding:14px 26px; border-radius:2px; border:1px solid var(--accent); background:var(--accent); color:var(--accent-ink);
+  cursor:pointer; transition:opacity .15s; text-decoration:none; display:inline-block; text-align:center;
+}
+.btn:hover{opacity:.86}
+.btn[disabled]{opacity:.32; cursor:not-allowed}
+.btn.ghost{background:transparent; color:var(--fg-dim); border-color:var(--line-strong)}
+.btn.ghost:hover{color:var(--fg); border-color:var(--fg-dim); opacity:1}
+
+/* resultado */
+.score-hero{display:grid; grid-template-columns:auto minmax(0,1fr); gap:32px; align-items:center; padding-bottom:26px; border-bottom:1px solid var(--line)}
+@media(max-width:620px){.score-hero{grid-template-columns:minmax(0,1fr); gap:18px}}
+.dial{position:relative; width:168px; height:168px}
+.dial svg{transform:rotate(-90deg); width:168px; height:168px; display:block}
+.dial .ring-bg{fill:none; stroke:var(--surface-2); stroke-width:11}
+.dial .ring-fg{fill:none; stroke-width:11; stroke-linecap:butt; transition:stroke-dashoffset .8s cubic-bezier(.4,0,.2,1)}
+.dial .cap{
+  position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:2px;
+}
+.dial .cap b{font-family:"Bodoni Moda",Georgia,serif; font-size:52px; font-weight:600; line-height:1; font-variant-numeric:tabular-nums}
+.dial .cap span{font-family:"IBM Plex Mono",monospace; font-size:9.5px; letter-spacing:.2em; text-transform:uppercase; color:var(--fg-faint)}
+
+.frow{display:grid; grid-template-columns:minmax(0,1fr) minmax(120px,30%) 84px; gap:14px; align-items:center; padding:11px 0; border-bottom:1px solid var(--line)}
+.frow:last-child{border-bottom:none}
+.frow .fname{font-size:14px; color:var(--fg); font-weight:500}
+.frow .fname i{display:block; font-style:normal; font-size:12px; color:var(--fg-faint); margin-top:2px; line-height:1.45}
+.fmeter{height:5px; background:var(--surface-2); border-radius:3px; overflow:hidden}
+.fmeter span{display:block; height:100%; width:0; transition:width .7s cubic-bezier(.4,0,.2,1)}
+.fval{font-family:"IBM Plex Mono",monospace; font-size:13px; text-align:right; font-variant-numeric:tabular-nums; font-weight:600}
+@media(max-width:560px){.frow{grid-template-columns:minmax(0,1fr) 60px; row-gap:6px} .frow .fmeter{grid-column:1/-1}}
+
+.offer{border:1px solid var(--accent); border-radius:3px; overflow:hidden; margin-top:8px}
+.offer-h{background:var(--accent); color:var(--accent-ink); padding:12px 20px; font-family:"IBM Plex Mono",monospace; font-size:11px; letter-spacing:.16em; text-transform:uppercase; font-weight:600}
+.offer-b{padding:24px 20px; display:grid; grid-template-columns:minmax(0,1fr) auto; gap:26px; align-items:center}
+@media(max-width:700px){.offer-b{grid-template-columns:minmax(0,1fr)}}
+.price{font-family:"Bodoni Moda",Georgia,serif; font-size:44px; font-weight:600; line-height:1; color:var(--fg); font-variant-numeric:tabular-nums; white-space:nowrap}
+.price small{font-family:"IBM Plex Mono",monospace; font-size:12px; letter-spacing:.1em; color:var(--fg-faint); margin-left:6px}
+
+/* ============ DASHBOARD (MVP 3) ============ */
+.dash{background:var(--bg)}
+.dash-top{display:flex; justify-content:space-between; align-items:center; gap:16px; flex-wrap:wrap; padding-bottom:18px; border-bottom:1px solid var(--line)}
+.kpi{display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:1px; background:var(--line); border:1px solid var(--line); margin-top:20px}
+@media(max-width:820px){.kpi{grid-template-columns:repeat(2,1fr)}}
+.kpi>div{background:var(--surface); padding:16px 18px; min-width:0}
+.kpi .k{font-family:"IBM Plex Mono",monospace; font-size:9.5px; letter-spacing:.16em; text-transform:uppercase; color:var(--label)}
+.kpi .v{font-family:"Bodoni Moda",Georgia,serif; font-size:32px; font-weight:600; line-height:1.1; margin-top:8px; font-variant-numeric:tabular-nums}
+.kpi .d{font-size:12px; color:var(--fg-faint); margin-top:4px}
+
+.tl{display:flex; flex-direction:column; gap:0; margin-top:4px}
+.tl-i{display:grid; grid-template-columns:82px 12px minmax(0,1fr) auto; gap:14px; align-items:start; padding:13px 0; border-bottom:1px solid var(--line)}
+.tl-i:last-child{border-bottom:none}
+.tl-d{font-family:"IBM Plex Mono",monospace; font-size:11.5px; color:var(--fg-faint); padding-top:2px; white-space:nowrap}
+.tl-dot{width:9px; height:9px; border-radius:50%; margin-top:6px}
+.tl-t{font-size:14px; color:var(--fg); font-weight:500}
+.tl-t i{display:block; font-style:normal; font-size:12.5px; color:var(--fg-dim); margin-top:2px}
+@media(max-width:600px){.tl-i{grid-template-columns:minmax(0,1fr) auto; } .tl-d,.tl-dot{grid-column:1/-1} .tl-dot{display:none}}
+
+.carat{border:1px solid var(--line-strong); border-radius:3px; overflow:hidden}
+.carat-h{padding:12px 18px; background:var(--surface-2); border-bottom:1px solid var(--line); display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap}
+.carat-b{padding:18px; display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:2px 26px; font-size:13.5px}
+@media(max-width:640px){.carat-b{grid-template-columns:minmax(0,1fr)}}
+.cf{padding:8px 0; border-bottom:1px dotted var(--line)}
+.cf b{display:block; font-family:"IBM Plex Mono",monospace; font-size:9.5px; letter-spacing:.14em; text-transform:uppercase; color:var(--label); font-weight:500; margin-bottom:3px}
+.cf span{color:var(--fg)}
+
+/* ============ FUNNEL ============ */
+.funnel{display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:0; border:1px solid var(--line); border-radius:3px; overflow:hidden}
+@media(max-width:900px){.funnel{grid-template-columns:minmax(0,1fr)}}
+.fstep{min-width:0; padding:18px 18px 20px; background:var(--surface); border-right:1px solid var(--line); position:relative}
+.fstep:last-child{border-right:none}
+@media(max-width:900px){.fstep{border-right:none; border-bottom:1px solid var(--line)} .fstep:last-child{border-bottom:none}}
+.fstep .fk{font-family:"IBM Plex Mono",monospace; font-size:9.5px; letter-spacing:.16em; text-transform:uppercase; color:var(--ember)}
+.fstep .fh{font-size:14.5px; font-weight:600; color:var(--fg); margin-top:9px; line-height:1.35}
+.fstep .fd{font-size:12.5px; color:var(--fg-dim); margin-top:7px; line-height:1.5}
+.fstep .fn{font-family:"IBM Plex Mono",monospace; font-size:11px; color:var(--fg-faint); margin-top:11px; padding-top:9px; border-top:1px solid var(--line); font-variant-numeric:tabular-nums}
+
+/* ============ PRICING (MVP 2, inglés) ============ */
+.tiers{display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:1px; background:var(--line); border:1px solid var(--line)}
+@media(max-width:760px){.tiers{grid-template-columns:minmax(0,1fr)}}
+.tier{background:var(--surface); padding:22px 20px; display:flex; flex-direction:column; gap:12px; min-width:0}
+.tier.hot{background:var(--surface-2)}
+.tier .tn{font-family:"IBM Plex Mono",monospace; font-size:10.5px; letter-spacing:.16em; text-transform:uppercase; color:var(--label)}
+.tier .tp{font-family:"Bodoni Moda",Georgia,serif; font-size:38px; font-weight:600; line-height:1; font-variant-numeric:tabular-nums}
+.tier .tp small{font-family:"IBM Plex Mono",monospace; font-size:11px; letter-spacing:.1em; color:var(--fg-faint); margin-left:5px}
+.tier ul{list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:7px; font-size:13px; color:var(--fg-dim); flex:1}
+.tier ul li{padding-left:15px; position:relative; line-height:1.5}
+.tier ul li::before{content:"—"; position:absolute; left:0; color:var(--ember)}
+
+footer{border-top:1px solid var(--line); padding:44px 0 60px; background:var(--surface)}
+</style>
+
+<nav>
+  <div class="navin">
+    <span class="navmark">G G R</span>
+    <div class="navlinks">
+      <a href="#aritmetica">La aritmética</a>
+      <a href="#mvp1">01 · IFS</a>
+      <a href="#mvp2">02 · Corredor</a>
+      <a href="#mvp3">03 · Expediente</a>
+      <a href="#sistema">El sistema</a>
+      <a href="#plan">14 días</a>
+      <a href="#limites">Límites</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="lbl">Tres productos digitales · Meta $10,000 MXN netos por semana · Hermosillo, Sonora</div>
+    <div class="hero-grid">
+    <div class="hero-copy">
+    <h1>Deja de vender<br>horas. Vende el<br><em>riesgo que eliminas.</em></h1>
+    <p class="lead">
+      Tres MVPs construidos sobre lo único que no puedes replicar en otro lado: once años leyendo
+      expedientes desde adentro de la fe pública. Ninguno vende actos notariales. Ninguno compite con
+      la Notaría 81. Los tres venden la capa pre-notarial —diagnóstico, estructura, vigilancia— y
+      alimentan el mismo embudo hacia el trabajo grande.
+    </p>
+    </div>
+    <div class="hero-index">
+      <div class="lbl" style="margin-bottom:2px">Orden de ejecución</div>
+      <div class="hi-row"><span class="hi-n">01</span><span class="hi-t">Dictamen IFS<i>$6,900 MXN · caja en día 9</i></span></div>
+      <div class="hi-row"><span class="hi-n">02</span><span class="hi-t">Sonora Closing File<i>$449 USD · caja en día 20</i></span></div>
+      <div class="hi-row"><span class="hi-n">03</span><span class="hi-t">Expediente Vivo<i>$2,900/mes · piso en el mes 4</i></span></div>
+      <p class="tiny" style="color:var(--hero-dim); margin-top:6px">Ordenados por tiempo al primer peso, no por tamaño.</p>
+    </div>
+    </div>
+    <div class="metrics">
+      <div class="metric">
+        <div class="v">$12,800<small>MXN</small></div>
+        <div class="k">Bruto semanal necesario<br>para netear $10,000</div>
+      </div>
+      <div class="metric">
+        <div class="v">3<small>SKU</small></div>
+        <div class="k">Uno transaccional, uno<br>en dólares, uno recurrente</div>
+      </div>
+      <div class="metric">
+        <div class="v">9<small>días</small></div>
+        <div class="k">Del primer post<br>al primer cobro (MVP&nbsp;01)</div>
+      </div>
+      <div class="metric">
+        <div class="v">0<small>hrs</small></div>
+        <div class="k">De junta de cortesía<br>antes de facturar</div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ══════════════ 00 · ARITMÉTICA ══════════════ -->
+<section class="band" id="aritmetica">
+  <div class="wrap rail">
+    <div class="rail-n">00</div>
+    <div class="stack gap36">
+
+      <div class="stack gap16">
+        <div class="lbl">Antes de diseñar nada</div>
+        <h2 class="h-sec">Qué significa realmente<br>&ldquo;diez mil netos&rdquo;</h2>
+        <p class="lead">
+          $10,000 MXN netos por semana son $43,333 al mes en tu bolsillo. No es lo que facturas.
+          Entre lo que cobras y lo que te queda hay cuatro fugas, y hay que dimensionarlas antes de
+          fijar precios, porque el precio se calcula hacia atrás desde el neto.
+        </p>
+      </div>
+
+      <div class="grid g2 gap24">
+        <div class="tblwrap">
+          <table>
+            <thead><tr><th>Fuga entre bruto y neto</th><th class="num">Sobre bruto</th></tr></thead>
+            <tbody>
+              <tr><td>Comisión de cobro en línea<i></i></td><td class="num">4.2 %</td></tr>
+              <tr><td>ISR efectivo <span class="chip w">⚠ régimen</span></td><td class="num">2.5 – 10 %</td></tr>
+              <tr><td>Costo variable de producción<br><span class="tiny">IA, hosting, asistente, diseño del PDF</span></td><td class="num">6 – 9 %</td></tr>
+              <tr><td>Reserva de reproceso y reembolso</td><td class="num">3 %</td></tr>
+              <tr><td><b>Factor neto de trabajo</b></td><td class="num"><b>0.78 – 0.82</b></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="stack gap16">
+          <div class="pull">
+            El IVA no es una fuga: se traslada y se entera. Lo que sí es fuga —y la que nadie
+            modela— es el reproceso: el entregable que se rehace porque el cliente subió el
+            documento equivocado.
+          </div>
+          <div class="card stack gap12">
+            <div class="lbl">Objetivo operativo</div>
+            <div style="font-family:'Bodoni Moda',Georgia,serif; font-size:34px; font-weight:600; line-height:1.15">
+              $12,800 MXN brutos por semana
+            </div>
+            <p class="small">
+              $55,500 al mes. Esa es la cifra contra la que se mide cada MVP.
+              Un solo producto puede alcanzarla; los tres juntos la sostienen cuando uno tiene una
+              semana mala, que la va a tener.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="stack gap16">
+        <div class="lbl">Los tres caminos a la misma cifra</div>
+        <div class="tblwrap">
+          <table>
+            <thead>
+              <tr>
+                <th>MVP</th><th>Precio</th><th class="num">Unidades / semana</th>
+                <th class="num">Bruto / semana</th><th class="num">Neto ≈</th><th>Tu tiempo por unidad</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>01 · Dictamen IFS</td><td>$6,900 MXN</td><td class="num">2</td>
+                <td class="num">$13,800</td><td class="num">$10,900</td><td>50–70 min de revisión</td>
+              </tr>
+              <tr>
+                <td>02 · Sonora Closing File</td><td>$449 USD</td><td class="num">1.5</td>
+                <td class="num">$12,500</td><td class="num">$9,900</td><td>60–80 min + llamada 20 min</td>
+              </tr>
+              <tr>
+                <td>03 · Expediente Vivo</td><td>$2,900–$7,900 / mes</td><td class="num">16 cuentas activas</td>
+                <td class="num">$12,900</td><td class="num">$10,300</td><td>25 min por cuenta al mes</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="tiny">
+          Tipo de cambio usado: 18.50 MXN/USD <span class="chip w">⚠ verificar al día de fijar precio</span>
+          · El MVP 03 no llega a 16 cuentas en la semana uno: es la máquina que compone, no la que arranca.
+        </p>
+      </div>
+
+      <div class="warnnote">
+        <b>La decisión estratégica que hay debajo de todo esto:</b> los tres productos digitales no son
+        el negocio. Son la máquina de originación del negocio, que sigue siendo la estructuración de
+        $40,000 a $300,000 MXN. El producto digital sustituye la junta de cortesía —que es gratis,
+        no compromete a nadie y es donde se te va el tiempo— por un entregable pagado que califica al
+        cliente antes de que te sientes con él.
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ 01 · IFS ══════════════ -->
+<section class="band" id="mvp1" style="background:var(--surface)">
+  <div class="wrap rail">
+    <div class="rail-n">01</div>
+    <div class="stack gap36">
+
+      <div class="stack gap16">
+        <div class="lbl">MVP 01 · Transaccional · Español · Mercado local</div>
+        <h2 class="h-sec">Dictamen de Fragilidad Societaria</h2>
+        <p class="lead">
+          Un diagnóstico digital que le dice a un empresario, en tres minutos y sin hablar contigo,
+          por dónde se va a romper su sociedad. Y luego le vende el peritaje completo de ese punto de
+          ruptura por $6,900 pesos, cobrados en línea, sin junta previa.
+        </p>
+      </div>
+
+      <div class="grid g3 gap24">
+        <div class="card stack gap12">
+          <div class="lbl">Paso 1 — gratis</div>
+          <div class="h-min">Autodiagnóstico web</div>
+          <p class="small">
+            14 preguntas, tres minutos, sin subir documentos. Devuelve un número de 0 a 100 y un
+            semáforo por cada uno de los siete factores del IFS. Captura correo y nombre de la sociedad.
+            Instantáneo: el valor se entrega antes de pedir nada.
+          </p>
+        </div>
+        <div class="card stack gap12">
+          <div class="lbl">Paso 2 — $6,900 MXN</div>
+          <div class="h-min">El Dictamen</div>
+          <p class="small">
+            PDF de 14 a 18 páginas en 72 horas. El cliente sube cuatro documentos —acta constitutiva,
+            última asamblea, poderes vigentes, expediente de beneficiario controlador— y recibe el
+            peritaje factor por factor, con la transcripción literal de las cláusulas que lo condenan.
+          </p>
+        </div>
+        <div class="card stack gap12">
+          <div class="lbl">Paso 3 — el embudo real</div>
+          <div class="h-min">Plan de Remediación</div>
+          <p class="small">
+            Las últimas tres páginas del dictamen son la lista de documentos ausentes, cada uno con
+            precio, plazo y consecuencia de no firmarlo. Es una cotización que el cliente ya pagó por
+            recibir. Ahí es donde nacen los honorarios de $40,000 a $180,000.
+          </p>
+        </div>
+      </div>
+
+      <div class="grid g2 gap36">
+        <div class="stack gap16">
+          <div class="lbl">El problema que evita</div>
+          <h3 class="h-sub">Nadie sabe dónde se rompe<br>hasta que ya se rompió</h3>
+          <ul class="tick">
+            <li><b>Bloqueo sin salida.</b> Capital 50/50, sin cláusula de desempate, sin método de valuación. La sociedad queda viva y paralizada, que es peor que muerta.</li>
+            <li><b>Poderes zombis.</b> Facultades amplias vigentes en manos de un ex director, un ex socio o un yerno que ya se fue. El poder no caduca porque alguien se enoje.</li>
+            <li><b>El socio que muere sin previsión.</b> Sin testamento que disponga de las acciones y sin cláusula estatutaria, entran los herederos que la sociedad nunca eligió.</li>
+            <li><b>Beneficiario controlador.</b> Expediente inexistente o desactualizado bajo el art. 32-B Ter del CFF, con sanciones por cada beneficiario no identificado <span class="chip w">⚠ cotejar montos vigentes, art. 84-M CFF</span></li>
+            <li><b>Confusión patrimonial.</b> Préstamos de socios sin contrato, inmuebles de operación en la misma sociedad que contrata y litiga. El velo corporativo existe hasta que alguien lo prueba.</li>
+          </ul>
+          <div class="pull">
+            En toda catástrofe patrimonial hay un documento que no se firmó. Y el costo de ese
+            documento es inversamente proporcional al daño que habría evitado.
+          </div>
+        </div>
+
+        <div class="stack gap16">
+          <div class="lbl">Quién paga, con qué tarjeta</div>
+          <h3 class="h-sub">No paga la sociedad.<br>Paga el socio que teme.</h3>
+          <p class="small">
+            $6,900 está deliberadamente por debajo del umbral en que alguien pide autorización. Es una
+            compra personal, individual, silenciosa. Cuatro perfiles la hacen:
+          </p>
+          <div class="tblwrap">
+            <table>
+              <thead><tr><th>Perfil</th><th>El miedo que compra</th></tr></thead>
+              <tbody>
+                <tr><td>Socio minoritario<br><span class="tiny">25–45 % del capital</span></td><td>Sospecha que no controla nada y no quiere preguntarlo en la asamblea.</td></tr>
+                <tr><td>Fundador 58–72 años</td><td>Sabe que se va a morir y que nadie ha escrito qué pasa ese día.</td></tr>
+                <tr><td>Segunda generación</td><td>Va a heredar un desorden que no armó y que no puede auditar sin ofender.</td></tr>
+                <tr><td>Director general no socio<br><span class="tiny">o contralor / CFO</span></td><td>Firma con poder amplio y responde con su patrimonio personal.</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="stack gap8">
+            <div class="lbl">Audiencia</div>
+            <p class="small">
+              Sociedades mexicanas con dos o más socios, cinco o más años de operación, facturación de
+              $20 a $500 MDP, en Sonora y noroeste. Agro exportador, minería y proveeduría minera,
+              transporte y logística, construcción, gasolineras, distribución. Empresas donde el
+              fundador sigue vivo y la sucesión todavía no se discute en voz alta.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── PROTOTIPO IFS ── -->
+      <div class="stack gap16">
+        <div class="lbl">Prototipo funcional — pruébalo</div>
+        <h3 class="h-sub">El autodiagnóstico, corriendo</h3>
+        <p class="small" style="max-width:66ch">
+          Esto no es una maqueta: responde las catorce preguntas y calcula tu IFS real con la
+          ponderación de los siete factores. Es exactamente lo que vería un prospecto en
+          <span class="mono">ifs.gutierrezrodriguez.mx</span> antes de ver la oferta de $6,900.
+        </p>
+
+        <div class="proto">
+          <div class="proto-bar">
+            <span class="dots"><i></i><i></i><i></i></span>
+            <span class="proto-url">ifs.gutierrezrodriguez.mx/diagnostico</span>
+            <span class="proto-tag">Prototipo vivo</span>
+          </div>
+          <div class="proto-body">
+
+            <div id="ifs-app">
+              <!-- PANTALLA A: cuestionario -->
+              <div id="ifs-quiz">
+                <div class="ifs-head">
+                  <div class="stack gap8">
+                    <div class="lbl">Índice de Fragilidad Societaria</div>
+                    <div class="h-sub">Siete factores. Catorce preguntas. Tres minutos.</div>
+                  </div>
+                  <div class="ifs-prog">
+                    <span class="mono" style="font-size:12px; color:var(--fg-faint)"><b id="ifs-count">0</b>/14</span>
+                    <span class="ifs-bar"><span id="ifs-fill"></span></span>
+                  </div>
+                </div>
+                <div id="ifs-questions"></div>
+                <div style="display:flex; gap:12px; align-items:center; flex-wrap:wrap; padding-top:24px; border-top:1px solid var(--line)">
+                  <button class="btn" id="ifs-go" disabled>Calcular mi índice</button>
+                  <span class="tiny" id="ifs-hint">Responde las catorce para ver el resultado.</span>
+                </div>
+              </div>
+
+              <!-- PANTALLA B: resultado -->
+              <div id="ifs-result" hidden>
+                <div class="score-hero">
+                  <div class="dial">
+                    <svg viewBox="0 0 168 168" aria-hidden="true">
+                      <circle class="ring-bg" cx="84" cy="84" r="72"></circle>
+                      <circle class="ring-fg" id="ring" cx="84" cy="84" r="72"
+                              stroke-dasharray="452.4" stroke-dashoffset="452.4"></circle>
+                    </svg>
+                    <div class="cap">
+                      <b id="score-n">0</b>
+                      <span>IFS / 100</span>
+                    </div>
+                  </div>
+                  <div class="stack gap12">
+                    <div class="lbl">Resultado para <span id="r-empresa" style="color:var(--fg)">tu sociedad</span></div>
+                    <h4 class="h-sub" id="score-band">—</h4>
+                    <p class="small" id="score-copy" style="max-width:52ch"></p>
+                    <div><span class="chip" id="score-chip">—</span></div>
+                  </div>
+                </div>
+
+                <div style="padding:22px 0 6px">
+                  <div class="lbl" style="margin-bottom:10px">Desglose por factor · 0 = blindado · 100 = frágil</div>
+                  <div id="factor-rows"></div>
+                </div>
+
+                <div class="offer">
+                  <div class="offer-h">Lo que este número no te dice</div>
+                  <div class="offer-b">
+                    <div class="stack gap12">
+                      <p style="font-size:15px; color:var(--fg); max-width:56ch">
+                        El autodiagnóstico localiza el punto de ruptura. No te dice qué cláusula
+                        exacta lo causa, ni qué documento hay que firmar, ni cuánto cuesta.
+                        Eso está en el <b>Dictamen de Fragilidad Societaria</b>: peritaje de 14 a 18
+                        páginas sobre tus documentos reales, en 72 horas.
+                      </p>
+                      <ul class="tick">
+                        <li>Transcripción literal de las cláusulas que producen cada factor rojo</li>
+                        <li>Inventario de poderes vigentes con nombre, facultades y fecha</li>
+                        <li>Plan de Remediación: qué documento falta, qué cuesta, qué evita</li>
+                        <li>Versión ejecutiva de dos páginas para llevar a la asamblea</li>
+                      </ul>
+                    </div>
+                    <div class="stack gap12" style="align-items:flex-start">
+                      <div class="price">$6,900<small>MXN</small></div>
+                      <button class="btn" type="button" onclick="return false">Pagar y subir documentos</button>
+                      <span class="tiny">Entrega 72 h hábiles · Factura con IVA<br>Pago en línea, sin junta previa</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div style="display:flex; gap:12px; flex-wrap:wrap; padding-top:20px">
+                  <button class="btn ghost" id="ifs-again">Volver a empezar</button>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+        <p class="tiny">
+          Construcción real: Typeform o Tally para el formulario, Make o n8n para el scoring y el
+          correo, Stripe para el cobro, Notion o Drive para el intake de documentos. Cero código.
+          Costo de infraestructura: menos de $900 MXN al mes.
+        </p>
+      </div>
+
+      <!-- ── FUNNEL 01 ── -->
+      <div class="stack gap16">
+        <div class="lbl">Canales y embudo</div>
+        <h3 class="h-sub">De un post a una factura, en cinco pasos</h3>
+        <div class="funnel">
+          <div class="fstep">
+            <div class="fk">Entrada</div>
+            <div class="fh">LinkedIn, tres veces por semana</div>
+            <div class="fd">Motor de contenido: post-mortems anonimizados y traducción literal de artículos de ley. Cada pieza termina apuntando al diagnóstico, sin sonar a venta.</div>
+            <div class="fn">250 visitas / semana</div>
+          </div>
+          <div class="fstep">
+            <div class="fk">Captura</div>
+            <div class="fh">Autodiagnóstico gratuito</div>
+            <div class="fd">Tres minutos, sin documentos, resultado instantáneo. El correo se pide para mandar el PDF del resultado, no para acceder.</div>
+            <div class="fn">12 % completan → 30</div>
+          </div>
+          <div class="fstep">
+            <div class="fk">Nutrición</div>
+            <div class="fh">Cinco correos, uno por factor rojo</div>
+            <div class="fd">Cada correo explica un mecanismo de ruptura con una cifra. No pide nada hasta el cuarto. El quinto es la oferta.</div>
+            <div class="fn">42 % abren</div>
+          </div>
+          <div class="fstep">
+            <div class="fk">Conversión</div>
+            <div class="fh">Dictamen $6,900</div>
+            <div class="fd">Pago en línea, intake de cuatro documentos, entrega en 72 horas. Sin llamada previa: la llamada es después, sobre el dictamen ya pagado.</div>
+            <div class="fn">7 % → 2 por semana</div>
+          </div>
+          <div class="fstep">
+            <div class="fk">Expansión</div>
+            <div class="fh">Estructuración</div>
+            <div class="fd">El Plan de Remediación se convierte en propuesta de honorarios. Pacto de socios, reforma de estatutos, revocación de poderes, protocolo familiar.</div>
+            <div class="fn">30 % → $40k–$180k</div>
+          </div>
+        </div>
+        <div class="grid g3 gap16">
+          <div class="card stack gap8">
+            <div class="lbl">Canal secundario</div>
+            <div class="h-min">Contadores como portero</div>
+            <p class="small">El contador ya tiene la confianza y ya ve el desorden. Programa de co-marca: él manda el diagnóstico a su cartera como servicio de valor propio y recibe el reporte agregado de su base. Veinte contadores por cuarenta clientes son ochocientas sociedades. <span class="chip w">⚠ estructurar sin reparto de honorarios</span></p>
+          </div>
+          <div class="card stack gap8">
+            <div class="lbl">Canal secundario</div>
+            <div class="h-min">Cámaras y clústeres</div>
+            <p class="small">Webinar de cuarenta minutos: &ldquo;Los siete puntos donde se rompe una empresa familiar&rdquo;. CANACO, COPARMEX, Canacintra, Clúster Minero de Sonora, AMPI. El diagnóstico se abre en vivo, al minuto treinta y cinco, y se llena en la sala.</p>
+          </div>
+          <div class="card stack gap8">
+            <div class="lbl">Canal secundario</div>
+            <div class="h-min">Tu propia red</div>
+            <p class="small">Los diez grupos empresariales que ya conoces. Aquí el diagnóstico no se vende: se regala como pretexto de reconexión. &ldquo;Armé una herramienta, quiero que la rompas antes de publicarla.&rdquo; Reciprocidad incondicional, cero factura.</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ 02 · CORREDOR ══════════════ -->
+<section class="band" id="mvp2">
+  <div class="wrap rail">
+    <div class="rail-n">02</div>
+    <div class="stack gap36">
+
+      <div class="stack gap16">
+        <div class="lbl">MVP 02 · Transaccional · Inglés · Precio en dólares</div>
+        <h2 class="h-sec">Sonora Closing File</h2>
+        <p class="lead">
+          El mismo trabajo, cobrado en la moneda correcta. Un comprador de Arizona firma en Puerto
+          Peñasco documentos que no puede leer, en un sistema jurídico que no tiene el seguro de
+          título al que está acostumbrado, sobre un vehículo que su abogado gringo llama
+          <span class="mono">&ldquo;trust&rdquo;</span> y que no es un trust. Le vendes la revisión
+          previa al cierre, en inglés, por 449 dólares.
+        </p>
+      </div>
+
+      <div class="pull">
+        Aquí está el arbitraje entero de tu posición: base de costos en Hermosillo, precio de venta
+        en Scottsdale. Un solo Closing File paga lo que en el mercado local exige una semana.
+      </div>
+
+      <div class="grid g2 gap36">
+        <div class="stack gap16">
+          <div class="lbl">El problema que evita</div>
+          <h3 class="h-sub">Todo se descubre al salir,<br>o al morir</h3>
+          <ul class="tick">
+            <li><b>El vendedor que no es el titular registral.</b> Cadena de titularidad rota tres transmisiones atrás, o un ejido que nunca se desincorporó y no puede transmitirse a un extranjero.</li>
+            <li><b>Sustitución de fideicomisario nunca inscrita.</b> El comprador anterior &ldquo;cedió derechos&rdquo; en un privado y nadie lo llevó al fiduciario. El nombre en el fideicomiso no es el suyo.</li>
+            <li><b>Sin beneficiario sustituto designado.</b> Cuando el titular muere, la familia descubre que hay que abrir una sucesión en México para una casa de playa. Costo y años.</li>
+            <li><b>Sin RFC ni representante fiscal al vender.</b> La retención sobre la salida se calcula sobre el precio bruto en lugar de sobre la ganancia. <span class="chip w">⚠ cotejar tasa y mecánica vigentes, LISR título V</span></li>
+            <li><b>Fideicomiso con vigencia vencida o mal renovado</b>, y permiso de la SRE que nunca se ajustó al uso real del inmueble.</li>
+            <li><b>El vehículo equivocado.</b> Le vendieron fideicomiso cuando su caso pedía sociedad mexicana, o al revés. La decisión se toma una vez y se paga toda la vida.</li>
+          </ul>
+        </div>
+
+        <div class="stack gap16">
+          <div class="lbl">Audiencia y quién paga</div>
+          <h3 class="h-sub">Compra con tarjeta,<br>en el mismo minuto</h3>
+          <p class="small">
+            <b style="color:var(--fg)">Comprador directo.</b> 45 a 75 años, Arizona, California,
+            Washington, Alberta y Columbia Británica. Compra de $150,000 a $900,000 USD en Puerto
+            Peñasco, San Carlos, Bahía de Kino o Guaymas. 449 dólares son el 0.1 % de su compra:
+            no es una decisión de presupuesto, es una decisión de ansiedad. Paga en el momento en
+            que entiende que nadie ha revisado su expediente.
+          </p>
+          <p class="small">
+            <b style="color:var(--fg)">Operador de nearshoring.</b> Empresa de Arizona o Delaware que
+            va a instalar proveeduría o maquila en Sonora y necesita el diseño del vehículo, no el
+            trámite. Ticket de $1,290 USD y camino directo a la estructuración completa.
+          </p>
+          <p class="small">
+            <b style="color:var(--fg)">Pagador recurrente — el canal que importa.</b> El agente
+            inmobiliario de Arizona y el broker de AMPI que mandan clientes a la costa. Para ellos el
+            reporte no es un costo: es la razón por la que su cliente firma tranquilo y no se arrepiente
+            a los tres meses. Un solo agente puede mandar dos por mes, para siempre.
+            <span class="chip w">⚠ compensación estructurada como marketing, no como reparto</span>
+          </p>
+        </div>
+      </div>
+
+      <!-- ── PROTOTIPO LANDING EN INGLÉS ── -->
+      <div class="stack gap16">
+        <div class="lbl">Prototipo — página de venta en inglés</div>
+        <h3 class="h-sub">Lo que ve el comprador de Arizona</h3>
+        <div class="proto">
+          <div class="proto-bar">
+            <span class="dots"><i></i><i></i><i></i></span>
+            <span class="proto-url">sonoraclosingfile.com</span>
+            <span class="proto-tag">Prototipo</span>
+          </div>
+          <div class="proto-body" lang="en">
+            <div class="stack gap24">
+              <div class="stack gap12">
+                <div class="lbl">Before you sign in Mexico</div>
+                <div style="font-family:'Bodoni Moda',Georgia,serif; font-size:clamp(26px,3.4vw,40px); font-weight:600; line-height:1.06; letter-spacing:-.01em; max-width:20ch">
+                  Your closing file is missing something. It always is.
+                </div>
+                <p class="lead" style="font-size:16px">
+                  I am a Mexican corporate and notarial attorney in Sonora. For eleven years I have
+                  verified title, standing and authority <em>before</em> documents get signed — inside
+                  the office that certifies them. Send me your file. In five business days you get a
+                  written report, in English, on what your purchase actually is.
+                </p>
+              </div>
+
+              <div class="stack gap12">
+                <div class="lbl">The twelve points I check</div>
+                <div class="grid g2 gap12">
+                  <ul class="tick">
+                    <li>Is the property actually inside the restricted zone</li>
+                    <li>Is the seller the registered owner of record</li>
+                    <li>Chain of title, three transfers back</li>
+                    <li>Ejido origin and whether it was ever regularized</li>
+                    <li>Bank trust term, and who renews it</li>
+                    <li>Whether the beneficiary substitution was ever recorded</li>
+                  </ul>
+                  <ul class="tick">
+                    <li>Substitute beneficiary designation — what happens if you die</li>
+                    <li>SRE permit scope versus your intended use</li>
+                    <li>Fideicomiso versus Mexican corporation for your case</li>
+                    <li>Liens, tax certificates, condominium regime</li>
+                    <li>Your Mexican tax ID position on the exit</li>
+                    <li>The documents your closing packet does not contain</li>
+                  </ul>
+                </div>
+                <p class="tiny">
+                  <em>Fideicomiso</em>: a Mexican bank trust — the bank holds title, you hold the
+                  rights of use, enjoyment and sale. It is not a common-law trust and it does not
+                  work like one.
+                </p>
+              </div>
+
+              <div class="tiers">
+                <div class="tier">
+                  <div class="tn">A · Pre-purchase</div>
+                  <div class="tp">$449<small>USD</small></div>
+                  <ul>
+                    <li>Twelve-point written report, 10–12 pages</li>
+                    <li>Five business days</li>
+                    <li>Plain-English translation of your key clauses</li>
+                    <li>Twenty-minute call with the report in hand</li>
+                  </ul>
+                </div>
+                <div class="tier hot">
+                  <div class="tn">B · Cross-border vehicle</div>
+                  <div class="tp">$1,290<small>USD</small></div>
+                  <ul>
+                    <li>México–Arizona–Delaware structure design</li>
+                    <li>One-page structure diagram</li>
+                    <li>Registration checklist: RNIE, RFC, beneficial owner</li>
+                    <li>Written memo on the choice and why</li>
+                  </ul>
+                </div>
+                <div class="tier">
+                  <div class="tn">C · Estate &amp; exit</div>
+                  <div class="tp">$249<small>USD</small></div>
+                  <ul>
+                    <li>Add-on to A</li>
+                    <li>What happens to the property when you die</li>
+                    <li>Substitute beneficiary language</li>
+                    <li>Exit tax posture and the RFC question</li>
+                  </ul>
+                </div>
+              </div>
+
+              <div class="grid g2 gap16" style="align-items:center">
+                <div class="stack gap8">
+                  <div class="h-min">Free first: The 12-Point Closing File Checklist</div>
+                  <p class="small">One page. Print it, walk into your closing with it, and ask the six questions on the back. No call required.</p>
+                </div>
+                <div style="display:flex; gap:10px; flex-wrap:wrap">
+                  <button class="btn" type="button" onclick="return false">Get the checklist</button>
+                  <button class="btn ghost" type="button" onclick="return false">Order the report</button>
+                </div>
+              </div>
+
+              <p class="tiny" style="border-top:1px solid var(--line); padding-top:14px">
+                This report is a documentary review, not legal representation and not a title
+                guarantee. Scope and limitations are stated on page one of every report.
+                Engagement, if any, is separate and in writing.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── MUESTRA DE REPORTE ── -->
+      <div class="stack gap16">
+        <div class="lbl">Prototipo — extracto del entregable</div>
+        <h3 class="h-sub">Página 4 del reporte</h3>
+        <div class="proto">
+          <div class="proto-bar">
+            <span class="dots"><i></i><i></i><i></i></span>
+            <span class="proto-url">SCF-2026-0114_Peñasco_PreCheck.pdf — page 4 of 11</span>
+            <span class="proto-tag">Muestra</span>
+          </div>
+          <div class="proto-body" lang="en">
+            <div class="stack gap16">
+              <div class="lbl" style="color:var(--ember)">Finding 03 — Beneficiary substitution</div>
+              <div class="h-sub" style="font-size:22px">The person named in the trust is not you.</div>
+              <div class="grid g2 gap24">
+                <div class="stack gap12">
+                  <p class="small"><b style="color:var(--fg)">What the file shows.</b> The trust
+                  agreement dated [____] names [____] as beneficiary. The assignment you signed in
+                  [____] is a private document. There is no record of the bank having accepted it,
+                  and no amendment to the trust was issued.</p>
+                  <p class="small"><b style="color:var(--fg)">What that means in practice.</b> Until
+                  the trustee bank issues the amendment, the bank's records show the prior party as
+                  beneficiary. You cannot instruct the trustee, cannot sell, and cannot designate who
+                  inherits. Your seller can.</p>
+                </div>
+                <div class="stack gap12">
+                  <p class="small"><b style="color:var(--fg)">What to do before closing.</b> Do not
+                  release funds until the trustee issues the beneficiary substitution and the
+                  corresponding notice is filed. Three documents are required: [____], [____], [____].
+                  Ordinary turnaround with the trustee is [____] weeks.</p>
+                  <div class="stack gap8">
+                    <span class="chip c">Critical — stop the closing</span>
+                    <span class="tiny">Verified against: trust agreement, public registry certificate,
+                    trustee statement. Not verified: the trustee's internal file, which we cannot access.</span>
+                  </div>
+                </div>
+              </div>
+              <div class="warnnote">
+                Los corchetes son deliberados. El reporte es una plantilla de razonamiento, no un
+                texto genérico: el esqueleto se produce una vez, los hechos los pones tú en cuarenta
+                minutos con el expediente enfrente.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── FUNNEL 02 ── -->
+      <div class="stack gap16">
+        <div class="lbl">Canales y embudo</div>
+        <h3 class="h-sub">Donde ya están preguntando esto en voz alta</h3>
+        <div class="funnel">
+          <div class="fstep">
+            <div class="fk">Entrada</div>
+            <div class="fh">Grupos de expatriados</div>
+            <div class="fd">Rocky Point Rocks, San Carlos Sonora Community, r/mexicoexpats. Regla absoluta: nunca vender. Se contesta la pregunta con el mecanismo real y la firma lleva la liga.</div>
+            <div class="fn">2 respuestas útiles / semana</div>
+          </div>
+          <div class="fstep">
+            <div class="fk">Entrada</div>
+            <div class="fh">Búsqueda en inglés</div>
+            <div class="fd">&ldquo;Can a foreigner own beachfront property in Mexico&rdquo;, &ldquo;fideicomiso beneficiary died&rdquo;, &ldquo;Rocky Point closing documents&rdquo;. Cola larga, competencia casi nula, intención altísima.</div>
+            <div class="fn">CPC &lt; $0.90 USD</div>
+          </div>
+          <div class="fstep">
+            <div class="fk">Captura</div>
+            <div class="fh">Checklist de 12 puntos</div>
+            <div class="fd">Una página, gratis, sin llamada. Es el objeto que el comprador imprime y lleva al cierre. Ahí se instala la autoridad sin pedir nada.</div>
+            <div class="fn">18 % dejan correo</div>
+          </div>
+          <div class="fstep">
+            <div class="fk">Nutrición</div>
+            <div class="fh">Cuatro correos, cuatro fracasos</div>
+            <div class="fd">Cada uno narra un modo de falla concreto y anonimizado. El cuarto ofrece el reporte. En inglés directo, orientado a consecuencia patrimonial personal.</div>
+            <div class="fn">9 % compran</div>
+          </div>
+          <div class="fstep">
+            <div class="fk">Conversión y red</div>
+            <div class="fh">Reporte + agente</div>
+            <div class="fd">La llamada de veinte minutos termina siempre en la misma pregunta: quién es tu agente. El agente satisfecho es el canal recurrente real.</div>
+            <div class="fn">1.5 / semana</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ 03 · EXPEDIENTE VIVO ══════════════ -->
+<section class="band" id="mvp3" style="background:var(--surface)">
+  <div class="wrap rail">
+    <div class="rail-n">03</div>
+    <div class="stack gap36">
+
+      <div class="stack gap16">
+        <div class="lbl">MVP 03 · Recurrente · Español · La máquina que compone</div>
+        <h2 class="h-sec">Expediente Corporativo Vivo</h2>
+        <p class="lead">
+          Suscripción mensual que mantiene vivo el expediente de una sociedad. No es asesoría: es
+          vigilancia documental. Un panel, un PDF mensual y una alerta cuando algo vence. La función
+          estrella es la que ya sabes hacer y nadie más entrega en horas: la carátula de personalidad
+          lista, en español y en inglés, con la transcripción literal de facultades.
+        </p>
+      </div>
+
+      <div class="grid g4 gap16">
+        <div class="card stack gap8">
+          <div class="lbl">Función 01</div>
+          <div class="h-min">Carátula de personalidad permanente</div>
+          <p class="small">El documento que el banco, el notario y la contraparte piden siempre y que siempre tarda tres días. Aquí está hecho, versionado y en dos idiomas. Se descarga en veinte segundos.</p>
+        </div>
+        <div class="card stack gap8">
+          <div class="lbl">Función 02</div>
+          <div class="h-min">Semáforo de poderes</div>
+          <p class="small">Todos los apoderados vivos, sus facultades, su fecha y su estatus. Rojo cuando alguien conserva facultades que ya no debería tener. Es la fuga más cara y la menos vigilada.</p>
+        </div>
+        <div class="card stack gap8">
+          <div class="lbl">Función 03</div>
+          <div class="h-min">Calendario corporativo</div>
+          <p class="small">Asamblea anual, renovación de órganos, actualización de beneficiario controlador, aviso al RNIE, vencimientos de poderes. Con alerta a treinta y a siete días.</p>
+        </div>
+        <div class="card stack gap8">
+          <div class="lbl">Función 04</div>
+          <div class="h-min">IFS trimestral con delta</div>
+          <p class="small">El índice se vuelve a correr cada trimestre y se muestra el movimiento. Convierte el diagnóstico en una serie de tiempo, que es lo que hace que la suscripción no se cancele.</p>
+        </div>
+      </div>
+
+      <!-- ── PROTOTIPO DASHBOARD ── -->
+      <div class="stack gap16">
+        <div class="lbl">Prototipo — el panel del cliente</div>
+        <h3 class="h-sub">Lo que ve el contralor cada lunes</h3>
+        <div class="proto">
+          <div class="proto-bar">
+            <span class="dots"><i></i><i></i><i></i></span>
+            <span class="proto-url">expediente.gutierrezrodriguez.mx / grupo-agricola-del-noroeste</span>
+            <span class="proto-tag">Prototipo</span>
+          </div>
+          <div class="proto-body dash">
+            <div class="stack gap24">
+
+              <div class="dash-top">
+                <div class="stack gap8">
+                  <div class="lbl">Expediente Corporativo Vivo · Plan Grupo</div>
+                  <div class="h-sub" style="font-size:24px">Grupo Agrícola del Noroeste</div>
+                  <span class="tiny mono">3 sociedades · 1 vehículo extranjero · Corte al 17 ago 2026</span>
+                </div>
+                <div style="display:flex; gap:10px; flex-wrap:wrap">
+                  <button class="btn ghost" type="button" onclick="return false">Descargar PDF mensual</button>
+                  <button class="btn" type="button" onclick="return false">Generar carátula</button>
+                </div>
+              </div>
+
+              <div class="kpi">
+                <div>
+                  <div class="k">IFS del grupo</div>
+                  <div class="v" style="color:var(--warn)">41</div>
+                  <div class="d">Bajó 12 puntos este trimestre</div>
+                </div>
+                <div>
+                  <div class="k">Poderes vigentes</div>
+                  <div class="v">14</div>
+                  <div class="d"><span style="color:var(--crit)">2 en revocación pendiente</span></div>
+                </div>
+                <div>
+                  <div class="k">Actos por vencer &lt; 60 d</div>
+                  <div class="v" style="color:var(--crit)">3</div>
+                  <div class="d">Uno de ellos es la asamblea anual</div>
+                </div>
+                <div>
+                  <div class="k">Carátulas emitidas</div>
+                  <div class="v">9</div>
+                  <div class="d">Tiempo medio de entrega: 22 min</div>
+                </div>
+              </div>
+
+              <div class="grid g2 gap24" style="align-items:start">
+                <div class="stack gap12">
+                  <div class="lbl">Semáforo de poderes</div>
+                  <div class="tblwrap">
+                    <table style="min-width:420px">
+                      <thead><tr><th>Apoderado</th><th>Alcance</th><th>Estatus</th></tr></thead>
+                      <tbody>
+                        <tr>
+                          <td>[Nombre 1]<br><span class="tiny">Director general</span></td>
+                          <td>Dominio, administración, cambiarios</td>
+                          <td><span class="chip o">Vigente</span></td>
+                        </tr>
+                        <tr>
+                          <td>[Nombre 2]<br><span class="tiny">Ex director de finanzas</span></td>
+                          <td>Administración, cambiarios</td>
+                          <td><span class="chip c">Revocar ya</span></td>
+                        </tr>
+                        <tr>
+                          <td>[Nombre 3]<br><span class="tiny">Socio saliente</span></td>
+                          <td>Pleitos y cobranzas, actos de dominio</td>
+                          <td><span class="chip c">Revocar ya</span></td>
+                        </tr>
+                        <tr>
+                          <td>[Nombre 4]<br><span class="tiny">Contralor</span></td>
+                          <td>Administración limitada a $[____]</td>
+                          <td><span class="chip w">Cotejar límite</span></td>
+                        </tr>
+                        <tr>
+                          <td>[Nombre 5]<br><span class="tiny">Apoderado laboral</span></td>
+                          <td>Representación patronal</td>
+                          <td><span class="chip o">Vigente</span></td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <p class="tiny">Dos personas que ya no trabajan aquí pueden obligar a la sociedad hoy. Ese renglón, solo, justifica la suscripción todos los meses.</p>
+                </div>
+
+                <div class="stack gap12">
+                  <div class="lbl">Calendario corporativo</div>
+                  <div class="tl">
+                    <div class="tl-i">
+                      <span class="tl-d">02 sep</span><span class="tl-dot" style="background:var(--crit)"></span>
+                      <span class="tl-t">Revocación de dos poderes<i>Requiere sesión de consejo previa</i></span>
+                      <span class="chip c">16 días</span>
+                    </div>
+                    <div class="tl-i">
+                      <span class="tl-d">30 sep</span><span class="tl-dot" style="background:var(--warn)"></span>
+                      <span class="tl-t">Actualización de beneficiario controlador<i>Cambió la estructura accionaria en julio</i></span>
+                      <span class="chip w">44 días</span>
+                    </div>
+                    <div class="tl-i">
+                      <span class="tl-d">15 oct</span><span class="tl-dot" style="background:var(--warn)"></span>
+                      <span class="tl-t">Aviso al RNIE<i>Vehículo de Delaware con participación</i></span>
+                      <span class="chip w">59 días</span>
+                    </div>
+                    <div class="tl-i">
+                      <span class="tl-d">30 abr</span><span class="tl-dot" style="background:var(--ok)"></span>
+                      <span class="tl-t">Asamblea anual ordinaria<i>Dentro de los cuatro meses al cierre del ejercicio ⚠ cotejar LGSM</i></span>
+                      <span class="chip n">Planeada</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="stack gap12">
+                <div class="lbl">Carátula de personalidad — siempre lista</div>
+                <div class="carat">
+                  <div class="carat-h">
+                    <span class="mono" style="font-size:12px; color:var(--fg)">Agrícola del Noroeste, S.A. de C.V. · v7 · emitida 17 ago 2026</span>
+                    <span style="display:flex; gap:8px">
+                      <span class="chip o">Cotejada</span>
+                      <span class="chip n">ES / EN</span>
+                    </span>
+                  </div>
+                  <div class="carat-b">
+                    <div class="cf"><b>Constitución</b><span>Escritura [____], vol. [____], ante Notario Público No. [____]</span></div>
+                    <div class="cf"><b>Inscripción</b><span>Folio mercantil electrónico [____], RPPC Hermosillo</span></div>
+                    <div class="cf"><b>Objeto social</b><span>[Transcripción literal de la cláusula]</span></div>
+                    <div class="cf"><b>Duración y capital</b><span>Indefinida · Capital fijo $[____] · Variable $[____]</span></div>
+                    <div class="cf"><b>Órgano de administración</b><span>Consejo de administración · Vigencia [____]</span></div>
+                    <div class="cf"><b>Facultades del compareciente</b><span>[Transcripción literal — no paráfrasis]</span></div>
+                    <div class="cf"><b>Reformas posteriores</b><span>3 actas protocolizadas · última [____]</span></div>
+                    <div class="cf"><b>Beneficiario controlador</b><span>Identificado y documentado · última actualización [____]</span></div>
+                  </div>
+                </div>
+                <p class="tiny">La transcripción es literal por diseño. Una paráfrasis de facultades es exactamente el defecto de forma que produce el rechazo registral que tú no has tenido en once años.</p>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid g2 gap36">
+        <div class="stack gap16">
+          <div class="lbl">Precio y matemática de la cuenta</div>
+          <div class="tblwrap">
+            <table>
+              <thead><tr><th>Plan</th><th>Alcance</th><th class="num">Mensual</th><th class="num">Cuentas objetivo</th></tr></thead>
+              <tbody>
+                <tr><td>Vigilancia</td><td>Una sociedad</td><td class="num">$2,900</td><td class="num">7</td></tr>
+                <tr><td>Grupo</td><td>Hasta tres sociedades</td><td class="num">$4,900</td><td class="num">6</td></tr>
+                <tr><td>Corredor</td><td>Grupo + vehículo extranjero, RNIE, agente residente</td><td class="num">$7,900</td><td class="num">3</td></tr>
+                <tr><td><b>Total</b></td><td>16 cuentas</td><td class="num"><b>$56,600</b></td><td class="num"><b>$12,900 / sem</b></td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="small">
+            Anualidad con dos meses de descuento pagada por adelantado: una sola cuenta Corredor
+            anual son $79,000 pesos cobrados en un solo cargo. Tres de esas cubren un trimestre entero
+            de la meta, y eliminan la cobranza mensual.
+          </p>
+          <div class="warnnote">
+            <b>Honestidad sobre el arranque:</b> este MVP no da $10,000 la primera semana. Llega a
+            dieciséis cuentas en el mes cuatro o cinco. Es el que hay que empezar primero
+            precisamente porque es el que más tarda, y el único que sigue pagando cuando dejes
+            de publicar.
+          </div>
+        </div>
+
+        <div class="stack gap16">
+          <div class="lbl">Canales y embudo</div>
+          <h3 class="h-sub">La venta es una demostración<br>de velocidad, no un argumento</h3>
+          <ul class="tick">
+            <li><b>Tu red primero.</b> Los grupos que ya conoces. No se presenta el producto: se les manda la carátula de su propia sociedad, hecha, sin que la pidan. Reciprocidad incondicional, entregada en menos de tres horas. La suscripción se vende sola en la siguiente llamada.</li>
+            <li><b>El Dictamen IFS como originador.</b> Todo dictamen termina con la misma línea: esto se degrada cada trimestre. Treinta por ciento de quien paga $6,900 acepta $2,900 al mes por no volver a estar así.</li>
+            <li><b>Contadores en marca blanca.</b> El despacho contable lo ofrece dentro de su iguala, tú operas el expediente, el contador conserva la relación. Es el canal que escala sin que publiques nada.</li>
+            <li><b>Prueba de 30 días.</b> Sin tarjeta. La prueba es la carátula entregada en veinticuatro horas. Quien la recibe entiende en un minuto qué está comprando, porque acaba de vivir la diferencia entre tres días y un día.</li>
+          </ul>
+          <div class="pull">
+            El trámite es un commodity perfectamente sustituible. La estructura es un monopolio.
+            La vigilancia es la estructura, cobrada mes con mes.
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ 04 · EL SISTEMA ══════════════ -->
+<section class="band" id="sistema">
+  <div class="wrap rail">
+    <div class="rail-n">04</div>
+    <div class="stack gap36">
+      <div class="stack gap16">
+        <div class="lbl">Por qué son tres y no uno</div>
+        <h2 class="h-sec">No son tres productos.<br>Es un producto con tres puertas.</h2>
+        <p class="lead">
+          Cada uno resuelve una debilidad distinta de los otros dos, y los tres desembocan en el mismo
+          lugar: la estructuración que cobra el despacho y que instrumenta después un notario que no
+          eres tú.
+        </p>
+      </div>
+
+      <div class="grid g3 gap16">
+        <div class="card stack gap12">
+          <div class="lbl">01 alimenta a 03</div>
+          <p class="small">El Dictamen produce, en su última página, la lista de todo lo que hay que vigilar. La suscripción es la continuación natural de un documento que el cliente ya pagó. Conversión estimada: <b class="mono" style="color:var(--fg)">30 %</b>.</p>
+        </div>
+        <div class="card stack gap12">
+          <div class="lbl">02 financia a 01</div>
+          <p class="small">Un Closing File en dólares paga el pauta, el diseño y el asistente de todo el mes del embudo en español. El corredor subsidia la construcción del mercado local, no al revés.</p>
+        </div>
+        <div class="card stack gap12">
+          <div class="lbl">03 estabiliza a los dos</div>
+          <p class="small">La suscripción convierte una meta semanal —que es una fuente de ansiedad— en un piso mensual. A partir de la cuenta doce, dejas de depender de vender algo cada lunes.</p>
+        </div>
+      </div>
+
+      <div class="stack gap16">
+        <div class="lbl">Qué hace único a este sistema, y que ningún competidor puede copiar rápido</div>
+        <div class="tblwrap">
+          <table>
+            <thead><tr><th>Activo</th><th>De dónde sale</th><th>Por qué no se replica</th></tr></thead>
+            <tbody>
+              <tr><td>Criterio pre-firma</td><td>Once años verificando personalidad, facultades y cadena de titularidad antes del acto</td><td>Se adquiere dentro de una notaría, no leyendo. Casi ningún abogado corporativo lo tuvo.</td></tr>
+              <tr><td>Cero rechazos registrales</td><td>Cientos de actos inscritos sin rechazo por defecto de forma</td><td>Es una estadística verificable y es exactamente la prueba que un empresario entiende sin explicación.</td></tr>
+              <tr><td>Bilingüismo real de contrato</td><td>Negociación y redacción en inglés, no traducción</td><td>Convierte un mercado local en un mercado en dólares sin cambiar de oficina.</td></tr>
+              <tr><td>Vista binacional</td><td>Reestructuras México–Delaware–Arizona–California cerradas en una sola ronda de firma</td><td>Casi nadie en Sonora opera los dos lados; los que sí, cobran en despacho grande y no atienden estos tickets.</td></tr>
+              <tr><td>Marcos propios nombrados</td><td>Prima Notarial · Documento Ausente · IFS · Trámite-Commodity</td><td>Un marco con nombre repetido se vuelve propiedad intelectual. El competidor que lo usa te cita.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ 05 · PLAN 14 DÍAS ══════════════ -->
+<section class="band" id="plan" style="background:var(--surface)">
+  <div class="wrap rail">
+    <div class="rail-n">05</div>
+    <div class="stack gap36">
+      <div class="stack gap16">
+        <div class="lbl">Ejecución</div>
+        <h2 class="h-sec">Catorce días al primer cobro</h2>
+        <p class="lead">
+          Orden deliberado: primero lo que produce caja, después lo que compone. No se construyen los
+          tres en paralelo — es el error que mata este tipo de lanzamientos y es el que tu propia
+          Paradoja del Técnico predice.
+        </p>
+      </div>
+
+      <div class="tblwrap">
+        <table>
+          <thead><tr><th>Días</th><th>Qué se construye</th><th>Entregable que existe al final</th><th class="num">Horas</th></tr></thead>
+          <tbody>
+            <tr><td class="mono">1 – 2</td><td>El cuestionario del IFS y su ponderación, escritos en definitivo</td><td>Catorce preguntas y siete pesos, cerrados</td><td class="num">5</td></tr>
+            <tr><td class="mono">3 – 4</td><td>Autodiagnóstico publicado y cobro en línea conectado</td><td>Liga viva + Stripe en producción</td><td class="num">6</td></tr>
+            <tr><td class="mono">5</td><td>Plantilla del Dictamen: dieciocho páginas con corchetes</td><td>El esqueleto que produce cada entrega en 50 min</td><td class="num">6</td></tr>
+            <tr><td class="mono">6 – 8</td><td>Nueve posts de LinkedIn del lote inicial, calendarizados</td><td>Tres semanas de cadencia lunes/miércoles/viernes</td><td class="num">4</td></tr>
+            <tr><td class="mono">9</td><td><b>Primer post publica. Se abre el diagnóstico.</b></td><td class="num" style="color:var(--ok)">Primer cobro posible</td><td class="num">1</td></tr>
+            <tr><td class="mono">9 – 11</td><td>Carátula de personalidad regalada a seis contactos de tu red</td><td>Seis conversaciones de suscripción abiertas</td><td class="num">7</td></tr>
+            <tr><td class="mono">12 – 13</td><td>Checklist de 12 puntos en inglés y la página de venta</td><td>sonoraclosingfile.com en línea</td><td class="num">6</td></tr>
+            <tr><td class="mono">14</td><td>Primeras respuestas en tres grupos de expatriados</td><td>Canal 02 abierto</td><td class="num">2</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="tiny">Treinta y siete horas en total. Cuatro fines de semana o dos horas y media diarias durante dos semanas.</p>
+
+      <div class="grid g2 gap24">
+        <div class="card stack gap12">
+          <div class="lbl">Lo que no hay que hacer en estos catorce días</div>
+          <ul class="tick">
+            <li>Marca, logotipo, sitio institucional. El brochure que ya tienes es suficiente.</li>
+            <li>Instagram y TikTok. LinkedIn primero y solo, noventa días sostenidos.</li>
+            <li>Automatizar la producción del dictamen. Los primeros diez se hacen a mano, porque los primeros diez son los que enseñan qué automatizar.</li>
+            <li>Constituir una sociedad para esto. Persona física con actividad empresarial hasta los seis meses. <span class="chip w">⚠ validar con tu contador</span></li>
+          </ul>
+        </div>
+        <div class="card stack gap12">
+          <div class="lbl">Los cinco números que se miden desde el día 9</div>
+          <ul class="tick">
+            <li>Visitas al diagnóstico por semana <span class="mono tiny">meta 250</span></li>
+            <li>Tasa de terminación del cuestionario <span class="mono tiny">meta 12 %</span></li>
+            <li>Diagnóstico → Dictamen <span class="mono tiny">meta 7 %</span></li>
+            <li>Dictamen → suscripción <span class="mono tiny">meta 30 %</span></li>
+            <li>Minutos reales por dictamen entregado <span class="mono tiny">tope 70</span></li>
+          </ul>
+          <p class="tiny">Si a la semana seis la terminación está bajo 6 %, el problema es el cuestionario, no el tráfico. Si la conversión a dictamen está bajo 3 %, el problema es el precio del miedo, no el precio del producto.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ 06 · LÍMITES ══════════════ -->
+<section class="band" id="limites">
+  <div class="wrap rail">
+    <div class="rail-n">06</div>
+    <div class="stack gap36">
+      <div class="stack gap16">
+        <div class="lbl">Lo que hay que resolver antes del día 9</div>
+        <h2 class="h-sec">Los límites que este<br>sistema no puede cruzar</h2>
+      </div>
+
+      <div class="grid g2 gap24">
+        <div class="card stack gap12">
+          <div class="lbl">Regla de operación heredada de tu propio brochure</div>
+          <p class="small">Ningún producto digital promete, insinúa ni empaqueta el acto notarial. Donde el despacho cobra estructuración, la fe pública la autoriza otro notario. Donde la Notaría 81 da fe, no hay honorario de éxito. Los tres MVPs viven íntegramente en la capa pre-notarial y esa separación tiene que ser visible en el texto de cada página de venta, no solo en tu cabeza.</p>
+        </div>
+        <div class="card stack gap12">
+          <div class="lbl">Asesoría contra diagnóstico</div>
+          <p class="small">El autodiagnóstico y la carátula son documentales. El Dictamen ya es opinión, y toda opinión sale con carátula, alcance, hechos considerados, análisis, conclusión y limitaciones —el formato de opinión legal, sin excepción. Página uno de cada entregable: qué se revisó, qué no se revisó y qué no se garantiza.</p>
+        </div>
+        <div class="card stack gap12">
+          <div class="lbl">LFPIORPI y expediente único</div>
+          <p class="small">El diagnóstico y la suscripción no son actividad vulnerable por sí mismos. La estructuración que viene después sí puede serlo. <span class="chip w">⚠ cotejar art. 17 fr. XI LFPIORPI</span> Construye la identificación del cliente dentro del intake desde la primera venta: es infinitamente más barato pedirlo al cobrar que reconstruirlo después.</p>
+        </div>
+        <div class="card stack gap12">
+          <div class="lbl">Datos personales</div>
+          <p class="small">Tres formularios que capturan correo, nombre de sociedad y después documentos societarios. Aviso de privacidad integral y simplificado desde el día uno, y una política de retención que diga cuánto tiempo conservas los documentos que te suben. <span class="chip w">⚠ LFPDPPP</span></p>
+        </div>
+        <div class="card stack gap12">
+          <div class="lbl">Contenido y confidencialidad</div>
+          <p class="small">Ningún caso identificable, nunca. Casos compuestos de tres expedientes, cifras desviadas, rezago mínimo de dieciocho meses, jamás un asunto en trámite, jamás un cliente. Nunca se menciona la notaría por número ni se identifica la fuente institucional del conocimiento. El límite es &ldquo;trabajo dentro de una notaría&rdquo;.</p>
+        </div>
+        <div class="card stack gap12">
+          <div class="lbl">Referidores</div>
+          <p class="small">Contadores y agentes inmobiliarios son los dos mejores canales y los dos con más riesgo. La compensación se estructura como servicio de marketing o co-marca documentada, nunca como participación en honorarios. <span class="chip w">⚠ revisar código de ética y normativa aplicable antes de firmar el primero</span></p>
+        </div>
+      </div>
+
+      <div class="stack gap16">
+        <div class="lbl">Lo que necesito de ti para cerrar los corchetes</div>
+        <div class="grid g3 gap16">
+          <div class="card stack gap8"><div class="h-min">Tipo de cambio y régimen fiscal</div><p class="small">Determina el precio en dólares y el factor neto real. Es la única variable que puede mover los tres precios a la vez.</p></div>
+          <div class="card stack gap8"><div class="h-min">Tres casos compuestos</div><p class="small">Uno por MVP, con la cifra real desviada. El esqueleto narrativo ya está escrito; falta la carne, y solo tú la tienes.</p></div>
+          <div class="card stack gap8"><div class="h-min">Seis nombres de tu red</div><p class="small">Los seis a quienes se les regala la carátula en los días 9 a 11. De ahí salen las primeras cuatro suscripciones.</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap stack gap12">
+    <div class="lbl">Gilberto Gutiérrez Rodríguez · Abogado corporativo y notarial · Hermosillo, Sonora</div>
+    <p class="small" style="max-width:70ch">
+      Documento de trabajo interno. Los importes, plazos y conversiones son estimaciones de diseño,
+      no proyecciones garantizadas. Todo lo marcado <span class="chip w">⚠</span> requiere cotejo
+      contra texto vigente antes de ponerse por escrito frente a un cliente o publicarse.
+    </p>
+  </div>
+</footer>
+
+<script>
+(function(){
+  "use strict";
+
+  var FACTORS = [
+    {id:"F1", w:15, name:"Pacto parasocial",            note:"Existencia y vigencia de un convenio entre socios distinto de los estatutos"},
+    {id:"F2", w:12, name:"Quórums y desempate",         note:"Mecanismo para decidir cuando el capital se bloquea"},
+    {id:"F3", w:15, name:"Deadlock y salida",           note:"Cómo sale un socio, a qué precio y quién lo calcula"},
+    {id:"F4", w:18, name:"Previsión sucesoria del socio",note:"Qué pasa con las acciones el día que uno se muere"},
+    {id:"F5", w:15, name:"Control de poderes",          note:"Quién puede obligar hoy a la sociedad, y desde cuándo"},
+    {id:"F6", w:15, name:"Beneficiario controlador",    note:"Expediente vigente conforme al art. 32-B Ter del CFF"},
+    {id:"F7", w:10, name:"Separación patrimonial",      note:"Dónde termina el socio y dónde empieza la sociedad"}
+  ];
+
+  var Q = [
+    {f:0, t:"¿Existe un convenio entre socios firmado, distinto de los estatutos?",
+     o:[["Sí, firmado por todos",0],["Se redactó, no lo firmaron todos",65],["No existe",100]]},
+    {f:0, t:"¿Se revisó o actualizó ese convenio en los últimos 36 meses?",
+     o:[["Sí",0],["No, pero existe",55],["No hay convenio que revisar",100]]},
+    {f:1, t:"¿Los estatutos prevén cómo se decide cuando hay empate o bloqueo?",
+     o:[["Sí, mecanismo definido",0],["Existe algo, no sé si funciona",60],["No",100]]},
+    {f:1, t:"¿Alguna decisión relevante exige unanimidad de los socios?",
+     o:[["No, todo se resuelve por mayoría",10],["Sí, una o dos decisiones",60],["Varias, o no lo sé",100]]},
+    {f:2, t:"¿Hay cláusula de salida con método de valuación escrito?",
+     o:[["Sí, con fórmula definida",0],["Hay derecho de salida sin método de valuación",70],["No",100]]},
+    {f:2, t:"¿Existe un mecanismo de ruptura pactado —opción cruzada, compra forzosa, buy-sell?",
+     o:[["Sí, está escrito",0],["Se ha hablado, no está escrito",75],["No",100]]},
+    {f:3, t:"¿Todos los socios tienen testamento vigente que disponga expresamente de sus acciones?",
+     o:[["Todos",0],["Algunos",60],["Ninguno, o no lo sé",100]]},
+    {f:3, t:"¿Los estatutos o el pacto regulan qué pasa cuando muere un socio?",
+     o:[["Sí: quién entra, quién no, y a qué precio",0],["Se menciona, sin mecanismo",65],["No",100]]},
+    {f:4, t:"¿Tiene un inventario actualizado de todos los poderes otorgados?",
+     o:[["Sí, actualizado este año",0],["Existe, pero desactualizado",55],["No existe",100]]},
+    {f:4, t:"¿Hay poderes vigentes en manos de personas que ya no están en la empresa?",
+     o:[["No, se revocaron todos",0],["Sí, al menos uno",100],["No lo sé",85]]},
+    {f:5, t:"¿Tiene integrado el expediente de beneficiario controlador de cada persona física que controla?",
+     o:[["Sí, completo y documentado",0],["Se integró una vez, sin actualizar",60],["No",100]]},
+    {f:5, t:"¿Se actualizó ese expediente después del último cambio en la estructura accionaria?",
+     o:[["Sí",0],["No ha habido cambios",25],["Hubo cambios y no se actualizó, o no lo sé",100]]},
+    {f:6, t:"¿Corren préstamos o gastos personales de socios por la sociedad?",
+     o:[["No",0],["Sí, documentados con contrato",50],["Sí, sin documentar, o no lo sé",100]]},
+    {f:6, t:"¿Los inmuebles y activos clave están en la misma sociedad que opera y contrata?",
+     o:[["No, están en vehículo separado",0],["Parcialmente",55],["Sí, todo en la misma",100]]}
+  ];
+
+  var BANDS = [
+    {max:24, name:"Fragilidad contenida",
+     copy:"Tu sociedad está por encima de la media mexicana, que es un estándar bajo. Los puntos abiertos son de mantenimiento, no de ruptura. Se degradan solos si nadie los vigila.",
+     chip:"o", label:"Riesgo bajo"},
+    {max:49, name:"Fragilidad expuesta",
+     copy:"Hay al menos un factor que, ante un desacuerdo real, se convierte en el problema principal. Todavía se corrige barato y en frío. Después de la discusión ya no.",
+     chip:"w", label:"Riesgo medio"},
+    {max:74, name:"Sociedad frágil",
+     copy:"El punto de ruptura ya está localizado y no depende de la voluntad de nadie: depende de un documento que no está firmado. Si mañana un socio se enferma, se enoja o se muere, esto se convierte en litigio.",
+     chip:"c", label:"Riesgo alto"},
+    {max:100, name:"Fragilidad crítica",
+     copy:"Varios factores rojos simultáneos. En esta configuración la sociedad no sobrevive a un evento sucesorio ni a una salida no acordada, y una operación de venta o de crédito se cae en la primera diligencia de la contraparte.",
+     chip:"c", label:"Riesgo crítico"}
+  ];
+
+  var answers = new Array(Q.length).fill(null);
+
+  var qWrap   = document.getElementById("ifs-questions");
+  var countEl = document.getElementById("ifs-count");
+  var fillEl  = document.getElementById("ifs-fill");
+  var goBtn   = document.getElementById("ifs-go");
+  var hintEl  = document.getElementById("ifs-hint");
+  var quizEl  = document.getElementById("ifs-quiz");
+  var resEl   = document.getElementById("ifs-result");
+
+  function tone(v){ return v < 25 ? "ok" : (v < 60 ? "warn" : "crit"); }
+  function toneVar(v){ return "var(--" + tone(v) + ")"; }
+
+  function build(){
+    var html = "";
+    for (var i = 0; i < Q.length; i++){
+      var q = Q[i];
+      html += '<div class="q">'
+           +    '<div class="q-top">'
+           +      '<span class="q-n">' + (i < 9 ? "0" : "") + (i+1) + '</span>'
+           +      '<span><span class="q-t">' + q.t + '</span>'
+           +      '<span class="q-f">' + FACTORS[q.f].id + " · " + FACTORS[q.f].name + '</span></span>'
+           +    '</div><div class="opts">';
+      for (var j = 0; j < q.o.length; j++){
+        html += '<button type="button" class="opt" aria-pressed="false" data-q="' + i + '" data-o="' + j + '">'
+             +  q.o[j][0] + '</button>';
+      }
+      html += '</div></div>';
+    }
+    qWrap.innerHTML = html;
+  }
+
+  qWrap.addEventListener("click", function(e){
+    var b = e.target.closest(".opt");
+    if (!b) return;
+    var qi = +b.dataset.q, oi = +b.dataset.o;
+    var siblings = b.parentNode.querySelectorAll(".opt");
+    for (var k = 0; k < siblings.length; k++) siblings[k].setAttribute("aria-pressed","false");
+    b.setAttribute("aria-pressed","true");
+    answers[qi] = oi;
+    refresh();
+  });
+
+  function answered(){
+    var n = 0;
+    for (var i = 0; i < answers.length; i++) if (answers[i] !== null) n++;
+    return n;
+  }
+
+  function refresh(){
+    var n = answered();
+    countEl.textContent = n;
+    fillEl.style.width = (n / Q.length * 100) + "%";
+    var done = n === Q.length;
+    goBtn.disabled = !done;
+    hintEl.textContent = done
+      ? "Listo. El cálculo usa la ponderación de los siete factores."
+      : "Faltan " + (Q.length - n) + " de 14.";
+  }
+
+  function compute(){
+    var sums = FACTORS.map(function(){ return {s:0, c:0}; });
+    for (var i = 0; i < Q.length; i++){
+      var q = Q[i];
+      sums[q.f].s += q.o[answers[i]][1];
+      sums[q.f].c += 1;
+    }
+    var scores = sums.map(function(x){ return Math.round(x.s / x.c); });
+    var total = 0;
+    for (var f = 0; f < FACTORS.length; f++) total += scores[f] * FACTORS[f].w;
+    return {factors: scores, global: Math.round(total / 100)};
+  }
+
+  goBtn.addEventListener("click", function(){
+    var r = compute();
+    var band = BANDS.find(function(b){ return r.global <= b.max; });
+
+    document.getElementById("score-band").textContent = band.name;
+    document.getElementById("score-copy").textContent = band.copy;
+    var chip = document.getElementById("score-chip");
+    chip.className = "chip " + band.chip;
+    chip.textContent = band.label + " · IFS " + r.global;
+
+    var rows = "";
+    for (var f = 0; f < FACTORS.length; f++){
+      var v = r.factors[f];
+      rows += '<div class="frow">'
+           +   '<span class="fname">' + FACTORS[f].name + '<i>' + FACTORS[f].note + '</i></span>'
+           +   '<span class="fmeter"><span data-w="' + v + '" style="background:' + toneVar(v) + '"></span></span>'
+           +   '<span class="fval" style="color:' + toneVar(v) + '">' + v + ' / 100</span>'
+           + '</div>';
+    }
+    document.getElementById("factor-rows").innerHTML = rows;
+
+    quizEl.hidden = true;
+    resEl.hidden = false;
+    resEl.scrollIntoView({behavior:"smooth", block:"start"});
+
+    var ring = document.getElementById("ring");
+    var C = 2 * Math.PI * 72;
+    ring.setAttribute("stroke-dasharray", C.toFixed(1));
+    ring.setAttribute("stroke-dashoffset", C.toFixed(1));
+    ring.style.stroke = toneVar(r.global);
+    document.getElementById("score-n").style.color = toneVar(r.global);
+
+    requestAnimationFrame(function(){
+      setTimeout(function(){
+        ring.setAttribute("stroke-dashoffset", (C * (1 - r.global / 100)).toFixed(1));
+        var bars = document.querySelectorAll("#factor-rows .fmeter span");
+        for (var i = 0; i < bars.length; i++) bars[i].style.width = bars[i].dataset.w + "%";
+      }, 60);
+    });
+
+    // conteo animado
+    var el = document.getElementById("score-n"), t0 = null, dur = 850;
+    function step(ts){
+      if (!t0) t0 = ts;
+      var p = Math.min((ts - t0) / dur, 1);
+      el.textContent = Math.round(r.global * (1 - Math.pow(1 - p, 3)));
+      if (p < 1) requestAnimationFrame(step);
+    }
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) el.textContent = r.global;
+    else requestAnimationFrame(step);
+  });
+
+  document.getElementById("ifs-again").addEventListener("click", function(){
+    answers = new Array(Q.length).fill(null);
+    build();
+    refresh();
+    resEl.hidden = true;
+    quizEl.hidden = false;
+    quizEl.scrollIntoView({behavior:"smooth", block:"start"});
+  });
+
+  build();
+  refresh();
+})();
+</script>

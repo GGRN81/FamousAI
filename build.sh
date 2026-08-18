@@ -9,7 +9,7 @@ python3 - <<'PY'
 import io, os, re, glob
 css = io.open('comun/ggr.css', encoding='utf-8').read()
 paginas = []
-for carpeta in ('01-dictamen-ifs','02-sonora-closing-file','03-expediente-vivo'):
+for carpeta in ('01-dictamen-ifs','02-sonora-closing-file','03-expediente-vivo','mvps'):
     paginas += sorted(glob.glob(os.path.join(carpeta,'*.html')))
 os.makedirs('dist', exist_ok=True)
 for p in paginas:

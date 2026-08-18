@@ -514,11 +514,24 @@ document.getElementById("b-carat").addEventListener("click", function(){
   toast("Carátula v"+c.caratulas+" emitida · abre la plantilla para imprimirla");
 });
 document.getElementById("b-print").addEventListener("click", function(){ window.print(); });
-document.getElementById("b-export").addEventListener("click", function(){
-  var blob = new Blob([JSON.stringify(S,null,2)], {type:"application/json"});
+document.getElementById("b-export").addEventListener("click", async function(){
+  var json = JSON.stringify(S, null, 2);
+  var nombre = "expediente-" + new Date().toISOString().slice(0,10) + ".json";
+
+  // Publicado como artefacto: la descarga pasa por el visor y pide confirmación.
+  var dl = null;
+  try { if (typeof claude !== "undefined" && claude.use) dl = await claude.use("downloads"); } catch(e){}
+  if (dl){
+    try { await dl.save({filename:nombre, data:json}); toast("Respaldo guardado"); }
+    catch(err){ toast(err && err.code === "declined" ? "Descarga cancelada" : "No se pudo guardar el respaldo"); }
+    return;
+  }
+
+  // Abierto como archivo local: descarga directa del navegador.
+  var blob = new Blob([json], {type:"application/json"});
   var a = document.createElement("a");
   a.href = URL.createObjectURL(blob);
-  a.download = "expediente-" + new Date().toISOString().slice(0,10) + ".json";
+  a.download = nombre;
   a.click(); URL.revokeObjectURL(a.href);
   toast("Respaldo descargado");
 });

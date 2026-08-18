@@ -1,0 +1,848 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>El Piso y el Techo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,600;1,6..96,600&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="../comun/ggr.css">
+<style>
+/* ── series de producto: validadas para daltonismo en ambos temas ── */
+:root{ --s1:#E5983C; --s2:#6FA3E8; --s3:#DE7AA0; }
+@media (prefers-color-scheme: light){
+  :root:not([data-theme="dark"]){ --s1:#AD5718; --s2:#2A55A8; --s3:#98306E; }
+}
+:root[data-theme="light"]{ --s1:#AD5718; --s2:#2A55A8; --s3:#98306E; }
+
+.rail{display:grid; grid-template-columns:64px minmax(0,1fr)}
+.rail-n{font-family:"IBM Plex Mono",monospace; font-size:12px; letter-spacing:.18em; color:var(--ember); padding-top:6px}
+@media(max-width:760px){.rail{grid-template-columns:minmax(0,1fr)} .rail-n{padding-bottom:14px}}
+
+.price3{display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:0; margin-top:clamp(34px,4vw,52px);
+  border-top:1px solid rgba(237,232,223,.16)}
+@media(max-width:760px){.price3{grid-template-columns:minmax(0,1fr)}}
+.p3{padding:24px 26px 8px; border-right:1px solid rgba(237,232,223,.12); min-width:0}
+.p3:last-child{border-right:none}
+@media(max-width:760px){.p3{border-right:none; border-bottom:1px solid rgba(237,232,223,.12)}}
+.p3 .k{font-family:"IBM Plex Mono",monospace; font-size:10px; letter-spacing:.18em; text-transform:uppercase; color:var(--hero-label)}
+.p3 .v{font-family:"Bodoni Moda",Georgia,serif; font-size:clamp(34px,4.4vw,50px); font-weight:600; color:var(--hero-fg); line-height:1; margin-top:12px; font-variant-numeric:tabular-nums}
+.p3 .v small{font-family:"IBM Plex Mono",monospace; font-size:12px; letter-spacing:.1em; color:var(--hero-accent); margin-left:6px; font-weight:500}
+.p3 .n{font-family:"IBM Plex Mono",monospace; font-size:11px; letter-spacing:.08em; color:var(--hero-dim); margin-top:12px; line-height:1.6}
+
+.prod-head{display:grid; grid-template-columns:minmax(0,1fr) auto; gap:22px; align-items:end;
+  padding-bottom:18px; border-bottom:2px solid var(--sc); margin-bottom:28px}
+@media(max-width:640px){.prod-head{grid-template-columns:minmax(0,1fr)}}
+.prod-head .big{font-family:"Bodoni Moda",Georgia,serif; font-size:clamp(32px,3.6vw,42px); font-weight:600; line-height:1.05}
+.prod-head .tag{font-family:"IBM Plex Mono",monospace; font-size:10.5px; letter-spacing:.18em; text-transform:uppercase; color:var(--sc)}
+.prod-head .pr{font-family:"Bodoni Moda",Georgia,serif; font-size:clamp(30px,3.4vw,40px); font-weight:600; white-space:nowrap; font-variant-numeric:tabular-nums; color:var(--sc)}
+.prod-head .pr small{font-family:"IBM Plex Mono",monospace; font-size:11px; letter-spacing:.1em; color:var(--fg-faint); margin-left:5px}
+
+.blk{margin-bottom:26px}
+.blk-h{font-family:"IBM Plex Mono",monospace; font-size:10.5px; letter-spacing:.2em; text-transform:uppercase;
+  color:var(--label); padding-bottom:8px; border-bottom:1px solid var(--line); margin-bottom:14px}
+.two{display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:24px}
+@media(max-width:820px){.two{grid-template-columns:minmax(0,1fr)}}
+
+.floorceil{display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:1px; background:var(--line); border:1px solid var(--line)}
+@media(max-width:640px){.floorceil{grid-template-columns:minmax(0,1fr)}}
+.floorceil>div{background:var(--surface); padding:16px 18px; min-width:0}
+.floorceil .l{font-family:"IBM Plex Mono",monospace; font-size:9.5px; letter-spacing:.16em; text-transform:uppercase; color:var(--label); margin-bottom:7px}
+
+/* ── gráfica de rampa ── */
+.chart{border:1px solid var(--line); background:var(--surface); border-radius:3px; padding:22px 22px 14px; position:relative}
+.legend{display:flex; gap:20px; flex-wrap:wrap; margin-bottom:20px}
+.legend span{display:flex; align-items:center; gap:8px; font-size:13px; color:var(--fg-dim)}
+.legend i{width:11px; height:11px; border-radius:2px; display:block; flex:none}
+.plot{position:relative; height:280px; display:flex; align-items:flex-end; gap:clamp(3px,.9vw,11px); padding-top:26px}
+.col{flex:1; display:flex; flex-direction:column; justify-content:flex-end; height:100%; position:relative; min-width:0; cursor:default}
+.col .stack3{display:flex; flex-direction:column; justify-content:flex-end; height:100%; gap:2px}
+.seg{width:100%; min-height:0}
+.seg.top{border-radius:4px 4px 0 0}
+.col .mlab{font-family:"IBM Plex Mono",monospace; font-size:10px; color:var(--fg-faint); text-align:center; padding-top:7px}
+.col:hover .stack3{opacity:.82}
+.meta-line{position:absolute; left:0; right:0; border-top:1px dashed var(--fg-dim); pointer-events:none; z-index:5}
+.meta-line span{position:absolute; left:0; top:-20px; font-family:"IBM Plex Mono",monospace; font-size:10px;
+  letter-spacing:.12em; text-transform:uppercase; color:var(--fg-dim); background:var(--surface);
+  padding:1px 8px 1px 0; border-radius:2px}
+.dlab{position:absolute; left:50%; transform:translateX(-50%); font-family:"IBM Plex Mono",monospace;
+  font-size:10.5px; font-weight:600; color:var(--fg); white-space:nowrap}
+.ctip{position:absolute; pointer-events:none; background:var(--ink); color:var(--bone); border:1px solid rgba(237,232,223,.26);
+  padding:9px 12px; border-radius:2px; font-family:"IBM Plex Mono",monospace; font-size:11px; line-height:1.7;
+  white-space:nowrap; transform:translate(-50%,-112%); opacity:0; transition:opacity .12s; z-index:10}
+.ctip.on{opacity:1}
+.ctip b{color:var(--bone)}
+.ctip i{display:inline-block; width:8px; height:8px; border-radius:2px; margin-right:6px}
+
+.scen{border-left:3px solid var(--sc); padding-left:18px}
+.dec{display:grid; grid-template-columns:44px minmax(0,1fr); gap:16px; padding:16px 0; border-bottom:1px solid var(--line); align-items:start}
+.dec:last-child{border-bottom:none}
+.dec .num{font-family:"Bodoni Moda",Georgia,serif; font-size:28px; font-weight:600; color:var(--ember); line-height:1}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="navin">
+    <a class="navmark" href="#top">G G R</a>
+    <div class="navlinks">
+      <a href="#supuestos">Supuestos</a>
+      <a href="#unidad">Unidad</a>
+      <a href="#m1">01 · IFS</a>
+      <a href="#m2">02 · Corredor</a>
+      <a href="#m3">03 · Expediente</a>
+      <a href="#consolidado">Consolidado</a>
+      <a href="#decisiones">Decisiones</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero" id="top">
+  <div class="wrap">
+    <div class="lbl">Plan de negocio y precio de cada MVP · Agosto 2026</div>
+    <h1>Un precio no es<br>un número. Es una<br><em>decisión de capacidad.</em></h1>
+    <p class="lead">
+      Tienes doce horas a la semana y una meta de $10,000 netos. Eso ya define el precio de los
+      tres productos antes de pensar en el mercado: cada peso que bajas te obliga a producir más
+      unidades, y las unidades se pagan con las horas que no tienes.
+    </p>
+    <div class="price3">
+      <div class="p3">
+        <div class="k">01 · Dictamen IFS</div>
+        <div class="v">$6,900<small>MXN</small></div>
+        <div class="n">8.1 al mes para la meta<br>11.3 h de las 52 disponibles</div>
+      </div>
+      <div class="p3">
+        <div class="k">02 · Sonora Closing File</div>
+        <div class="v">$449<small>USD</small></div>
+        <div class="n">6.9 al mes para la meta<br>13.7 h · más $1,290 y $249 de SKU</div>
+      </div>
+      <div class="p3">
+        <div class="k">03 · Expediente Vivo</div>
+        <div class="v">$4,900<small>/mes</small></div>
+        <div class="n">11 cuentas para la meta<br>8.3 h · rango $2,900 a $7,900</div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ══════ 00 SUPUESTOS ══════ -->
+<section class="band" id="supuestos">
+  <div class="wrap rail">
+    <div class="rail-n">00</div>
+    <div class="stack gap24">
+      <div class="stack gap12">
+        <div class="lbl">Antes de creerle a cualquier cifra de este documento</div>
+        <h2 class="h-sec">Cinco supuestos.<br>Todo lo demás se deriva.</h2>
+        <p class="lead">Si uno de estos cambia, cambian los tres planes. Están arriba, a la vista, no escondidos en una nota al pie.</p>
+      </div>
+      <div class="tblwrap">
+        <table>
+          <thead><tr><th>Supuesto</th><th>Valor usado</th><th>Qué pasa si cambia</th></tr></thead>
+          <tbody>
+            <tr><td>Tipo de cambio <span class="chip w">⚠ verificar</span></td><td class="num">18.50 MXN/USD</td>
+                <td>Mueve el MVP 02 entero. A 20.00 el Closing File neto sube 8%; a 17.00 baja 8%.</td></tr>
+            <tr><td>ISR efectivo <span class="chip w">⚠ con tu contador</span></td><td class="num">10 %</td>
+                <td>Es el supuesto más caro del documento. Bajo RESICO PF sería ~2.5%: <b>$50,000 al año de diferencia</b> a este nivel de facturación.</td></tr>
+            <tr><td>Comisión de cobro</td><td class="num">3.6 % MXN · 5.1 % USD</td>
+                <td>Stripe y Mercado Pago. La de dólares incluye conversión de divisa.</td></tr>
+            <tr><td>Horas tuyas disponibles</td><td class="num">12 h / semana</td>
+                <td>Es el recurso escaso, no el dinero. Define el techo de todo.</td></tr>
+            <tr><td>Reserva de reproceso</td><td class="num">3 % de transaccionales</td>
+                <td>El entregable que se rehace porque subieron el documento equivocado. Nadie lo modela y siempre ocurre.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="warnnote">
+        <b>El IVA no aparece en ningún cálculo</b> porque no es tuyo: se traslada y se entera.
+        Todos los precios de este documento son <b>antes de IVA</b>.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════ 01 UNIDAD ══════ -->
+<section class="band" id="unidad" style="background:var(--surface)">
+  <div class="wrap rail">
+    <div class="rail-n">01</div>
+    <div class="stack gap24">
+      <div class="stack gap12">
+        <div class="lbl">Economía unitaria</div>
+        <h2 class="h-sec">Qué te queda de cada venta</h2>
+      </div>
+      <div class="tblwrap">
+        <table>
+          <thead><tr><th>Producto</th><th class="num">Precio</th><th class="num">Cobro</th><th class="num">IA</th>
+            <th class="num">Reserva</th><th class="num">Contribución</th><th class="num">ISR</th><th class="num">Neto</th><th class="num">Factor</th></tr></thead>
+          <tbody>
+            <tr><td>01 Dictamen</td><td class="num">$6,900</td><td class="num">251</td><td class="num">60</td>
+                <td class="num">207</td><td class="num">6,382</td><td class="num">690</td><td class="num"><b>$5,692</b></td><td class="num">0.825</td></tr>
+            <tr><td>02 Closing File A</td><td class="num">$8,306</td><td class="num">427</td><td class="num">80</td>
+                <td class="num">249</td><td class="num">7,551</td><td class="num">831</td><td class="num"><b>$6,720</b></td><td class="num">0.809</td></tr>
+            <tr><td>02 Vehículo B</td><td class="num">$23,865</td><td class="num">1,220</td><td class="num">140</td>
+                <td class="num">716</td><td class="num">21,789</td><td class="num">2,386</td><td class="num"><b>$19,402</b></td><td class="num">0.813</td></tr>
+            <tr><td>02 Sucesorio C</td><td class="num">$4,606</td><td class="num">238</td><td class="num">40</td>
+                <td class="num">138</td><td class="num">4,190</td><td class="num">461</td><td class="num"><b>$3,730</b></td><td class="num">0.810</td></tr>
+            <tr><td>03 Vigilancia</td><td class="num">$2,900</td><td class="num">107</td><td class="num">25</td>
+                <td class="num">—</td><td class="num">2,768</td><td class="num">290</td><td class="num"><b>$2,478</b></td><td class="num">0.854</td></tr>
+            <tr><td>03 Grupo</td><td class="num">$4,900</td><td class="num">179</td><td class="num">45</td>
+                <td class="num">—</td><td class="num">4,676</td><td class="num">490</td><td class="num"><b>$4,186</b></td><td class="num">0.854</td></tr>
+            <tr><td>03 Corredor</td><td class="num">$7,900</td><td class="num">287</td><td class="num">70</td>
+                <td class="num">—</td><td class="num">7,543</td><td class="num">790</td><td class="num"><b>$6,753</b></td><td class="num">0.855</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="tiny">Cifras en pesos, sin IVA. El precio del MVP 02 está convertido a 18.50 MXN/USD.</p>
+
+      <div class="two">
+        <div class="stack gap12">
+          <div class="blk-h">Cada producto, solo, contra la meta</div>
+          <div class="tblwrap">
+            <table style="min-width:0">
+              <thead><tr><th>Si solo hicieras esto</th><th class="num">Volumen</th><th class="num">Horas / mes</th></tr></thead>
+              <tbody>
+                <tr><td>01 Dictamen</td><td class="num">8.1 / mes</td><td class="num">11.3</td></tr>
+                <tr><td>02 Closing File</td><td class="num">6.9 / mes</td><td class="num">13.7</td></tr>
+                <tr><td>03 Suscripción Grupo</td><td class="num">11 cuentas</td><td class="num">8.3</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="small">Cualquiera de los tres, solo, alcanza la meta dentro de tus 52 horas mensuales. Eso no es lo notable. Lo notable es que <b>la suscripción la alcanza con la tercera parte del esfuerzo recurrente</b> y sin depender de vender algo cada semana.</p>
+        </div>
+        <div class="stack gap12">
+          <div class="blk-h">Costos fijos y punto de equilibrio</div>
+          <div class="tblwrap">
+            <table style="min-width:0">
+              <thead><tr><th>Fase</th><th class="num">Fijo / mes</th><th class="num">Equilibrio</th></tr></thead>
+              <tbody>
+                <tr><td>Meses 1–6<br><span class="tiny">dominios, formularios, correo, IA</span></td><td class="num">$2,800</td><td class="num">0.5 dictámenes</td></tr>
+                <tr><td>Meses 7+ con pauta<br><span class="tiny">agrega Google Ads en inglés</span></td><td class="num">$6,800</td><td class="num">1.2 dictámenes</td></tr>
+                <tr><td>Con asistente 20 h/sem<br><span class="tiny">solo si el volumen lo obliga</span></td><td class="num">$15,800</td><td class="num">2.8 dictámenes</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="warnnote">Este negocio no puede quebrar por dinero: el equilibrio es medio dictamen al mes. Solo puede fallar por falta de atención tuya — o por comprometer un costo fijo antes de que la demanda lo justifique.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════ MVP 01 ══════ -->
+<section class="band" id="m1" style="--sc:var(--s1)">
+  <div class="wrap rail">
+    <div class="rail-n">02</div>
+    <div class="stack">
+
+      <div class="prod-head">
+        <div>
+          <div class="tag">MVP 01 · Transaccional · Español · Mercado local</div>
+          <div class="big" style="margin-top:8px">Dictamen de Fragilidad Societaria</div>
+        </div>
+        <div class="pr">$6,900<small>MXN</small></div>
+      </div>
+
+      <div class="blk">
+        <div class="blk-h">Por qué exactamente $6,900</div>
+        <div class="two">
+          <div class="stack gap12">
+            <p class="small"><b style="color:var(--fg)">Es un precio de tarjeta personal.</b> Por debajo de $10,000 un socio o un director lo carga a su tarjeta sin pedirle permiso a nadie. Por arriba entra a un comité, y un comité convierte una compra de tres minutos en una decisión de tres semanas. Ese umbral —no el costo, no la competencia— es lo que fija el techo.</p>
+            <p class="small"><b style="color:var(--fg)">Y es un precio que ancla hacia arriba.</b> Una diligencia legal básica va de $25,000 a $80,000. El dictamen se lee como la cuarta parte del piso de esa banda, lo cual lo hace parecer barato sin serlo: el margen de contribución es 92.5%.</p>
+          </div>
+          <div class="floorceil">
+            <div>
+              <div class="l">El piso — por qué no menos</div>
+              <p class="small">A $2,900 se lee como trámite, y el trámite atrae al cliente que jamás va a comprar estructuración. Estarías comprando el peor cliente con tu propio margen. Además necesitarías 11.5 al mes: 16 horas, y el producto se convierte en un empleo.</p>
+            </div>
+            <div>
+              <div class="l">El techo — por qué no más, todavía</div>
+              <p class="small">A $12,900 bastarían 4.3 al mes y solo 6 horas. Es tentador y es prematuro: sin diez dictámenes entregados no tienes el testimonio, la referencia ni la confianza en tu propio tiempo de producción para defenderlo. El precio alto se gana, no se declara.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="blk">
+        <div class="blk-h">La escalera de precio · cuándo mover</div>
+        <div class="tblwrap">
+          <table>
+            <thead><tr><th>Precio</th><th class="num">Neto / unidad</th><th class="num">Unidades para la meta</th><th class="num">Horas / mes</th><th>Cuándo</th></tr></thead>
+            <tbody>
+              <tr><td>$4,900</td><td class="num">$4,024</td><td class="num">11.5</td><td class="num">16.1</td><td>Nunca. Aquí el producto te consume.</td></tr>
+              <tr><td><b>$6,900</b></td><td class="num"><b>$5,692</b></td><td class="num"><b>8.1</b></td><td class="num"><b>11.3</b></td><td><b>Lanzamiento. Dictámenes 1 al 20.</b></td></tr>
+              <tr><td>$8,900</td><td class="num">$7,360</td><td class="num">6.3</td><td class="num">8.8</td><td>Cuando la conversión diagnóstico→dictamen supere 10% de forma sostenida.</td></tr>
+              <tr><td>$12,900</td><td class="num">$10,696</td><td class="num">4.3</td><td class="num">6.0</td><td>Solo con testimonios verificables y lista de espera.</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="warnnote" style="margin-top:14px">
+          <b>Regla de descuento: no hay.</b> Un descuento le enseña al cliente que el precio era ficción, y arrastra hacia abajo el honorario de estructuración que viene después. Cuando necesites ceder algo, cede volumen: <b>la segunda sociedad del mismo grupo al 50%</b>. Eso sube el ticket y no toca el precio de lista.
+        </div>
+      </div>
+
+      <div class="two blk">
+        <div class="stack gap12">
+          <div class="blk-h">De dónde sale el cliente · CAC</div>
+          <ul class="tick">
+            <li><b>LinkedIn orgánico.</b> Tres posts por semana. CAC en efectivo: cero. CAC real: 4 horas mensuales de producción, ya construidas en el lote de nueve.</li>
+            <li><b>Contadores.</b> Veinte contadores por cuarenta clientes son ochocientas sociedades expuestas al diagnóstico sin que publiques nada.</li>
+            <li><b>Cámaras y clústeres.</b> Un webinar de cuarenta minutos llena el diagnóstico en la sala. CAC: media jornada por evento.</li>
+            <li><b>Tu red directa.</b> Aquí no se vende: se regala como pretexto de reconexión.</li>
+          </ul>
+          <p class="small">Si más adelante agregas pauta, el costo por dictamen vendido debería caer entre $250 y $400. <b>Sobre $900 la pauta no tiene sentido</b> para este ticket y se apaga.</p>
+        </div>
+        <div class="stack gap12">
+          <div class="blk-h">El dictamen no es el producto</div>
+          <div class="card" style="background:var(--bg)">
+            <div class="stack gap8">
+              <div class="tiny mono">VALOR DE VIDA DEL CLIENTE</div>
+              <div style="font-family:'Bodoni Moda',Georgia,serif; font-size:40px; font-weight:600; line-height:1; color:var(--s1)">$57,360</div>
+              <p class="small">$6,900 del dictamen · más 30% que contratan suscripción y duran 18 meses · más 30% que contratan estructuración de $80,000.</p>
+            </div>
+          </div>
+          <p class="small"><b style="color:var(--fg)">Ocho veces el precio de lista.</b> Por eso el dictamen puede venderse casi al costo de oportunidad y seguir siendo el mejor negocio de los tres: no es un producto, es un procedimiento de calificación por el que el cliente te paga a ti.</p>
+        </div>
+      </div>
+
+      <div class="two blk">
+        <div class="stack gap12">
+          <div class="blk-h">Capacidad y punto de quiebre</div>
+          <div class="tblwrap">
+            <table style="min-width:0">
+              <tbody>
+                <tr><td>Tiempo por dictamen</td><td class="num">70 min producción + 15 admin</td></tr>
+                <tr><td>Techo con 52 h/mes</td><td class="num">37 al mes</td></tr>
+                <tr><td>Techo cómodo, con los otros dos corriendo</td><td class="num">12 al mes</td></tr>
+                <tr><td>Donde se rompe</td><td class="num">20 al mes</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="small">A veinte al mes son 28 horas y la calidad se cae, que es precisamente el modo de falla que predice tu Paradoja del Técnico. La respuesta correcta a ese volumen <b>no es contratar: es subir el precio</b>. Contratar convierte un negocio de margen en uno de nómina.</p>
+        </div>
+        <div class="stack gap12">
+          <div class="blk-h">Riesgos y qué los mata</div>
+          <div class="tblwrap">
+            <table style="min-width:0">
+              <thead><tr><th>Riesgo</th><th>Mitigación</th></tr></thead>
+              <tbody>
+                <tr><td>El diagnóstico satisface la curiosidad y nadie paga</td><td>El resultado dice <b>dónde</b> duele, nunca <b>qué documento</b> falta. Esa línea es la que se cobra.</td></tr>
+                <tr><td>Un dictamen mal hecho circula entre socios</td><td>La lista de verificación del prompt maestro. Ningún dictamen sale sin cotejar transcripciones y preceptos.</td></tr>
+                <tr><td>Se percibe como venta disfrazada</td><td>El Plan de Remediación dice expresamente que cualquier abogado competente puede redactar esos documentos.</td></tr>
+                <tr><td>Confusión con la función notarial</td><td>Bloque de independencia en las cuatro páginas de venta y en el dictamen.</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div class="blk">
+        <div class="blk-h">Hitos de decisión</div>
+        <div class="tblwrap">
+          <table>
+            <thead><tr><th>Cuándo</th><th>Qué mides</th><th>Si falla, el problema es</th></tr></thead>
+            <tbody>
+              <tr><td>Semana 8</td><td>Terminación del cuestionario ≥ 6%</td><td>El cuestionario, no el tráfico. Acórtalo.</td></tr>
+              <tr><td>Semana 12</td><td>4 dictámenes acumulados</td><td>El precio del miedo, no el precio del producto. Revisa qué dice el resultado.</td></tr>
+              <tr><td>Mes 6</td><td>Conversión diagnóstico→dictamen ≥ 6%</td><td>Si supera 10%: sube a $8,900 ese mismo mes.</td></tr>
+              <tr><td>Mes 6</td><td>30% de los dictámenes derivan en suscripción</td><td>El cierre del dictamen. La última página debe empujar al Expediente Vivo.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══════ MVP 02 ══════ -->
+<section class="band" id="m2" style="--sc:var(--s2); background:var(--surface)">
+  <div class="wrap rail">
+    <div class="rail-n">03</div>
+    <div class="stack">
+
+      <div class="prod-head">
+        <div>
+          <div class="tag">MVP 02 · Transaccional · Inglés · Dólares</div>
+          <div class="big" style="margin-top:8px">Sonora Closing File</div>
+        </div>
+        <div class="pr">$449<small>USD</small></div>
+      </div>
+
+      <div class="blk">
+        <div class="blk-h">Por qué exactamente $449 USD</div>
+        <div class="two">
+          <div class="stack gap12">
+            <p class="small"><b style="color:var(--fg)">Es el 0.1% de la compra.</b> Sobre una casa de $450,000 dólares, cuatrocientos cuarenta y nueve no es una decisión de presupuesto: es una decisión de ansiedad. Nadie compara ese número contra otro proveedor; lo compara contra la sensación de firmar a ciegas.</p>
+            <p class="small"><b style="color:var(--fg)">Y ancla contra su abogado de Arizona,</b> que cobra de $350 a $600 la hora. El reporte se lee como "una hora de mi abogado, pero del lado mexicano y por escrito". Ese encuadre es lo que hace que el precio ni se discuta.</p>
+            <p class="small">Aquí está el arbitraje completo de tu posición: base de costos en Hermosillo, precio de venta en Scottsdale. Un solo Closing File deja lo que en el mercado local exige casi una semana.</p>
+          </div>
+          <div class="floorceil">
+            <div>
+              <div class="l">El piso — y es contraintuitivo</div>
+              <p class="small">Por debajo de $299 <b>el precio bajo destruye credibilidad</b>. El comprador estadounidense ya llega con desconfianza estructural hacia lo barato en México; un reporte legal de $150 confirma exactamente el prejuicio que tienes que vencer. En este mercado, bajar el precio reduce la conversión.</p>
+            </div>
+            <div>
+              <div class="l">El techo — dónde se rompe el modelo</div>
+              <p class="small">Arriba de $700 el comprador quiere hablar contigo <b>antes</b> de pagar. Y en el momento en que se necesita una llamada previa, el producto deja de ser digital y vuelve a ser tu agenda. El techo no lo pone su disposición a pagar: lo pone tu modelo de entrega.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="blk">
+        <div class="blk-h">La escalera de precio · y los otros dos SKU</div>
+        <div class="tblwrap">
+          <table>
+            <thead><tr><th>Precio</th><th class="num">MXN</th><th class="num">Neto</th><th class="num">Unidades para la meta</th><th class="num">Horas / mes</th><th>Cuándo</th></tr></thead>
+            <tbody>
+              <tr><td>$299 USD</td><td class="num">5,532</td><td class="num">4,447</td><td class="num">10.4</td><td class="num">20.7</td><td>Nunca. Debajo del umbral de credibilidad.</td></tr>
+              <tr><td><b>$449 USD</b></td><td class="num"><b>8,306</b></td><td class="num"><b>6,720</b></td><td class="num"><b>6.9</b></td><td class="num"><b>13.7</b></td><td><b>Lanzamiento y primera temporada.</b></td></tr>
+              <tr><td>$649 USD</td><td class="num">12,006</td><td class="num">9,750</td><td class="num">4.7</td><td class="num">9.5</td><td>Segunda temporada, con reportes entregados y agentes que ya refieren.</td></tr>
+              <tr><td>$899 USD</td><td class="num">16,632</td><td class="num">13,538</td><td class="num">3.4</td><td class="num">6.8</td><td>Solo si el modelo migra a incluir llamada previa.</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="two" style="margin-top:16px">
+          <div class="card stack gap8">
+            <div class="tiny mono" style="color:var(--s2)">SKU B · VEHÍCULO TRANSFRONTERIZO · $1,290 USD</div>
+            <p class="small">Neto <b>$19,402</b> por unidad: uno solo equivale a tres dictámenes y medio. Un despacho de Phoenix cobraría de $5,000 a $15,000 por el mismo diseño de estructura. Es el SKU con más margen del portafolio entero, y el que menos vas a vender: uno cada dos meses es realista.</p>
+          </div>
+          <div class="card stack gap8">
+            <div class="tiny mono" style="color:var(--s2)">SKU C · SUCESORIO Y SALIDA · $249 USD</div>
+            <p class="small">Neto <b>$3,730</b>, se vende solo con el A y sube el ticket 55% sin agregar canal ni esfuerzo comercial. Lo compra una de cada cuatro personas, porque el correo sobre el beneficiario sustituto ya les dejó el miedo instalado.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="two blk">
+        <div class="stack gap12">
+          <div class="blk-h">El hecho que ningún otro producto tiene: temporada</div>
+          <p class="small">La compra en la costa de Sonora se concentra de <b>octubre a abril</b>. Los <em>snowbirds</em> llegan, ven la propiedad, y cierran. De mayo a septiembre el canal casi se apaga.</p>
+          <p class="small">Consecuencias que hay que aceptar de entrada, no descubrir en junio:</p>
+          <ul class="tick">
+            <li>El ingreso de este producto es <b>irregular por diseño</b>. No sirve para cubrir la meta semana a semana.</li>
+            <li>La temporada baja es cuando se construye el SEO en inglés y se cultiva a los agentes, no cuando se mide el producto.</li>
+            <li><b>La pauta se apaga de mayo a septiembre.</b> Pagar clics fuera de temporada es quemar presupuesto contra una intención que no existe.</li>
+          </ul>
+        </div>
+        <div class="stack gap12">
+          <div class="blk-h">De dónde sale el cliente · CAC</div>
+          <ul class="tick">
+            <li><b>Grupos de expatriados.</b> Dos respuestas útiles por semana, jamás una venta en el hilo. CAC en efectivo: cero.</li>
+            <li><b>Búsqueda en inglés.</b> Cola larga, competencia casi nula, intención altísima. CPC por debajo de un dólar.</li>
+            <li><b>Agentes inmobiliarios de Arizona y AMPI.</b> El canal recurrente real: un agente satisfecho manda dos por mes durante años. <span class="chip w">⚠ compensación como marketing, nunca reparto de honorarios</span></li>
+          </ul>
+          <div class="card" style="background:var(--bg)">
+            <div class="stack gap8">
+              <div class="tiny mono">VALOR DE VIDA DEL COMPRADOR</div>
+              <div style="font-family:'Bodoni Moda',Georgia,serif; font-size:36px; font-weight:600; line-height:1; color:var(--s2)">$13,038</div>
+              <p class="small">El A, más 25% que agregan el C, más 15% que suben al B. <b>El número que importa no es este</b>: es el del agente que refiere, y ese no tiene tope conocido.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="two blk">
+        <div class="stack gap12">
+          <div class="blk-h">Capacidad</div>
+          <div class="tblwrap">
+            <table style="min-width:0">
+              <tbody>
+                <tr><td>Tiempo por reporte A</td><td class="num">80 min + 20 de llamada</td></tr>
+                <tr><td>Tiempo por vehículo B</td><td class="num">4 h</td></tr>
+                <tr><td>Techo con 52 h/mes</td><td class="num">26 al mes</td></tr>
+                <tr><td>Techo realista en temporada</td><td class="num">5 a 8 al mes</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="small">Aquí el límite no eres tú: es cuánta gente compra en la costa de Sonora y cuántos de ellos te encuentran. <b>El cuello es el tráfico, no la producción.</b></p>
+        </div>
+        <div class="stack gap12">
+          <div class="blk-h">Riesgos y qué los mata</div>
+          <div class="tblwrap">
+            <table style="min-width:0">
+              <thead><tr><th>Riesgo</th><th>Mitigación</th></tr></thead>
+              <tbody>
+                <tr><td>Esperan un seguro de título</td><td>La página lo niega tres veces y el reporte lo niega en la página uno y en la once.</td></tr>
+                <tr><td>El reporte mata un trato y el agente deja de referir</td><td>Severidad honesta más la sección "si la fecha de cierre no se puede mover", que separa lo que se arregla después de lo que no.</td></tr>
+                <tr><td>Reclamación de un comprador extranjero</td><td>Alcance, limitaciones y la lista expresa de lo no verificado. Es la sección que más protege y la que más se tiende a recortar.</td></tr>
+                <tr><td>Tipo de cambio</td><td>Cotiza en dólares y cobra en dólares. La volatilidad juega a tu favor, no en contra.</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div class="blk">
+        <div class="blk-h">Hitos de decisión</div>
+        <div class="tblwrap">
+          <table>
+            <thead><tr><th>Cuándo</th><th>Qué mides</th><th>Qué haces</th></tr></thead>
+            <tbody>
+              <tr><td>Mes 2</td><td>18% de descargas del checklist dejan correo</td><td>Si es menor, el problema es la promesa del checklist, no el tráfico.</td></tr>
+              <tr><td>Mes 4 (plena temporada)</td><td>3 reportes en el mes</td><td>Si es menor, el canal de agentes no arrancó. Es el canal, no el producto.</td></tr>
+              <tr><td>Mes 6</td><td>Costo por reporte vendido en pauta</td><td>Sobre $2,000 MXN, apaga la pauta y deja solo el SEO.</td></tr>
+              <tr><td>Abril</td><td>Reportes acumulados de la temporada</td><td>Con más de 15: sube a $649 la siguiente temporada. Con menos de 6: es un producto de nicho, mantenlo sin pauta y sin ambición.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══════ MVP 03 ══════ -->
+<section class="band" id="m3" style="--sc:var(--s3)">
+  <div class="wrap rail">
+    <div class="rail-n">04</div>
+    <div class="stack">
+
+      <div class="prod-head">
+        <div>
+          <div class="tag">MVP 03 · Suscripción · Español · La máquina que compone</div>
+          <div class="big" style="margin-top:8px">Expediente Corporativo Vivo</div>
+        </div>
+        <div class="pr">$4,900<small>/mes</small></div>
+      </div>
+
+      <div class="blk">
+        <div class="blk-h">Por qué tres planes y por qué esos tres números</div>
+        <div class="two">
+          <div class="stack gap12">
+            <p class="small"><b style="color:var(--fg)">$2,900 está bajo el umbral de firma de cualquier contralor.</b> No sube a autorización, no entra a presupuesto, no espera al siguiente comité. Es la puerta.</p>
+            <p class="small"><b style="color:var(--fg)">$7,900 no existe principalmente para venderse.</b> Existe para que $4,900 se vea razonable. Es el señuelo, y funciona: el plan de en medio es el que se lleva casi todo el mundo. Además ancla contra una hora de abogado corporativo en Hermosillo, que va de $1,500 a $2,500 — la suscripción Grupo se lee como "dos horas al mes, pero permanentes y con alguien vigilando".</p>
+            <p class="small"><b style="color:var(--fg)">La anualidad son diez mensualidades.</b> Dos meses sin costo a cambio de pago anticipado. Elimina la cobranza mensual, que es donde se pierde el tiempo y donde nacen los cobros incómodos, y sube el valor de vida de golpe.</p>
+          </div>
+          <div class="floorceil">
+            <div>
+              <div class="l">El piso — por qué no $1,900</div>
+              <p class="small">Debajo de $2,500 el cliente deja de percibirlo como un servicio con alguien detrás y lo lee como software. Y al software se le cancela sin culpa. El precio tiene que doler lo justo para que alguien lo defienda internamente.</p>
+            </div>
+            <div>
+              <div class="l">El techo — dónde deja de venderse solo</div>
+              <p class="small">Arriba de $9,000 entra a presupuesto anual y a comparación con un despacho de planta. Ahí compites contra una iguala completa y pierdes, porque la iguala incluye redacción y tú expresamente no.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="blk">
+        <div class="blk-h">Los tres planes y la meta</div>
+        <div class="tblwrap">
+          <table>
+            <thead><tr><th>Plan</th><th>Alcance</th><th class="num">Mensual</th><th class="num">Anual</th><th class="num">Neto / mes</th><th class="num">Cuentas para la meta</th></tr></thead>
+            <tbody>
+              <tr><td>Vigilancia</td><td>Una sociedad</td><td class="num">$2,900</td><td class="num">$29,000</td><td class="num">$2,478</td><td class="num">18.6</td></tr>
+              <tr><td><b>Grupo</b></td><td>Hasta tres sociedades</td><td class="num"><b>$4,900</b></td><td class="num">$49,000</td><td class="num"><b>$4,186</b></td><td class="num"><b>11.0</b></td></tr>
+              <tr><td>Corredor</td><td>Grupo más vehículo extranjero</td><td class="num">$7,900</td><td class="num">$79,000</td><td class="num">$6,753</td><td class="num">6.8</td></tr>
+              <tr><td colspan="2"><b>Cartera objetivo mezclada</b></td><td class="num"><b>$56,600</b></td><td class="num">—</td><td class="num"><b>$48,300</b></td><td class="num"><b>16 cuentas</b></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="tiny">Alta inicial del expediente: $6,900 por sociedad, condonada al contratar la modalidad anual. Sociedad adicional dentro de un plan: $1,400 al mes.</p>
+      </div>
+
+      <div class="two blk">
+        <div class="stack gap12">
+          <div class="blk-h">El número que hace de este el mejor de los tres</div>
+          <div class="card" style="background:var(--bg)">
+            <div class="stack gap8">
+              <div class="tiny mono">VALOR DE VIDA POR CUENTA</div>
+              <div style="font-family:'Bodoni Moda',Georgia,serif; font-size:44px; font-weight:600; line-height:1; color:var(--s3)">$122,500</div>
+              <p class="small">Con cancelación de 4% mensual: vida media de 25 meses × $4,900. Si la cancelación resulta de 6%, baja a <b>$81,667</b> — sigue siendo el doble del MVP 01 y seis veces el MVP 02.</p>
+            </div>
+          </div>
+          <p class="small"><b style="color:var(--fg)">Y no depende de tráfico.</b> Los otros dos exigen que alguien te encuentre. Este se llena con los grupos empresariales que ya conoces. Es el único de los tres que puede alcanzar la meta sin que publiques un solo post — y por eso es también el seguro contra el fracaso del contenido.</p>
+        </div>
+        <div class="stack gap12">
+          <div class="blk-h">Capacidad y el margen que lo delata</div>
+          <div class="tblwrap">
+            <table style="min-width:0">
+              <tbody>
+                <tr><td>Vigilancia</td><td class="num">25 min / mes por cuenta</td></tr>
+                <tr><td>Grupo</td><td class="num">45 min / mes</td></tr>
+                <tr><td>Corredor</td><td class="num">70 min / mes</td></tr>
+                <tr><td>16 cuentas mezcladas</td><td class="num">10.7 h / mes</td></tr>
+                <tr><td>Techo con 52 h/mes</td><td class="num">69 cuentas Grupo</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="small">Factor neto de <b>0.855</b>, el más alto del portafolio: sin reserva de reproceso y con el costo de cobro repartido en doce cargos pequeños. Dieciséis cuentas ocupan una quinta parte de tu capacidad.</p>
+        </div>
+      </div>
+
+      <div class="two blk">
+        <div class="stack gap12">
+          <div class="blk-h">Cómo se llena · y el costo real de adquirir</div>
+          <ul class="tick">
+            <li><b>Tu red directa.</b> No se presenta el producto: se manda la carátula de su propia sociedad, hecha, sin que la pidan, en menos de tres horas. CAC: una llamada de veinte minutos más una hora de producción.</li>
+            <li><b>El Dictamen IFS como originador.</b> 30% de quien paga $6,900 acepta $2,900 al mes por no volver a estar así. CAC: cero, ya lo pagó el cliente.</li>
+            <li><b>Contadores en marca blanca.</b> El despacho contable lo ofrece dentro de su iguala, tú operas el expediente. Escala sin que publiques nada.</li>
+            <li><b>Prueba de 30 días sin tarjeta.</b> La prueba es la carátula entregada en 24 horas. No es una promesa de valor: es una demostración de velocidad que el cliente puede verificar gratis.</li>
+          </ul>
+        </div>
+        <div class="stack gap12">
+          <div class="blk-h">Riesgos y qué los mata</div>
+          <div class="tblwrap">
+            <table style="min-width:0">
+              <thead><tr><th>Riesgo</th><th>Mitigación</th></tr></thead>
+              <tbody>
+                <tr><td><b>Cancelación al mes 4</b>, cuando pasó lo urgente y el mes se ve tranquilo</td><td>El reporte mensual debe mostrar algo que cambió. Un mes sin hallazgos se reporta como "esto no se movió y esto vence en 44 días" — nunca en blanco.</td></tr>
+                <tr><td>Deslizamiento de alcance: empiezan a pedir redacción</td><td>Cláusula tercera del contrato, y precio preferente para lo que sí se cotiza aparte. El deslizamiento no se pelea: se factura.</td></tr>
+                <tr><td>Concentración: perder 3 de 16 cuentas es 19% del ingreso</td><td>Anualidades. Cada cuenta anual saca un cliente del riesgo mensual durante doce meses.</td></tr>
+                <tr><td>Se vuelve trabajo administrativo tuyo</td><td>El panel. Si a la cuenta 10 sigues actualizando a mano lo que el panel puede llevar, el problema es de disciplina, no de producto.</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div class="blk">
+        <div class="blk-h">Hitos de decisión</div>
+        <div class="tblwrap">
+          <table>
+            <thead><tr><th>Cuándo</th><th>Qué mides</th><th>Qué haces</th></tr></thead>
+            <tbody>
+              <tr><td>Mes 2</td><td>6 carátulas regaladas</td><td>Si no las mandaste, el producto no ha sido probado. No es que no se venda: es que no lo has ofrecido.</td></tr>
+              <tr><td>Mes 4</td><td>5 cuentas activas</td><td>Con menos de 3, revisa a quién se las regalaste: probablemente no tienen autoridad para decidir.</td></tr>
+              <tr><td>Mes 6</td><td>Cancelación mensual bajo 5%</td><td>Si alguien cancela, pregunta por qué en la misma llamada. La primera cancelación enseña más que las diez primeras ventas.</td></tr>
+              <tr><td>Mes 9</td><td>40% de la cartera en anualidad</td><td>Si es menor, el descuento anual no está siendo ofrecido en la conversación de cierre.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══════ CONSOLIDADO ══════ -->
+<section class="band" id="consolidado" style="background:var(--surface)">
+  <div class="wrap rail">
+    <div class="rail-n">05</div>
+    <div class="stack gap36">
+
+      <div class="stack gap12">
+        <div class="lbl">Los tres juntos</div>
+        <h2 class="h-sec">Cuándo llegas a los<br>diez mil por semana</h2>
+        <p class="lead">
+          Rampa del plan de trabajo: neto semanal por producto, ya descontados los costos fijos.
+          Es el escenario conservador, no el optimista — la mitad del tráfico que el embudo teórico
+          predice.
+        </p>
+      </div>
+
+      <div class="chart">
+        <div class="legend">
+          <span><i style="background:var(--s1)"></i>01 · Dictamen IFS</span>
+          <span><i style="background:var(--s2)"></i>02 · Sonora Closing File</span>
+          <span><i style="background:var(--s3)"></i>03 · Expediente Vivo</span>
+        </div>
+        <div class="plot" id="plot">
+          <div class="meta-line" id="metaline"><span>Meta · $10,000 / semana</span></div>
+          <div class="ctip" id="ctip"></div>
+        </div>
+        <p class="tiny" style="margin-top:12px">
+          Neto semanal en pesos, después de comisiones, IA, reserva, ISR y costos fijos. El pico del
+          mes 5 y del mes 9 es un SKU B de $1,290 dólares: este producto entrega el ingreso a
+          saltos, no en línea recta.
+        </p>
+      </div>
+
+      <div class="stack gap16">
+        <div class="blk-h">Los tres escenarios</div>
+        <div class="tblwrap">
+          <table>
+            <thead><tr><th>Escenario</th><th>Qué supone</th><th class="num">Mes que cruza la meta</th>
+              <th class="num">Neto/semana al mes 12</th><th class="num">Acumulado 12 meses</th></tr></thead>
+            <tbody>
+              <tr><td>Optimista</td><td>El embudo convierte a las tasas diseñadas y LinkedIn entrega 1,500 visitas al mes</td>
+                  <td class="num">3</td><td class="num">$30,947</td><td class="num">$1,247,000</td></tr>
+              <tr><td><b>Plan de trabajo</b></td><td><b>La mitad de ese tráfico. La red rinde igual.</b></td>
+                  <td class="num"><b>5</b></td><td class="num"><b>$21,476</b></td><td class="num"><b>$785,000</b></td></tr>
+              <tr><td>Ácido</td><td>El contenido no despega. Solo funciona tu red: 8 cuentas en el año, 3 dictámenes al mes, uno de cada dos meses en el corredor</td>
+                  <td class="num">—</td><td class="num">$7,437</td><td class="num">$280,000</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="scen" style="--sc:var(--warn)">
+        <div class="stack gap12">
+          <div class="lbl" style="color:var(--warn)">El hallazgo que cambia una decisión</div>
+          <h3 class="h-sub">En el escenario ácido no fallas por falta de ventas.<br>Fallas por el costo fijo.</h3>
+          <p class="small" style="max-width:70ch">
+            Con asistente y pauta —$15,800 al mes— el escenario ácido llega a <b>$7,437 por semana:
+            74% de la meta</b>. Sin asistente y sin pauta —$2,800 al mes— el mismo escenario, con
+            exactamente las mismas ventas, llega a <b>$10,439: 104% de la meta.</b>
+          </p>
+          <p class="small" style="max-width:70ch">
+            La diferencia entre cumplir y no cumplir, en el peor caso previsible, no está del lado del
+            ingreso. Está del lado del gasto que te comprometes a pagar antes de tener el ingreso que
+            lo justifique.
+          </p>
+          <div class="pull" style="border-color:var(--warn)">
+            No contrates ni pautes hasta que el producto que va a pagar ese costo fijo ya lo esté
+            pagando durante tres meses seguidos.
+          </div>
+        </div>
+      </div>
+
+      <div class="two">
+        <div class="stack gap12">
+          <div class="blk-h">Rampa del plan de trabajo · detalle</div>
+          <div class="tblwrap">
+            <table style="min-width:440px">
+              <thead><tr><th class="num">Mes</th><th class="num">Dict.</th><th class="num">SCF</th><th class="num">Cuentas</th>
+                <th class="num">Neto/sem</th></tr></thead>
+              <tbody id="ramptable"></tbody>
+            </table>
+          </div>
+        </div>
+        <div class="stack gap12">
+          <div class="blk-h">Cómo se alimentan entre sí</div>
+          <ul class="tick">
+            <li><b>01 alimenta a 03.</b> El dictamen termina en la lista de lo que hay que vigilar. 30% de conversión, con CAC cero.</li>
+            <li><b>02 financia a 01.</b> Un Closing File en dólares paga todo el costo fijo del mes con el 20% de su neto. El corredor subsidia la construcción del mercado local.</li>
+            <li><b>03 estabiliza a los dos.</b> A partir de la cuenta doce dejas de depender de vender algo cada lunes. Es lo que convierte una meta semanal —que es una fuente de ansiedad— en un piso mensual.</li>
+            <li><b>Los tres alimentan lo que de verdad paga:</b> la estructuración de $40,000 a $300,000. Los productos digitales no son el negocio. Son la máquina de originación del negocio.</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══════ DECISIONES ══════ -->
+<section class="band" id="decisiones">
+  <div class="wrap rail">
+    <div class="rail-n">06</div>
+    <div class="stack gap24">
+      <div class="stack gap12">
+        <div class="lbl">Lo que hay que resolver esta semana</div>
+        <h2 class="h-sec">Cuatro decisiones,<br>y solo una es de precio</h2>
+      </div>
+      <div>
+        <div class="dec">
+          <div class="num">1</div>
+          <div class="stack gap8">
+            <div class="h-min">El régimen fiscal, con tu contador</div>
+            <p class="small">Es la decisión más cara del documento y no tiene nada que ver con el mercado. Diez por ciento de ISR efectivo contra dos y medio bajo RESICO PF son <b>alrededor de $50,000 al año</b> a este nivel de facturación. Ningún ajuste de precio produce ese dinero con tan poco esfuerzo. <span class="chip w">⚠ cotejar límites y requisitos del régimen</span></p>
+          </div>
+        </div>
+        <div class="dec">
+          <div class="num">2</div>
+          <div class="stack gap8">
+            <div class="h-min">Confirmar los tres precios de lanzamiento</div>
+            <p class="small"><b>$6,900 · $449 USD · $2,900 a $7,900.</b> No son negociables hacia abajo en ningún caso, y las subidas están calendarizadas por hito, no por ánimo: $8,900 cuando la conversión pase de 10%; $649 USD cuando la temporada cierre con más de 15 reportes.</p>
+          </div>
+        </div>
+        <div class="dec">
+          <div class="num">3</div>
+          <div class="stack gap8">
+            <div class="h-min">Congelar el costo fijo en $2,800 hasta el mes 6</div>
+            <p class="small">Sin asistente, sin pauta, sin herramientas nuevas. Es la única decisión que separa cumplir de no cumplir en el peor caso previsible, y es enteramente tuya: no depende de que nadie compre nada.</p>
+          </div>
+        </div>
+        <div class="dec">
+          <div class="num">4</div>
+          <div class="stack gap8">
+            <div class="h-min">Los seis nombres, esta semana</div>
+            <p class="small">Seis contactos de tu red a quienes se les manda la carátula de su sociedad, hecha, sin que la pidan. De ahí salen las primeras cuatro suscripciones, y la suscripción es el único producto que alcanza la meta sin depender de que el contenido funcione. <b>Es tu póliza contra el escenario ácido</b>, y hoy no está contratada.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap stack gap12">
+    <div class="lbl">Gilberto Gutiérrez Rodríguez · Abogado corporativo y notarial · Hermosillo, Sonora</div>
+    <p class="tiny" style="max-width:74ch">
+      Documento de trabajo interno. Las cifras son modelos de diseño construidos sobre los supuestos
+      de la sección 00, no proyecciones garantizadas. Todo lo marcado <b style="color:var(--warn)">⚠</b>
+      requiere cotejo contra texto vigente o con tu contador antes de tomarse como base de una decisión.
+      Los precios son antes de IVA.
+    </p>
+  </div>
+</footer>
+
+<script>
+(function(){
+  "use strict";
+  // Neto semanal por producto, con el costo fijo ya repartido proporcionalmente.
+  var D = [
+    {m:1,  a:668,  b:0,    c:0},
+    {m:2,  a:864,  b:0,    c:376},
+    {m:3,  a:2332, b:1377, c:1365},
+    {m:4,  a:3673, b:2248, c:2867},
+    {m:5,  a:5078, b:8157, c:5031},
+    {m:6,  a:6318, b:3812, c:5937},
+    {m:7,  a:6126, b:7873, c:7559},
+    {m:8,  a:7326, b:5125, c:8064},
+    {m:9,  a:7410, b:7936, c:9065},
+    {m:10, a:7287, b:1434, c:10355},
+    {m:11, a:7405, b:5664, c:11060},
+    {m:12, a:7349, b:2249, c:11878}
+  ];
+  var UNIDADES = [[1,0,0],[1,0,1],[2,1,2],[3,2,4],[4,4,6],[5,2,7],[5,4,9],[6,4,10],[6,4,11],[6,1,12],[6,3,13],[6,2,14]];
+
+  var TOPE = 26000, ALTO = 270, META = 10000;
+  var plot = document.getElementById("plot");
+  var tip  = document.getElementById("ctip");
+  var fmt  = function(n){ return "$" + n.toLocaleString("es-MX"); };
+
+  document.getElementById("metaline").style.bottom = (META/TOPE*ALTO) + "px";
+
+  D.forEach(function(d, i){
+    var total = d.a + d.b + d.c;
+    var col = document.createElement("div");
+    col.className = "col";
+    var segs = [["c", d.c, "--s3"], ["b", d.b, "--s2"], ["a", d.a, "--s1"]];
+    var html = '<div class="stack3">';
+    var primero = true;
+    segs.forEach(function(s){
+      if (s[1] <= 0) return;
+      html += '<div class="seg' + (primero ? ' top' : '') + '" style="height:' +
+              (s[1]/TOPE*ALTO).toFixed(1) + 'px; background:var(' + s[2] + ')"></div>';
+      primero = false;
+    });
+    html += '</div><div class="mlab">' + d.m + '</div>';
+    if (d.m === 5 || d.m === 12){
+      html = '<div class="dlab" style="bottom:' + (total/TOPE*ALTO + 34).toFixed(0) + 'px">' +
+             (d.m === 5 ? "cruza la meta" : fmt(total)) + '</div>' + html;
+    }
+    col.innerHTML = html;
+
+    col.addEventListener("mouseenter", function(){
+      var u = UNIDADES[i];
+      tip.innerHTML =
+        '<b>Mes ' + d.m + ' · ' + fmt(total) + ' / semana</b><br>' +
+        '<i style="background:var(--s1)"></i>' + fmt(d.a) + ' · ' + u[0] + ' dictámenes<br>' +
+        '<i style="background:var(--s2)"></i>' + fmt(d.b) + ' · ' + u[1] + ' closing files<br>' +
+        '<i style="background:var(--s3)"></i>' + fmt(d.c) + ' · ' + u[2] + ' cuentas';
+      var pr = plot.getBoundingClientRect(), cr = col.getBoundingClientRect();
+      tip.classList.add("on");
+      var mitad = tip.offsetWidth/2 + 6;
+      var cx = cr.left - pr.left + cr.width/2;
+      tip.style.left = Math.max(mitad, Math.min(pr.width - mitad, cx)) + "px";
+      tip.style.top  = Math.max(tip.offsetHeight*1.15, (1 - total/TOPE) * ALTO + 30) + "px";
+    });
+    col.addEventListener("mouseleave", function(){ tip.classList.remove("on"); });
+    plot.appendChild(col);
+  });
+
+  document.getElementById("ramptable").innerHTML = D.map(function(d, i){
+    var t = d.a + d.b + d.c, u = UNIDADES[i];
+    return '<tr><td class="num">' + d.m + '</td><td class="num">' + u[0] + '</td><td class="num">' + u[1] +
+           '</td><td class="num">' + u[2] + '</td><td class="num"' +
+           (t >= META ? ' style="color:var(--ok); font-weight:600"' : '') + '>' + fmt(t) + '</td></tr>';
+  }).join("");
+})();
+</script>
+</body>
+</html>

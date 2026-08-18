@@ -1,0 +1,384 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Reporte Mensual</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,400;6..96,600&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap">
+<style>
+/* comun/ggr.css incrustado por build.sh */
+/* ═══════════════════════════════════════════════════════════════
+   GGR — Hoja de estilos común de los tres productos digitales
+   EDITA LOS TOKENS DE ABAJO Y CAMBIA LOS TRES PRODUCTOS A LA VEZ.
+   ═══════════════════════════════════════════════════════════════ */
+
+:root{
+  /* ---- MARCA (tomados del brochure) ---- */
+  --ink:#0D191B;         /* verde-negro profundo */
+  --bone:#EDE8DF;        /* crema */
+  --ember:#C4712F;       /* naranja quemado */
+  --verdigris:#7FA394;   /* verde de las etiquetas */
+
+  /* ---- SUPERFICIES Y TEXTO (tema oscuro por defecto) ---- */
+  --bg:#0D191B;
+  --surface:#132427;
+  --surface-2:#1B3034;
+  --line:rgba(237,232,223,.14);
+  --line-strong:rgba(237,232,223,.28);
+  --fg:#E9E4DB;
+  --fg-dim:#A9B3B0;
+  --fg-faint:#77837F;
+  --accent:#D9924F;
+  --accent-ink:#0D191B;
+  --label:#7FA394;
+
+  /* ---- SEMÁFORO (independiente del acento) ---- */
+  --crit:#DE6153; --warn:#D2A32B; --ok:#3CA97C;
+  --crit-bg:rgba(222,97,83,.14); --warn-bg:rgba(210,163,43,.14); --ok-bg:rgba(60,169,124,.14);
+
+  /* ---- HERO: mundo único, igual en ambos temas ---- */
+  --hero-bg:#0D191B; --hero-fg:#EDE8DF; --hero-dim:#94A29E;
+  --hero-accent:#D9924F; --hero-label:#7FA394;
+
+  --shadow:0 1px 0 rgba(237,232,223,.05), 0 18px 40px -24px rgba(0,0,0,.7);
+  --maxw:1180px;
+}
+@media (prefers-color-scheme: light){
+  :root:not([data-theme="dark"]){
+    --bg:#F2EEE6; --surface:#FBF9F5; --surface-2:#E8E2D6;
+    --line:rgba(13,25,27,.14); --line-strong:rgba(13,25,27,.30);
+    --fg:#14262A; --fg-dim:#4B5A5C; --fg-faint:#7C8886;
+    --accent:#A85A1E; --accent-ink:#FBF9F5; --label:#3F6F5E;
+    --crit:#A82014; --warn:#B8860B; --ok:#0F7048;
+    --crit-bg:rgba(168,32,20,.10); --warn-bg:rgba(184,134,11,.13); --ok-bg:rgba(15,112,72,.10);
+    --shadow:0 1px 0 rgba(13,25,27,.04), 0 16px 34px -26px rgba(13,25,27,.45);
+  }
+}
+:root[data-theme="light"]{
+  --bg:#F2EEE6; --surface:#FBF9F5; --surface-2:#E8E2D6;
+  --line:rgba(13,25,27,.14); --line-strong:rgba(13,25,27,.30);
+  --fg:#14262A; --fg-dim:#4B5A5C; --fg-faint:#7C8886;
+  --accent:#A85A1E; --accent-ink:#FBF9F5; --label:#3F6F5E;
+  --crit:#A82014; --warn:#B8860B; --ok:#0F7048;
+  --crit-bg:rgba(168,32,20,.10); --warn-bg:rgba(184,134,11,.13); --ok-bg:rgba(15,112,72,.10);
+  --shadow:0 1px 0 rgba(13,25,27,.04), 0 16px 34px -26px rgba(13,25,27,.45);
+}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0; background:var(--bg); color:var(--fg);
+  font-family:"IBM Plex Sans",ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
+  font-size:16px; line-height:1.62; -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3,h4{text-wrap:balance; margin:0}
+p{margin:0}
+a{color:var(--accent)}
+img{max-width:100%}
+:focus-visible{outline:2px solid var(--accent); outline-offset:3px; border-radius:2px}
+@media (prefers-reduced-motion:reduce){*{animation:none!important; transition:none!important}}
+
+/* ---- primitivas ---- */
+.wrap{max-width:var(--maxw); margin:0 auto; padding:0 28px}
+@media(max-width:640px){.wrap{padding:0 18px}}
+.narrow{max-width:820px}
+
+.lbl{font-family:"IBM Plex Mono",ui-monospace,monospace; font-size:11px; font-weight:500;
+     letter-spacing:.22em; text-transform:uppercase; color:var(--label)}
+.mono{font-family:"IBM Plex Mono",ui-monospace,monospace; font-variant-numeric:tabular-nums}
+.serif{font-family:"Bodoni Moda",Georgia,"Times New Roman",serif}
+
+.h-sec{font-family:"Bodoni Moda",Georgia,serif; font-weight:600; font-size:clamp(30px,4.2vw,46px); line-height:1.08; letter-spacing:-.01em}
+.h-sub{font-family:"Bodoni Moda",Georgia,serif; font-weight:600; font-size:clamp(22px,2.6vw,30px); line-height:1.14}
+.h-min{font-size:15px; font-weight:600}
+.lead{font-size:clamp(16px,1.5vw,18.5px); color:var(--fg-dim); max-width:66ch}
+.small{font-size:13.5px; color:var(--fg-dim)}
+.tiny{font-size:12px; color:var(--fg-faint)}
+
+.band{border-top:1px solid var(--line); padding:clamp(48px,6vw,84px) 0}
+.card{background:var(--surface); border:1px solid var(--line); border-radius:3px; padding:22px 24px; box-shadow:var(--shadow); min-width:0}
+.grid{display:grid; gap:18px}
+.grid>*{min-width:0}
+.g2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.g3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.g4{grid-template-columns:repeat(4,minmax(0,1fr))}
+@media(max-width:900px){.g3,.g4{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:620px){.g2,.g3,.g4{grid-template-columns:minmax(0,1fr)}}
+.stack{display:flex; flex-direction:column; min-width:0}
+.gap8{gap:8px} .gap12{gap:12px} .gap16{gap:16px} .gap24{gap:24px} .gap36{gap:36px} .gap48{gap:48px}
+.row{display:flex; gap:12px; flex-wrap:wrap; align-items:center}
+
+.tblwrap{overflow-x:auto; border:1px solid var(--line); border-radius:3px; background:var(--surface)}
+table{border-collapse:collapse; width:100%; min-width:520px; font-size:14px}
+th{text-align:left; font-family:"IBM Plex Mono",monospace; font-size:10.5px; letter-spacing:.16em;
+   text-transform:uppercase; color:var(--label); font-weight:500; padding:12px 16px; border-bottom:1px solid var(--line-strong)}
+td{padding:12px 16px; border-bottom:1px solid var(--line); vertical-align:top; color:var(--fg-dim)}
+td:first-child{color:var(--fg); font-weight:500}
+tr:last-child td{border-bottom:none}
+td.num,th.num{text-align:right; font-family:"IBM Plex Mono",monospace; font-variant-numeric:tabular-nums; white-space:nowrap}
+
+.chip{display:inline-flex; align-items:center; gap:6px; font-family:"IBM Plex Mono",monospace;
+      font-size:10.5px; letter-spacing:.12em; text-transform:uppercase; padding:3px 9px; border-radius:2px;
+      border:1px solid currentColor; white-space:normal; max-width:100%; line-height:1.5}
+.chip.c{color:var(--crit); background:var(--crit-bg)}
+.chip.w{color:var(--warn); background:var(--warn-bg)}
+.chip.o{color:var(--ok); background:var(--ok-bg)}
+.chip.n{color:var(--fg-faint)}
+td .chip,.carat-h .chip{white-space:nowrap}
+
+.pull{border-left:3px solid var(--ember); padding:6px 0 6px 20px; font-size:17px; color:var(--fg); max-width:62ch}
+.warnnote{border-left:3px solid var(--warn); background:var(--warn-bg); padding:12px 16px; border-radius:0 3px 3px 0; font-size:13.5px; color:var(--fg-dim)}
+
+ul.tick{list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:9px}
+ul.tick li{position:relative; padding-left:20px; font-size:14.5px; color:var(--fg-dim)}
+ul.tick li::before{content:""; position:absolute; left:0; top:9px; width:7px; height:7px; background:var(--ember); border-radius:1px}
+ul.tick li b{color:var(--fg); font-weight:600}
+
+.btn{font-family:"IBM Plex Mono",monospace; font-size:12px; letter-spacing:.14em; text-transform:uppercase; font-weight:600;
+     padding:14px 26px; border-radius:2px; border:1px solid var(--accent); background:var(--accent); color:var(--accent-ink);
+     cursor:pointer; transition:opacity .15s; text-decoration:none; display:inline-block; text-align:center}
+.btn:hover{opacity:.86}
+.btn[disabled]{opacity:.32; cursor:not-allowed}
+.btn.ghost{background:transparent; color:var(--fg-dim); border-color:var(--line-strong)}
+.btn.ghost:hover{color:var(--fg); border-color:var(--fg-dim); opacity:1}
+.btn.big{padding:17px 34px; font-size:13px}
+
+input[type=text],input[type=email],input[type=tel],select,textarea{
+  font-family:inherit; font-size:15px; color:var(--fg); background:var(--bg);
+  border:1px solid var(--line-strong); border-radius:2px; padding:12px 14px; width:100%}
+input::placeholder,textarea::placeholder{color:var(--fg-faint)}
+label{font-family:"IBM Plex Mono",monospace; font-size:10.5px; letter-spacing:.14em;
+      text-transform:uppercase; color:var(--label); display:block; margin-bottom:6px}
+
+/* ---- nav ---- */
+nav{position:sticky; top:0; z-index:60; background:color-mix(in srgb, var(--bg) 88%, transparent);
+    backdrop-filter:blur(12px); border-bottom:1px solid var(--line)}
+.navin{max-width:var(--maxw); margin:0 auto; padding:11px 28px; display:flex; align-items:center; gap:22px; flex-wrap:wrap}
+.navmark{font-family:"IBM Plex Mono",monospace; font-size:12px; letter-spacing:.3em; color:var(--fg); font-weight:600; text-decoration:none}
+.navlinks{display:flex; gap:18px; flex-wrap:wrap; margin-left:auto; align-items:center}
+.navlinks a{font-family:"IBM Plex Mono",monospace; font-size:11px; letter-spacing:.14em; text-transform:uppercase;
+            color:var(--fg-dim); text-decoration:none; padding:3px 0; border-bottom:1px solid transparent}
+.navlinks a:hover{color:var(--fg); border-bottom-color:var(--ember)}
+@media(max-width:640px){.navin{padding:10px 18px; gap:12px} .navlinks{gap:12px; margin-left:0; width:100%}}
+section[id]{scroll-margin-top:76px}
+
+/* ---- hero ---- */
+.hero{background:var(--hero-bg); color:var(--hero-fg); padding:clamp(56px,8vw,104px) 0 clamp(44px,5vw,68px); position:relative; overflow:hidden}
+.hero::after{content:""; position:absolute; inset:0; pointer-events:none;
+  background:radial-gradient(760px 420px at 84% 8%, rgba(217,146,79,.16), transparent 62%)}
+.hero .wrap{position:relative; z-index:1}
+.hero .lbl{color:var(--hero-label)}
+.hero h1{font-family:"Bodoni Moda",Georgia,serif; font-weight:600;
+  font-size:clamp(38px,6.4vw,74px); line-height:1.0; letter-spacing:-.02em; color:var(--hero-fg); margin:18px 0 0}
+.hero h1 em{font-style:italic; color:var(--hero-accent)}
+.hero .lead{color:var(--hero-dim); max-width:58ch; margin-top:20px}
+.hero .small,.hero .tiny{color:var(--hero-dim)}
+
+.metrics{display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); margin-top:clamp(36px,4vw,56px); border-top:1px solid rgba(237,232,223,.16)}
+.metric{padding:20px 22px 4px; border-right:1px solid rgba(237,232,223,.12); min-width:0}
+.metric:last-child{border-right:none}
+.metric .v{font-family:"Bodoni Moda",Georgia,serif; font-size:clamp(26px,3.2vw,38px); font-weight:600; color:var(--hero-fg); line-height:1; font-variant-numeric:tabular-nums}
+.metric .v small{font-family:"IBM Plex Mono",monospace; font-size:12px; letter-spacing:.1em; color:var(--hero-accent); margin-left:6px; font-weight:500}
+.metric .k{font-family:"IBM Plex Mono",monospace; font-size:10.5px; letter-spacing:.16em; text-transform:uppercase; color:var(--hero-dim); margin-top:10px; line-height:1.5}
+@media(max-width:900px){.metrics{grid-template-columns:repeat(2,minmax(0,1fr))} .metric{border-bottom:1px solid rgba(237,232,223,.12)} .metric:nth-child(2){border-right:none}}
+@media(max-width:520px){.metrics{grid-template-columns:minmax(0,1fr)} .metric{border-right:none}}
+
+footer{border-top:1px solid var(--line); padding:40px 0 56px; background:var(--surface)}
+
+/* ═══ DOCUMENTOS IMPRIMIBLES (dictamen, reporte, carátula, propuesta) ═══ */
+.doc{background:#FFFFFF; color:#14262A; font-size:14px; line-height:1.6}
+.doc .page{
+  max-width:820px; margin:0 auto 26px; background:#FFF; padding:56px 62px 64px;
+  border:1px solid #D8D2C6; position:relative; min-height:1040px;
+}
+.doc .page.first{border-top:5px solid var(--ember)}
+.doc h1,.doc h2,.doc h3{font-family:"Bodoni Moda",Georgia,serif; color:#0D191B}
+.doc h1{font-size:34px; font-weight:600; line-height:1.1}
+.doc h2{font-size:23px; font-weight:600; line-height:1.15; margin:0 0 14px}
+.doc h3{font-size:17px; font-weight:600; margin:0 0 8px}
+.doc p{margin:0 0 11px; color:#2C3A3C}
+.doc .lbl{color:#3F6F5E}
+.doc .foot{position:absolute; left:62px; right:62px; bottom:26px; display:flex; justify-content:space-between;
+  font-family:"IBM Plex Mono",monospace; font-size:9.5px; letter-spacing:.12em; text-transform:uppercase; color:#8A938F;
+  border-top:1px solid #E4DED2; padding-top:9px}
+.doc table{min-width:0; font-size:12.5px}
+.doc th{color:#3F6F5E; border-bottom:1px solid #B9B2A3; padding:8px 10px}
+.doc td{color:#2C3A3C; border-bottom:1px solid #E4DED2; padding:8px 10px}
+.doc td:first-child{color:#0D191B}
+.doc .tblwrap{border:1px solid #D8D2C6; background:#FFF}
+.doc .quote{border-left:3px solid #B9B2A3; background:#F7F4EE; padding:12px 16px; font-family:"IBM Plex Mono",monospace;
+  font-size:12px; line-height:1.65; color:#2C3A3C; white-space:pre-wrap; margin:0 0 12px}
+.doc .flag{border-left:3px solid var(--ember); background:#FBF3EA; padding:11px 15px; margin:0 0 12px; font-size:13px}
+.doc .fill{background:#FFF4DC; border-bottom:1px solid #D9A93E; padding:0 3px; font-family:"IBM Plex Mono",monospace; font-size:12px}
+.doc .sev{display:inline-block; font-family:"IBM Plex Mono",monospace; font-size:9.5px; letter-spacing:.12em;
+  text-transform:uppercase; padding:2px 8px; border:1px solid currentColor; border-radius:2px}
+.doc .sev.c{color:#A82014; background:#FBEDEB} .doc .sev.w{color:#8A5F0B; background:#FBF3E0} .doc .sev.o{color:#0F7048; background:#EAF4EE}
+.doc .rule{height:1px; background:#D8D2C6; margin:20px 0}
+.docbar{position:sticky; top:0; z-index:50; background:var(--ink); color:var(--bone); padding:10px 20px;
+  display:flex; gap:14px; align-items:center; flex-wrap:wrap; font-family:"IBM Plex Mono",monospace; font-size:11px; letter-spacing:.12em; text-transform:uppercase}
+.docbar .btn{padding:8px 16px; font-size:10.5px}
+.docbar .btn.ghost{color:#CBD3D0; border-color:rgba(237,232,223,.38)}
+.docbar .btn.ghost:hover{color:#EDE8DF; border-color:#EDE8DF}
+@media(max-width:720px){.doc .page{padding:32px 24px 54px; min-height:0} .doc .foot{left:24px; right:24px}}
+
+@media print{
+  .docbar,nav,.noprint{display:none!important}
+  body{background:#FFF}
+  .doc .page{border:none; margin:0; padding:0; min-height:auto; max-width:none; page-break-after:always}
+  .doc .page:last-child{page-break-after:auto}
+  .doc .foot{position:static; margin-top:24px}
+  @page{size:letter; margin:18mm 16mm}
+}
+
+</style>
+<style>body{background:#E8E4DA} .doc{padding:26px 16px 60px}
+.kv td:first-child{width:34%; color:#3F6F5E; font-family:"IBM Plex Mono",monospace; font-size:10.5px; letter-spacing:.1em; text-transform:uppercase}</style>
+</head>
+<body class="doc">
+
+<div class="docbar noprint">
+  <span>Se entrega el mismo día cada mes · tres páginas</span>
+  <button class="btn" onclick="window.print()">Imprimir / Guardar como PDF</button>
+  <button class="btn ghost" id="toggle-fill">Ocultar resaltado</button>
+  <span class="mono" id="fill-count"></span>
+</div>
+
+<div class="page first">
+  <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:20px">
+    <div>
+      <div class="lbl">Expediente Corporativo Vivo · Plan <span class='fill'>[Grupo]</span></div>
+      <h1 style="font-size:28px; margin-top:6px"><span class='fill'>[GRUPO O SOCIEDAD]</span></h1>
+      <div class="mono" style="font-size:11px; color:#6C7573; margin-top:4px">
+        Reporte de <span class='fill'>[mes]</span> · corte al <span class='fill'>[dd/mm/aaaa]</span> · <span class='fill'>[N]</span> sociedades
+      </div>
+    </div>
+    <div class="mono" style="font-size:11px; color:#6C7573; text-align:right">Reporte <span class='fill'>[N]</span> de 12</div>
+  </div>
+  <div class="rule"></div>
+
+  <div style="display:grid; grid-template-columns:auto 1fr; gap:26px; align-items:center; margin:16px 0 20px">
+    <div style="text-align:center; border:2px solid #C4712F; padding:16px 24px">
+      <div style="font-family:'Bodoni Moda',Georgia,serif; font-size:46px; font-weight:600; line-height:1; color:#0D191B"><span class='fill'>[NN]</span></div>
+      <div class="lbl" style="margin-top:4px">IFS</div>
+      <div class="mono" style="font-size:11px; color:#6C7573; margin-top:6px"><span class='fill'>[+/- N]</span> vs. trimestre anterior</div>
+    </div>
+    <div>
+      <h3 style="font-size:18px"><span class='fill'>[Una línea sobre el estado del expediente este mes]</span></h3>
+      <p style="font-size:13px"><span class='fill'>[Dos o tres líneas. Si el mes fue tranquilo, se dice que fue tranquilo y se nombra lo que no se movió. Un reporte en blanco es la causa número uno de cancelación al cuarto mes.]</span></p>
+    </div>
+  </div>
+
+  <h3>Lo que cambió este mes</h3>
+  <div class="tblwrap"><table>
+    <thead><tr><th>Fecha</th><th>Qué pasó</th><th>Efecto en el expediente</th></tr></thead>
+    <tbody>
+      <tr><td><span class='fill'>[dd/mm]</span></td><td><span class='fill'>[hecho]</span></td><td><span class='fill'>[qué se actualizó]</span></td></tr><tr><td><span class='fill'>[dd/mm]</span></td><td><span class='fill'>[hecho]</span></td><td><span class='fill'>[qué se actualizó]</span></td></tr><tr><td><span class='fill'>[dd/mm]</span></td><td><span class='fill'>[hecho]</span></td><td><span class='fill'>[qué se actualizó]</span></td></tr><tr><td><span class='fill'>[dd/mm]</span></td><td><span class='fill'>[hecho]</span></td><td><span class='fill'>[qué se actualizó]</span></td></tr>
+    </tbody>
+  </table></div>
+
+  <h3 style="margin-top:16px">Lo que viene en los próximos 60 días</h3>
+  <div class="tblwrap"><table>
+    <thead><tr><th>Fecha</th><th>Acto</th><th>Requiere antes</th><th>Quién</th><th>Faltan</th></tr></thead>
+    <tbody>
+      <tr><td><span class='fill'>[dd/mm]</span></td><td><span class='fill'>[acto]</span></td><td><span class='fill'>[requisito previo]</span></td><td><span class='fill'>[sociedad / despacho]</span></td><td><span class="sev <span class='fill'>[c/w/o]</span>"><span class='fill'>[N d]</span></span></td></tr><tr><td><span class='fill'>[dd/mm]</span></td><td><span class='fill'>[acto]</span></td><td><span class='fill'>[requisito previo]</span></td><td><span class='fill'>[sociedad / despacho]</span></td><td><span class="sev <span class='fill'>[c/w/o]</span>"><span class='fill'>[N d]</span></span></td></tr><tr><td><span class='fill'>[dd/mm]</span></td><td><span class='fill'>[acto]</span></td><td><span class='fill'>[requisito previo]</span></td><td><span class='fill'>[sociedad / despacho]</span></td><td><span class="sev <span class='fill'>[c/w/o]</span>"><span class='fill'>[N d]</span></span></td></tr><tr><td><span class='fill'>[dd/mm]</span></td><td><span class='fill'>[acto]</span></td><td><span class='fill'>[requisito previo]</span></td><td><span class='fill'>[sociedad / despacho]</span></td><td><span class="sev <span class='fill'>[c/w/o]</span>"><span class='fill'>[N d]</span></span></td></tr>
+    </tbody>
+  </table></div>
+
+  <div class="flag" style="margin-top:16px">
+    <b>Lo único que necesito de ustedes este mes.</b> <span class='fill'>[Una sola petición, concreta, con fecha. Si no hay ninguna, escribir «nada» — decirlo explícitamente vale tanto como pedir.]</span>
+  </div>
+
+  <div class="foot"><span>Reporte mensual · <span class='fill'>[GRUPO]</span></span><span>Página 1 de 3 · Confidencial</span></div>
+</div>
+
+<div class="page">
+  <div class="lbl">Estado del expediente</div>
+  <h2>Semáforo de poderes</h2>
+  <p>Quién puede obligar a la sociedad hoy, con qué facultades y desde cuándo.</p>
+  <div class="tblwrap" style="margin-top:12px"><table>
+    <thead><tr><th>Apoderado</th><th>Cargo</th><th>Facultades</th><th>Otorgado</th><th>Estatus</th></tr></thead>
+    <tbody>
+      <tr><td><span class='fill'>[nombre]</span></td><td><span class='fill'>[cargo]</span></td><td><span class='fill'>[dominio / administración / cambiarios / pleitos]</span></td><td><span class='fill'>[dd/mm/aa]</span></td><td><span class="sev <span class='fill'>[o/w/c]</span>"><span class='fill'>[vigente]</span></span></td></tr><tr><td><span class='fill'>[nombre]</span></td><td><span class='fill'>[cargo]</span></td><td><span class='fill'>[dominio / administración / cambiarios / pleitos]</span></td><td><span class='fill'>[dd/mm/aa]</span></td><td><span class="sev <span class='fill'>[o/w/c]</span>"><span class='fill'>[vigente]</span></span></td></tr><tr><td><span class='fill'>[nombre]</span></td><td><span class='fill'>[cargo]</span></td><td><span class='fill'>[dominio / administración / cambiarios / pleitos]</span></td><td><span class='fill'>[dd/mm/aa]</span></td><td><span class="sev <span class='fill'>[o/w/c]</span>"><span class='fill'>[vigente]</span></span></td></tr><tr><td><span class='fill'>[nombre]</span></td><td><span class='fill'>[cargo]</span></td><td><span class='fill'>[dominio / administración / cambiarios / pleitos]</span></td><td><span class='fill'>[dd/mm/aa]</span></td><td><span class="sev <span class='fill'>[o/w/c]</span>"><span class='fill'>[vigente]</span></span></td></tr><tr><td><span class='fill'>[nombre]</span></td><td><span class='fill'>[cargo]</span></td><td><span class='fill'>[dominio / administración / cambiarios / pleitos]</span></td><td><span class='fill'>[dd/mm/aa]</span></td><td><span class="sev <span class='fill'>[o/w/c]</span>"><span class='fill'>[vigente]</span></span></td></tr><tr><td><span class='fill'>[nombre]</span></td><td><span class='fill'>[cargo]</span></td><td><span class='fill'>[dominio / administración / cambiarios / pleitos]</span></td><td><span class='fill'>[dd/mm/aa]</span></td><td><span class="sev <span class='fill'>[o/w/c]</span>"><span class='fill'>[vigente]</span></span></td></tr><tr><td><span class='fill'>[nombre]</span></td><td><span class='fill'>[cargo]</span></td><td><span class='fill'>[dominio / administración / cambiarios / pleitos]</span></td><td><span class='fill'>[dd/mm/aa]</span></td><td><span class="sev <span class='fill'>[o/w/c]</span>"><span class='fill'>[vigente]</span></span></td></tr>
+    </tbody>
+  </table></div>
+  <div class="flag" style="margin-top:14px">
+    <b>Advertencia permanente.</b> El inventario se construye únicamente con los instrumentos
+    proporcionados. Un poder otorgado y no proporcionado no aparece aquí y sigue siendo válido.
+    La única forma de cerrar ese riesgo es la revocación general con notificación e inscripción.
+  </div>
+
+  <h2 style="margin-top:22px">Calendario corporativo</h2>
+  <div class="tblwrap"><table>
+    <thead><tr><th>Fecha</th><th>Obligación</th><th>Origen</th><th>Estatus</th></tr></thead>
+    <tbody>
+      <tr><td><span class='fill'>[dd/mm/aa]</span></td><td>Asamblea anual ordinaria</td><td>LGSM <span class="sev w">⚠ cotejar plazo</span></td><td><span class='fill'>[planeada]</span></td></tr>
+      <tr><td><span class='fill'>[dd/mm/aa]</span></td><td>Actualización de beneficiario controlador</td><td>CFF 32-B Ter <span class="sev w">⚠ cotejar</span></td><td><span class='fill'>[estatus]</span></td></tr>
+      <tr><td><span class='fill'>[dd/mm/aa]</span></td><td>Aviso al RNIE</td><td><span class='fill'>[inversión extranjera]</span></td><td><span class='fill'>[estatus]</span></td></tr>
+      <tr><td><span class='fill'>[dd/mm/aa]</span></td><td><span class='fill'>[renovación de órgano de administración]</span></td><td>Estatutos</td><td><span class='fill'>[estatus]</span></td></tr>
+      <tr><td><span class='fill'>[dd/mm/aa]</span></td><td><span class='fill'>[otra]</span></td><td><span class='fill'>[origen]</span></td><td><span class='fill'>[estatus]</span></td></tr>
+    </tbody>
+  </table></div>
+  <div class="foot"><span>Reporte mensual · <span class='fill'>[GRUPO]</span></span><span>Página 2 de 3 · Confidencial</span></div>
+</div>
+
+<div class="page">
+  <div class="lbl">Documentos</div>
+  <h2>Carátula de personalidad vigente</h2>
+  <p>Versión en circulación a la fecha de corte. Se reemite en 24 horas hábiles a solicitud, en español y en inglés.</p>
+  <div class="tblwrap" style="margin-top:12px"><table class="kv"><tbody>
+    <tr><td>Sociedad</td><td><span class='fill'>[DENOMINACIÓN]</span></td></tr>
+    <tr><td>Versión</td><td>v<span class='fill'>[N]</span> · emitida <span class='fill'>[dd/mm/aaaa]</span></td></tr>
+    <tr><td>Órgano de administración</td><td><span class='fill'>[consejo / administrador único]</span> · vigencia <span class='fill'>[periodo]</span></td></tr>
+    <tr><td>Facultades</td><td>Transcritas literalmente · cláusula <span class='fill'>[N]</span></td></tr>
+    <tr><td>Beneficiario controlador</td><td><span class='fill'>[integrado / pendiente]</span> · actualizado <span class='fill'>[dd/mm/aaaa]</span></td></tr>
+    <tr><td>Emitida este mes</td><td><span class='fill'>[N]</span> veces · tiempo medio <span class='fill'>[NN]</span> min</td></tr>
+  </tbody></table></div>
+
+  <h2 style="margin-top:22px">Bóveda documental</h2>
+  <div class="tblwrap"><table>
+    <thead><tr><th>Documento</th><th>Versión</th><th>Actualizado</th><th>Estatus</th></tr></thead>
+    <tbody>
+      <tr><td><span class='fill'>[documento]</span></td><td><span class='fill'>[vN]</span></td><td><span class='fill'>[dd/mm/aa]</span></td><td><span class="sev <span class='fill'>[o/w]</span>"><span class='fill'>[vigente]</span></span></td></tr><tr><td><span class='fill'>[documento]</span></td><td><span class='fill'>[vN]</span></td><td><span class='fill'>[dd/mm/aa]</span></td><td><span class="sev <span class='fill'>[o/w]</span>"><span class='fill'>[vigente]</span></span></td></tr><tr><td><span class='fill'>[documento]</span></td><td><span class='fill'>[vN]</span></td><td><span class='fill'>[dd/mm/aa]</span></td><td><span class="sev <span class='fill'>[o/w]</span>"><span class='fill'>[vigente]</span></span></td></tr><tr><td><span class='fill'>[documento]</span></td><td><span class='fill'>[vN]</span></td><td><span class='fill'>[dd/mm/aa]</span></td><td><span class="sev <span class='fill'>[o/w]</span>"><span class='fill'>[vigente]</span></span></td></tr><tr><td><span class='fill'>[documento]</span></td><td><span class='fill'>[vN]</span></td><td><span class='fill'>[dd/mm/aa]</span></td><td><span class="sev <span class='fill'>[o/w]</span>"><span class='fill'>[vigente]</span></span></td></tr>
+    </tbody>
+  </table></div>
+
+  <h2 style="margin-top:22px">Índice de Fragilidad · serie</h2>
+  <div class="tblwrap"><table>
+    <thead><tr><th>Corte</th><th class="num">IFS</th><th>Qué lo movió</th></tr></thead>
+    <tbody>
+      <tr><td><span class='fill'>[trimestre]</span></td><td class="num"><span class='fill'>[NN]</span></td><td><span class='fill'>[documento firmado o riesgo cerrado]</span></td></tr><tr><td><span class='fill'>[trimestre]</span></td><td class="num"><span class='fill'>[NN]</span></td><td><span class='fill'>[documento firmado o riesgo cerrado]</span></td></tr><tr><td><span class='fill'>[trimestre]</span></td><td class="num"><span class='fill'>[NN]</span></td><td><span class='fill'>[documento firmado o riesgo cerrado]</span></td></tr><tr><td><span class='fill'>[trimestre]</span></td><td class="num"><span class='fill'>[NN]</span></td><td><span class='fill'>[documento firmado o riesgo cerrado]</span></td></tr>
+    </tbody>
+  </table></div>
+
+  <div class="flag" style="margin-top:16px">
+    <b>Alcance de este reporte.</b> El Expediente Corporativo Vivo es un servicio de vigilancia
+    documental. No constituye auditoría legal, asesoría fiscal ni contable, y no sustituye las
+    constancias registrales. Las obligaciones del prestador son de medio y no de resultado. Se
+    presta sobre los documentos que la sociedad proporcione: un instrumento no proporcionado no
+    aparece en el expediente y sigue produciendo efectos.
+  </div>
+  <p class="tiny" style="margin-top:12px; color:#6C7573">
+    Los servicios se prestan en carácter de abogado corporativo. La fe pública que requiera la
+    instrumentación de cualquier acto será otorgada por el fedatario que la sociedad elija,
+    distinto del prestador. Siguiente corte: <span class='fill'>[dd/mm/aaaa]</span>.
+  </p>
+  <div class="foot"><span>Reporte mensual · <span class='fill'>[GRUPO]</span></span><span>Página 3 de 3 · Confidencial</span></div>
+</div>
+
+<script>
+(function(){
+  var on=true, btn=document.getElementById("toggle-fill"), c=document.getElementById("fill-count");
+  if(c) c.textContent = document.querySelectorAll(".fill").length + " campos por llenar";
+  if(!btn) return;
+  btn.addEventListener("click", function(){
+    on=!on;
+    document.querySelectorAll(".fill").forEach(function(el){
+      el.style.background = on ? "" : "transparent"; el.style.borderBottom = on ? "" : "none";
+    });
+    btn.textContent = on ? "Ocultar resaltado" : "Mostrar resaltado";
+  });
+})();
+</script>
+</body></html>

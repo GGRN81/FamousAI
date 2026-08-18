@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Resultado del Índice de Fragilidad</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,400;6..96,600&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="../comun/ggr.css">
+<style>body{background:#E8E4DA} .doc{padding:26px 16px 60px}
+.fbar{display:grid; grid-template-columns:minmax(0,1fr) minmax(70px,190px) 74px; gap:14px; align-items:center; padding:10px 0; border-bottom:1px solid #E4DED2}
+@media(max-width:560px){.fbar{grid-template-columns:minmax(0,1fr) 74px; row-gap:6px} .fbar>div:nth-child(2){grid-column:1/-1}} .kv td:first-child{width:34%; color:#3F6F5E; font-family:"IBM Plex Mono",monospace; font-size:10.5px; letter-spacing:.1em; text-transform:uppercase}</style>
+</head>
+<body class="doc">
+
+<div class="docbar noprint">
+  <span>Se adjunta al primer correo del embudo · una página</span>
+  <button class="btn" onclick="window.print()">Imprimir / Guardar como PDF</button>
+  <button class="btn ghost" id="toggle-fill">Ocultar resaltado</button>
+  <span class="mono" id="fill-count"></span>
+</div>
+
+<div class="page first">
+  <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:20px">
+    <div>
+      <div class="lbl">Índice de Fragilidad Societaria</div>
+      <h1 style="font-size:26px; margin-top:6px">Tu resultado</h1>
+    </div>
+    <div class="mono" style="font-size:11px; color:#6C7573; text-align:right">
+      <span class='fill'>[nombre]</span><br><span class='fill'>[sociedad]</span><br><span class='fill'>[dd/mm/aaaa]</span>
+    </div>
+  </div>
+  <div class="rule"></div>
+
+  <div style="display:grid; grid-template-columns:auto 1fr; gap:28px; align-items:center; margin:18px 0 22px">
+    <div style="text-align:center; border:2px solid #C4712F; padding:18px 26px">
+      <div style="font-family:'Bodoni Moda',Georgia,serif; font-size:52px; font-weight:600; line-height:1; color:#0D191B"><span class='fill'>[NN]</span></div>
+      <div class="lbl" style="margin-top:5px">IFS / 100</div>
+    </div>
+    <div>
+      <h3 style="font-size:19px"><span class='fill'>[Fragilidad contenida / expuesta / Sociedad frágil / Fragilidad crítica]</span></h3>
+      <p style="font-size:13px"><span class='fill'>[el párrafo de la banda que corresponda, tal como aparece en el diagnóstico]</span></p>
+    </div>
+  </div>
+
+  <div class="lbl" style="margin-bottom:6px">Desglose · 0 = blindado · 100 = frágil</div>
+  
+  <div class="fbar">
+    <div><b style="color:#0D191B; font-size:13.5px">1. Pacto parasocial</b><br><span style="font-size:12px; color:#6C7573">Convenio entre socios distinto de los estatutos</span></div>
+    <div style="height:6px; background:#E4DED2; border-radius:3px; overflow:hidden">
+      <div style="height:100%; width:<span class='fill'>[NN]</span>%; background:<span class='fill'>[color]</span>"></div></div>
+    <div style="font-family:'IBM Plex Mono',monospace; font-size:13px; text-align:right; font-weight:600"><span class='fill'>[NN]</span> / 100</div>
+  </div>
+  <div class="fbar">
+    <div><b style="color:#0D191B; font-size:13.5px">2. Quórums y desempate</b><br><span style="font-size:12px; color:#6C7573">Cómo se decide cuando el capital se bloquea</span></div>
+    <div style="height:6px; background:#E4DED2; border-radius:3px; overflow:hidden">
+      <div style="height:100%; width:<span class='fill'>[NN]</span>%; background:<span class='fill'>[color]</span>"></div></div>
+    <div style="font-family:'IBM Plex Mono',monospace; font-size:13px; text-align:right; font-weight:600"><span class='fill'>[NN]</span> / 100</div>
+  </div>
+  <div class="fbar">
+    <div><b style="color:#0D191B; font-size:13.5px">3. Deadlock y salida</b><br><span style="font-size:12px; color:#6C7573">Cómo sale un socio, a qué precio y quién lo calcula</span></div>
+    <div style="height:6px; background:#E4DED2; border-radius:3px; overflow:hidden">
+      <div style="height:100%; width:<span class='fill'>[NN]</span>%; background:<span class='fill'>[color]</span>"></div></div>
+    <div style="font-family:'IBM Plex Mono',monospace; font-size:13px; text-align:right; font-weight:600"><span class='fill'>[NN]</span> / 100</div>
+  </div>
+  <div class="fbar">
+    <div><b style="color:#0D191B; font-size:13.5px">4. Previsión sucesoria</b><br><span style="font-size:12px; color:#6C7573">Qué pasa con las acciones el día que muere un socio</span></div>
+    <div style="height:6px; background:#E4DED2; border-radius:3px; overflow:hidden">
+      <div style="height:100%; width:<span class='fill'>[NN]</span>%; background:<span class='fill'>[color]</span>"></div></div>
+    <div style="font-family:'IBM Plex Mono',monospace; font-size:13px; text-align:right; font-weight:600"><span class='fill'>[NN]</span> / 100</div>
+  </div>
+  <div class="fbar">
+    <div><b style="color:#0D191B; font-size:13.5px">5. Control de poderes</b><br><span style="font-size:12px; color:#6C7573">Quién puede obligar hoy a la sociedad</span></div>
+    <div style="height:6px; background:#E4DED2; border-radius:3px; overflow:hidden">
+      <div style="height:100%; width:<span class='fill'>[NN]</span>%; background:<span class='fill'>[color]</span>"></div></div>
+    <div style="font-family:'IBM Plex Mono',monospace; font-size:13px; text-align:right; font-weight:600"><span class='fill'>[NN]</span> / 100</div>
+  </div>
+  <div class="fbar">
+    <div><b style="color:#0D191B; font-size:13.5px">6. Beneficiario controlador</b><br><span style="font-size:12px; color:#6C7573">Expediente vigente conforme al art. 32-B Ter del CFF</span></div>
+    <div style="height:6px; background:#E4DED2; border-radius:3px; overflow:hidden">
+      <div style="height:100%; width:<span class='fill'>[NN]</span>%; background:<span class='fill'>[color]</span>"></div></div>
+    <div style="font-family:'IBM Plex Mono',monospace; font-size:13px; text-align:right; font-weight:600"><span class='fill'>[NN]</span> / 100</div>
+  </div>
+  <div class="fbar">
+    <div><b style="color:#0D191B; font-size:13.5px">7. Separación patrimonial</b><br><span style="font-size:12px; color:#6C7573">Dónde termina el socio y dónde empieza la sociedad</span></div>
+    <div style="height:6px; background:#E4DED2; border-radius:3px; overflow:hidden">
+      <div style="height:100%; width:<span class='fill'>[NN]</span>%; background:<span class='fill'>[color]</span>"></div></div>
+    <div style="font-family:'IBM Plex Mono',monospace; font-size:13px; text-align:right; font-weight:600"><span class='fill'>[NN]</span> / 100</div>
+  </div>
+
+  <div class="flag" style="margin-top:20px">
+    <b>Lo que este número no te dice.</b> Localiza el punto de ruptura. No te dice qué cláusula
+    exacta lo causa, ni qué documento hay que firmar, ni cuánto cuesta. Eso está en el
+    <b>Dictamen de Fragilidad Societaria</b>: dieciséis páginas sobre tus documentos reales, en
+    72 horas hábiles, por $6,900 más IVA.
+  </div>
+
+  <p class="tiny" style="margin-top:16px; color:#6C7573">
+    El Índice de Fragilidad Societaria es una herramienta de autoevaluación. Su resultado se
+    calcula únicamente con las respuestas que usted proporcionó y <b>no constituye asesoría
+    jurídica</b>, no implica revisión de los documentos de su sociedad y no sustituye la opinión
+    de un profesional sobre su caso concreto. No genera relación cliente-abogado.
+  </p>
+
+  <div class="foot"><span>Gilberto Gutiérrez Rodríguez · ggr@notaria81.com · +52 662 405 2022</span><span>Página 1 de 1</span></div>
+</div>
+
+<script>
+(function(){
+  var on=true, btn=document.getElementById("toggle-fill"), c=document.getElementById("fill-count");
+  if(c) c.textContent = document.querySelectorAll(".fill").length + " campos por llenar";
+  if(!btn) return;
+  btn.addEventListener("click", function(){
+    on=!on;
+    document.querySelectorAll(".fill").forEach(function(el){
+      el.style.background = on ? "" : "transparent"; el.style.borderBottom = on ? "" : "none";
+    });
+    btn.textContent = on ? "Ocultar resaltado" : "Mostrar resaltado";
+  });
+})();
+</script>
+</body></html>

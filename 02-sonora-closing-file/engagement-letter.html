@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Engagement Letter</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,400;6..96,600&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="../comun/ggr.css">
+<style>body{background:#E8E4DA} .doc{padding:26px 16px 60px} .kv td:first-child{width:34%; color:#3F6F5E; font-family:"IBM Plex Mono",monospace; font-size:10.5px; letter-spacing:.1em; text-transform:uppercase}</style>
+</head>
+<body class="doc">
+
+<div class="docbar noprint">
+  <span>Signed before work starts · one page</span>
+  <button class="btn" onclick="window.print()">Print / Save as PDF</button>
+  <button class="btn ghost" id="toggle-fill">Hide highlights</button>
+  <span class="mono" id="fill-count"></span>
+</div>
+
+<div class="page first">
+  <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:20px">
+    <div>
+      <div class="lbl">Gilberto Gutiérrez Rodríguez · Hermosillo, Sonora, Mexico</div>
+      <h1 style="font-size:28px; margin-top:8px">Engagement letter</h1>
+    </div>
+    <div class="mono" style="font-size:11px; color:#6C7573; text-align:right">
+      File <span class='fill'>[SCF-2026-0000]</span><br><span class='fill'>[Month DD, YYYY]</span>
+    </div>
+  </div>
+  <div class="rule"></div>
+
+  <p><b><span class='fill'>[CLIENT NAME]</span></b></p>
+  <p>Thank you. This letter sets out what I will do, what I will not, how long it takes and what it costs. Signing it starts the engagement.</p>
+
+  <div class="tblwrap" style="margin:14px 0"><table class="kv"><tbody>
+    <tr><td>Engagement</td><td><b><span class='fill'>[Pre-purchase check / Cross-border vehicle blueprint]</span></b> — <span class='fill'>[property or project]</span></td></tr>
+    <tr><td>Fee</td><td><b><span class='fill'>[US$449.00]</span></b>, flat. No hourly billing, no adjustment.</td></tr>
+    <tr><td>Payment</td><td>In full, by card, before work starts</td></tr>
+    <tr><td>Delivery</td><td><b>Five business days</b> from receipt of your last document — not from payment</td></tr>
+    <tr><td>Deliverable</td><td>Written report in English, PDF, plus a <span class='fill'>[20]</span>-minute call</td></tr>
+  </tbody></table></div>
+
+  <h3>What is included</h3>
+  <p>A written review of the documents you provide against twelve points of Mexican restricted-zone practice; findings ranked as stop-the-closing, fix-before-funding, or noted; plain-English rendering of your key Spanish clauses; a sequenced action list; and an explicit list of what your file does not contain.</p>
+
+  <h3>What is not included</h3>
+  <p><b>This is not title insurance and not a guarantee of title.</b> It is not a survey, appraisal or physical inspection. It is not U.S. tax advice. It is not representation in your transaction, and it does not make me your attorney of record. It does not bind the trustee bank, the notary, or any authority.</p>
+
+  <h3>Mexican notarial practice</h3>
+  <p>In Mexico a <em>notario público</em> — a specially licensed attorney holding public faith — authorizes the instrument that transfers property. <b>I do the review and the structuring; a different notary certifies.</b> You keep full freedom to choose that notary.</p>
+
+  <h3>What I need from you</h3>
+  <p>Whatever exists: the trust agreement or draft deed, the public registry certificate, the prior deed, the foreign investment permit, the purchase agreement, and tax, water and HOA statements. Send what you have — do not wait to have everything. <b>Documents requested and not provided are listed in the report and limit it accordingly.</b></p>
+
+  <h3>Confidentiality</h3>
+  <p>Your documents are not shared with third parties, not used as examples, and not used in published material. They are retained and destroyed under the privacy notice provided with this letter. You may request destruction in writing once the engagement ends.</p>
+
+  <h3>Identification</h3>
+  <p>I need your passport data page and proof of address to open the file. For a cross-border vehicle engagement I also need the U.S. entity's formation documents and the identity of the individuals who ultimately control it.</p>
+
+  <h3>Cancellation</h3>
+  <p>If you decide not to proceed <b>before</b> I receive your last document, the fee is refunded in full. Once the review has begun there is no refund, because the work has been produced.</p>
+
+  <h3>Governing law</h3>
+  <p>This engagement is governed by the laws of the United Mexican States. <span class='fill'>[Optional: dispute resolution clause agreed with the client.]</span></p>
+
+  <div class="rule" style="margin-top:26px"></div>
+  <div style="display:grid; grid-template-columns:1fr 1fr; gap:40px; margin-top:48px">
+    <div style="border-top:1px solid #0D191B; padding-top:9px; text-align:center">
+      <b><span class='fill'>[CLIENT NAME]</span></b><br><span class="tiny" style="color:#6C7573">I accept these terms</span>
+    </div>
+    <div style="border-top:1px solid #0D191B; padding-top:9px; text-align:center">
+      <b>Gilberto Gutiérrez Rodríguez</b><br><span class="tiny" style="color:#6C7573">Corporate &amp; notarial attorney · License <span class='fill'>[number]</span></span>
+    </div>
+  </div>
+
+  <div class="foot"><span>Engagement letter · <span class='fill'>[SCF-2026-0000]</span></span><span>Page 1 of 1 · Confidential</span></div>
+</div>
+
+<script>
+(function(){
+  var on=true, btn=document.getElementById("toggle-fill"), c=document.getElementById("fill-count");
+  if(c) c.textContent = document.querySelectorAll(".fill").length + " campos por llenar";
+  if(!btn) return;
+  btn.addEventListener("click", function(){
+    on=!on;
+    document.querySelectorAll(".fill").forEach(function(el){
+      el.style.background = on ? "" : "transparent"; el.style.borderBottom = on ? "" : "none";
+    });
+    btn.textContent = on ? "Ocultar resaltado" : "Mostrar resaltado";
+  });
+})();
+</script>
+</body></html>

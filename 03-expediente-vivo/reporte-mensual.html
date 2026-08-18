@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Reporte Mensual</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,400;6..96,600&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="../comun/ggr.css">
+<style>body{background:#E8E4DA} .doc{padding:26px 16px 60px}
+.kv td:first-child{width:34%; color:#3F6F5E; font-family:"IBM Plex Mono",monospace; font-size:10.5px; letter-spacing:.1em; text-transform:uppercase}</style>
+</head>
+<body class="doc">
+
+<div class="docbar noprint">
+  <span>Se entrega el mismo día cada mes · tres páginas</span>
+  <button class="btn" onclick="window.print()">Imprimir / Guardar como PDF</button>
+  <button class="btn ghost" id="toggle-fill">Ocultar resaltado</button>
+  <span class="mono" id="fill-count"></span>
+</div>
+
+<div class="page first">
+  <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:20px">
+    <div>
+      <div class="lbl">Expediente Corporativo Vivo · Plan <span class='fill'>[Grupo]</span></div>
+      <h1 style="font-size:28px; margin-top:6px"><span class='fill'>[GRUPO O SOCIEDAD]</span></h1>
+      <div class="mono" style="font-size:11px; color:#6C7573; margin-top:4px">
+        Reporte de <span class='fill'>[mes]</span> · corte al <span class='fill'>[dd/mm/aaaa]</span> · <span class='fill'>[N]</span> sociedades
+      </div>
+    </div>
+    <div class="mono" style="font-size:11px; color:#6C7573; text-align:right">Reporte <span class='fill'>[N]</span> de 12</div>
+  </div>
+  <div class="rule"></div>
+
+  <div style="display:grid; grid-template-columns:auto 1fr; gap:26px; align-items:center; margin:16px 0 20px">
+    <div style="text-align:center; border:2px solid #C4712F; padding:16px 24px">
+      <div style="font-family:'Bodoni Moda',Georgia,serif; font-size:46px; font-weight:600; line-height:1; color:#0D191B"><span class='fill'>[NN]</span></div>
+      <div class="lbl" style="margin-top:4px">IFS</div>
+      <div class="mono" style="font-size:11px; color:#6C7573; margin-top:6px"><span class='fill'>[+/- N]</span> vs. trimestre anterior</div>
+    </div>
+    <div>
+      <h3 style="font-size:18px"><span class='fill'>[Una línea sobre el estado del expediente este mes]</span></h3>
+      <p style="font-size:13px"><span class='fill'>[Dos o tres líneas. Si el mes fue tranquilo, se dice que fue tranquilo y se nombra lo que no se movió. Un reporte en blanco es la causa número uno de cancelación al cuarto mes.]</span></p>
+    </div>
+  </div>
+
+  <h3>Lo que cambió este mes</h3>
+  <div class="tblwrap"><table>
+    <thead><tr><th>Fecha</th><th>Qué pasó</th><th>Efecto en el expediente</th></tr></thead>
+    <tbody>
+      <tr><td><span class='fill'>[dd/mm]</span></td><td><span class='fill'>[hecho]</span></td><td><span class='fill'>[qué se actualizó]</span></td></tr><tr><td><span class='fill'>[dd/mm]</span></td><td><span class='fill'>[hecho]</span></td><td><span class='fill'>[qué se actualizó]</span></td></tr><tr><td><span class='fill'>[dd/mm]</span></td><td><span class='fill'>[hecho]</span></td><td><span class='fill'>[qué se actualizó]</span></td></tr><tr><td><span class='fill'>[dd/mm]</span></td><td><span class='fill'>[hecho]</span></td><td><span class='fill'>[qué se actualizó]</span></td></tr>
+    </tbody>
+  </table></div>
+
+  <h3 style="margin-top:16px">Lo que viene en los próximos 60 días</h3>
+  <div class="tblwrap"><table>
+    <thead><tr><th>Fecha</th><th>Acto</th><th>Requiere antes</th><th>Quién</th><th>Faltan</th></tr></thead>
+    <tbody>
+      <tr><td><span class='fill'>[dd/mm]</span></td><td><span class='fill'>[acto]</span></td><td><span class='fill'>[requisito previo]</span></td><td><span class='fill'>[sociedad / despacho]</span></td><td><span class="sev <span class='fill'>[c/w/o]</span>"><span class='fill'>[N d]</span></span></td></tr><tr><td><span class='fill'>[dd/mm]</span></td><td><span class='fill'>[acto]</span></td><td><span class='fill'>[requisito previo]</span></td><td><span class='fill'>[sociedad / despacho]</span></td><td><span class="sev <span class='fill'>[c/w/o]</span>"><span class='fill'>[N d]</span></span></td></tr><tr><td><span class='fill'>[dd/mm]</span></td><td><span class='fill'>[acto]</span></td><td><span class='fill'>[requisito previo]</span></td><td><span class='fill'>[sociedad / despacho]</span></td><td><span class="sev <span class='fill'>[c/w/o]</span>"><span class='fill'>[N d]</span></span></td></tr><tr><td><span class='fill'>[dd/mm]</span></td><td><span class='fill'>[acto]</span></td><td><span class='fill'>[requisito previo]</span></td><td><span class='fill'>[sociedad / despacho]</span></td><td><span class="sev <span class='fill'>[c/w/o]</span>"><span class='fill'>[N d]</span></span></td></tr>
+    </tbody>
+  </table></div>
+
+  <div class="flag" style="margin-top:16px">
+    <b>Lo único que necesito de ustedes este mes.</b> <span class='fill'>[Una sola petición, concreta, con fecha. Si no hay ninguna, escribir «nada» — decirlo explícitamente vale tanto como pedir.]</span>
+  </div>
+
+  <div class="foot"><span>Reporte mensual · <span class='fill'>[GRUPO]</span></span><span>Página 1 de 3 · Confidencial</span></div>
+</div>
+
+<div class="page">
+  <div class="lbl">Estado del expediente</div>
+  <h2>Semáforo de poderes</h2>
+  <p>Quién puede obligar a la sociedad hoy, con qué facultades y desde cuándo.</p>
+  <div class="tblwrap" style="margin-top:12px"><table>
+    <thead><tr><th>Apoderado</th><th>Cargo</th><th>Facultades</th><th>Otorgado</th><th>Estatus</th></tr></thead>
+    <tbody>
+      <tr><td><span class='fill'>[nombre]</span></td><td><span class='fill'>[cargo]</span></td><td><span class='fill'>[dominio / administración / cambiarios / pleitos]</span></td><td><span class='fill'>[dd/mm/aa]</span></td><td><span class="sev <span class='fill'>[o/w/c]</span>"><span class='fill'>[vigente]</span></span></td></tr><tr><td><span class='fill'>[nombre]</span></td><td><span class='fill'>[cargo]</span></td><td><span class='fill'>[dominio / administración / cambiarios / pleitos]</span></td><td><span class='fill'>[dd/mm/aa]</span></td><td><span class="sev <span class='fill'>[o/w/c]</span>"><span class='fill'>[vigente]</span></span></td></tr><tr><td><span class='fill'>[nombre]</span></td><td><span class='fill'>[cargo]</span></td><td><span class='fill'>[dominio / administración / cambiarios / pleitos]</span></td><td><span class='fill'>[dd/mm/aa]</span></td><td><span class="sev <span class='fill'>[o/w/c]</span>"><span class='fill'>[vigente]</span></span></td></tr><tr><td><span class='fill'>[nombre]</span></td><td><span class='fill'>[cargo]</span></td><td><span class='fill'>[dominio / administración / cambiarios / pleitos]</span></td><td><span class='fill'>[dd/mm/aa]</span></td><td><span class="sev <span class='fill'>[o/w/c]</span>"><span class='fill'>[vigente]</span></span></td></tr><tr><td><span class='fill'>[nombre]</span></td><td><span class='fill'>[cargo]</span></td><td><span class='fill'>[dominio / administración / cambiarios / pleitos]</span></td><td><span class='fill'>[dd/mm/aa]</span></td><td><span class="sev <span class='fill'>[o/w/c]</span>"><span class='fill'>[vigente]</span></span></td></tr><tr><td><span class='fill'>[nombre]</span></td><td><span class='fill'>[cargo]</span></td><td><span class='fill'>[dominio / administración / cambiarios / pleitos]</span></td><td><span class='fill'>[dd/mm/aa]</span></td><td><span class="sev <span class='fill'>[o/w/c]</span>"><span class='fill'>[vigente]</span></span></td></tr><tr><td><span class='fill'>[nombre]</span></td><td><span class='fill'>[cargo]</span></td><td><span class='fill'>[dominio / administración / cambiarios / pleitos]</span></td><td><span class='fill'>[dd/mm/aa]</span></td><td><span class="sev <span class='fill'>[o/w/c]</span>"><span class='fill'>[vigente]</span></span></td></tr>
+    </tbody>
+  </table></div>
+  <div class="flag" style="margin-top:14px">
+    <b>Advertencia permanente.</b> El inventario se construye únicamente con los instrumentos
+    proporcionados. Un poder otorgado y no proporcionado no aparece aquí y sigue siendo válido.
+    La única forma de cerrar ese riesgo es la revocación general con notificación e inscripción.
+  </div>
+
+  <h2 style="margin-top:22px">Calendario corporativo</h2>
+  <div class="tblwrap"><table>
+    <thead><tr><th>Fecha</th><th>Obligación</th><th>Origen</th><th>Estatus</th></tr></thead>
+    <tbody>
+      <tr><td><span class='fill'>[dd/mm/aa]</span></td><td>Asamblea anual ordinaria</td><td>LGSM <span class="sev w">⚠ cotejar plazo</span></td><td><span class='fill'>[planeada]</span></td></tr>
+      <tr><td><span class='fill'>[dd/mm/aa]</span></td><td>Actualización de beneficiario controlador</td><td>CFF 32-B Ter <span class="sev w">⚠ cotejar</span></td><td><span class='fill'>[estatus]</span></td></tr>
+      <tr><td><span class='fill'>[dd/mm/aa]</span></td><td>Aviso al RNIE</td><td><span class='fill'>[inversión extranjera]</span></td><td><span class='fill'>[estatus]</span></td></tr>
+      <tr><td><span class='fill'>[dd/mm/aa]</span></td><td><span class='fill'>[renovación de órgano de administración]</span></td><td>Estatutos</td><td><span class='fill'>[estatus]</span></td></tr>
+      <tr><td><span class='fill'>[dd/mm/aa]</span></td><td><span class='fill'>[otra]</span></td><td><span class='fill'>[origen]</span></td><td><span class='fill'>[estatus]</span></td></tr>
+    </tbody>
+  </table></div>
+  <div class="foot"><span>Reporte mensual · <span class='fill'>[GRUPO]</span></span><span>Página 2 de 3 · Confidencial</span></div>
+</div>
+
+<div class="page">
+  <div class="lbl">Documentos</div>
+  <h2>Carátula de personalidad vigente</h2>
+  <p>Versión en circulación a la fecha de corte. Se reemite en 24 horas hábiles a solicitud, en español y en inglés.</p>
+  <div class="tblwrap" style="margin-top:12px"><table class="kv"><tbody>
+    <tr><td>Sociedad</td><td><span class='fill'>[DENOMINACIÓN]</span></td></tr>
+    <tr><td>Versión</td><td>v<span class='fill'>[N]</span> · emitida <span class='fill'>[dd/mm/aaaa]</span></td></tr>
+    <tr><td>Órgano de administración</td><td><span class='fill'>[consejo / administrador único]</span> · vigencia <span class='fill'>[periodo]</span></td></tr>
+    <tr><td>Facultades</td><td>Transcritas literalmente · cláusula <span class='fill'>[N]</span></td></tr>
+    <tr><td>Beneficiario controlador</td><td><span class='fill'>[integrado / pendiente]</span> · actualizado <span class='fill'>[dd/mm/aaaa]</span></td></tr>
+    <tr><td>Emitida este mes</td><td><span class='fill'>[N]</span> veces · tiempo medio <span class='fill'>[NN]</span> min</td></tr>
+  </tbody></table></div>
+
+  <h2 style="margin-top:22px">Bóveda documental</h2>
+  <div class="tblwrap"><table>
+    <thead><tr><th>Documento</th><th>Versión</th><th>Actualizado</th><th>Estatus</th></tr></thead>
+    <tbody>
+      <tr><td><span class='fill'>[documento]</span></td><td><span class='fill'>[vN]</span></td><td><span class='fill'>[dd/mm/aa]</span></td><td><span class="sev <span class='fill'>[o/w]</span>"><span class='fill'>[vigente]</span></span></td></tr><tr><td><span class='fill'>[documento]</span></td><td><span class='fill'>[vN]</span></td><td><span class='fill'>[dd/mm/aa]</span></td><td><span class="sev <span class='fill'>[o/w]</span>"><span class='fill'>[vigente]</span></span></td></tr><tr><td><span class='fill'>[documento]</span></td><td><span class='fill'>[vN]</span></td><td><span class='fill'>[dd/mm/aa]</span></td><td><span class="sev <span class='fill'>[o/w]</span>"><span class='fill'>[vigente]</span></span></td></tr><tr><td><span class='fill'>[documento]</span></td><td><span class='fill'>[vN]</span></td><td><span class='fill'>[dd/mm/aa]</span></td><td><span class="sev <span class='fill'>[o/w]</span>"><span class='fill'>[vigente]</span></span></td></tr><tr><td><span class='fill'>[documento]</span></td><td><span class='fill'>[vN]</span></td><td><span class='fill'>[dd/mm/aa]</span></td><td><span class="sev <span class='fill'>[o/w]</span>"><span class='fill'>[vigente]</span></span></td></tr>
+    </tbody>
+  </table></div>
+
+  <h2 style="margin-top:22px">Índice de Fragilidad · serie</h2>
+  <div class="tblwrap"><table>
+    <thead><tr><th>Corte</th><th class="num">IFS</th><th>Qué lo movió</th></tr></thead>
+    <tbody>
+      <tr><td><span class='fill'>[trimestre]</span></td><td class="num"><span class='fill'>[NN]</span></td><td><span class='fill'>[documento firmado o riesgo cerrado]</span></td></tr><tr><td><span class='fill'>[trimestre]</span></td><td class="num"><span class='fill'>[NN]</span></td><td><span class='fill'>[documento firmado o riesgo cerrado]</span></td></tr><tr><td><span class='fill'>[trimestre]</span></td><td class="num"><span class='fill'>[NN]</span></td><td><span class='fill'>[documento firmado o riesgo cerrado]</span></td></tr><tr><td><span class='fill'>[trimestre]</span></td><td class="num"><span class='fill'>[NN]</span></td><td><span class='fill'>[documento firmado o riesgo cerrado]</span></td></tr>
+    </tbody>
+  </table></div>
+
+  <div class="flag" style="margin-top:16px">
+    <b>Alcance de este reporte.</b> El Expediente Corporativo Vivo es un servicio de vigilancia
+    documental. No constituye auditoría legal, asesoría fiscal ni contable, y no sustituye las
+    constancias registrales. Las obligaciones del prestador son de medio y no de resultado. Se
+    presta sobre los documentos que la sociedad proporcione: un instrumento no proporcionado no
+    aparece en el expediente y sigue produciendo efectos.
+  </div>
+  <p class="tiny" style="margin-top:12px; color:#6C7573">
+    Los servicios se prestan en carácter de abogado corporativo. La fe pública que requiera la
+    instrumentación de cualquier acto será otorgada por el fedatario que la sociedad elija,
+    distinto del prestador. Siguiente corte: <span class='fill'>[dd/mm/aaaa]</span>.
+  </p>
+  <div class="foot"><span>Reporte mensual · <span class='fill'>[GRUPO]</span></span><span>Página 3 de 3 · Confidencial</span></div>
+</div>
+
+<script>
+(function(){
+  var on=true, btn=document.getElementById("toggle-fill"), c=document.getElementById("fill-count");
+  if(c) c.textContent = document.querySelectorAll(".fill").length + " campos por llenar";
+  if(!btn) return;
+  btn.addEventListener("click", function(){
+    on=!on;
+    document.querySelectorAll(".fill").forEach(function(el){
+      el.style.background = on ? "" : "transparent"; el.style.borderBottom = on ? "" : "none";
+    });
+    btn.textContent = on ? "Ocultar resaltado" : "Mostrar resaltado";
+  });
+})();
+</script>
+</body></html>

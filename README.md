@@ -15,8 +15,11 @@ Ninguno vende actos notariales. Los tres viven en la capa pre-notarial.
 
 ## Empezar
 
-Abre **`index.html`** con doble clic. Es el catálogo: desde ahí se llega a los 24 archivos.
+Abre **`index.html`** con doble clic. Es el catálogo: desde ahí se llega a los 31 archivos.
 Nada requiere servidor, instalación ni conexión salvo Google Fonts.
+
+Para ponerlo en línea y poder cobrar: **`PUESTA-EN-MARCHA.md`**. Seis a ocho horas, dos
+sábados, menos de $1,500 MXN de arranque.
 
 ## Estructura
 
@@ -27,9 +30,15 @@ comun/ggr.css                  colores, tipografía y estilos de impresión — 
 comun/*.md                     alcance y limitaciones · aviso de privacidad · expediente de identificación
 contenido/lote-linkedin.md     9 posts, tres semanas, alimenta los embudos 01 y 02
 
+PUESTA-EN-MARCHA.md            de los archivos a la primera factura
+mvps/planes-de-negocio.html    economía unitaria, lógica de precio, capacidad, rampa a 12 meses
+contenido/modelo-financiero.py el script que produjo cada cifra
+
 01-dictamen-ifs/
   index.html                   página de venta + autodiagnóstico funcional (14 preguntas, 7 factores)
   dictamen-plantilla.html      el entregable, 16 páginas imprimibles
+  carta-de-encargo.html        se firma antes de empezar, 1 página
+  resultado-ifs.html           el PDF que se adjunta al primer correo, 1 página
   prompt-maestro.md            de cuatro documentos a borrador en 50 minutos
   intake.md                    qué se le pide al cliente al cobrar
   secuencia-correos.md         5 correos, los primeros tres no venden
@@ -37,13 +46,16 @@ contenido/lote-linkedin.md     9 posts, tres semanas, alimenta los embudos 01 y 
 02-sonora-closing-file/
   index.html                   página de venta en inglés + formulario de pedido
   checklist-12-puntos.html     el imán de captura, 2 páginas
-  report-template.html         el entregable en inglés, 11 páginas
+  report-template.html         el entregable del SKU A, 11 páginas
+  blueprint-template.html      el entregable del SKU B ($1,290 USD), 8 páginas, con diagramas
+  engagement-letter.html       se firma antes de empezar, 1 página
   master-prompt.md             incluye la regla de registro y la prohibición de inflar hallazgos
   intake.md · email-sequence.md · community-replies.md
 
 03-expediente-vivo/
   index.html                   panel funcional: edita, guarda solo, exporta, imprime
   caratula-personalidad.html   la función estrella, 4 páginas, ES/EN
+  reporte-mensual.html         la prueba de valor mensual, 3 páginas
   propuesta-honorarios.html    propuesta de suscripción, 4 páginas
   contrato-suscripcion.md · guion-venta.md
 ```

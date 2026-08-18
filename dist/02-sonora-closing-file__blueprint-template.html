@@ -1,0 +1,522 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cross-Border Vehicle Blueprint</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,400;6..96,600&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap">
+<style>
+/* comun/ggr.css incrustado por build.sh */
+/* ═══════════════════════════════════════════════════════════════
+   GGR — Hoja de estilos común de los tres productos digitales
+   EDITA LOS TOKENS DE ABAJO Y CAMBIA LOS TRES PRODUCTOS A LA VEZ.
+   ═══════════════════════════════════════════════════════════════ */
+
+:root{
+  /* ---- MARCA (tomados del brochure) ---- */
+  --ink:#0D191B;         /* verde-negro profundo */
+  --bone:#EDE8DF;        /* crema */
+  --ember:#C4712F;       /* naranja quemado */
+  --verdigris:#7FA394;   /* verde de las etiquetas */
+
+  /* ---- SUPERFICIES Y TEXTO (tema oscuro por defecto) ---- */
+  --bg:#0D191B;
+  --surface:#132427;
+  --surface-2:#1B3034;
+  --line:rgba(237,232,223,.14);
+  --line-strong:rgba(237,232,223,.28);
+  --fg:#E9E4DB;
+  --fg-dim:#A9B3B0;
+  --fg-faint:#77837F;
+  --accent:#D9924F;
+  --accent-ink:#0D191B;
+  --label:#7FA394;
+
+  /* ---- SEMÁFORO (independiente del acento) ---- */
+  --crit:#DE6153; --warn:#D2A32B; --ok:#3CA97C;
+  --crit-bg:rgba(222,97,83,.14); --warn-bg:rgba(210,163,43,.14); --ok-bg:rgba(60,169,124,.14);
+
+  /* ---- HERO: mundo único, igual en ambos temas ---- */
+  --hero-bg:#0D191B; --hero-fg:#EDE8DF; --hero-dim:#94A29E;
+  --hero-accent:#D9924F; --hero-label:#7FA394;
+
+  --shadow:0 1px 0 rgba(237,232,223,.05), 0 18px 40px -24px rgba(0,0,0,.7);
+  --maxw:1180px;
+}
+@media (prefers-color-scheme: light){
+  :root:not([data-theme="dark"]){
+    --bg:#F2EEE6; --surface:#FBF9F5; --surface-2:#E8E2D6;
+    --line:rgba(13,25,27,.14); --line-strong:rgba(13,25,27,.30);
+    --fg:#14262A; --fg-dim:#4B5A5C; --fg-faint:#7C8886;
+    --accent:#A85A1E; --accent-ink:#FBF9F5; --label:#3F6F5E;
+    --crit:#A82014; --warn:#B8860B; --ok:#0F7048;
+    --crit-bg:rgba(168,32,20,.10); --warn-bg:rgba(184,134,11,.13); --ok-bg:rgba(15,112,72,.10);
+    --shadow:0 1px 0 rgba(13,25,27,.04), 0 16px 34px -26px rgba(13,25,27,.45);
+  }
+}
+:root[data-theme="light"]{
+  --bg:#F2EEE6; --surface:#FBF9F5; --surface-2:#E8E2D6;
+  --line:rgba(13,25,27,.14); --line-strong:rgba(13,25,27,.30);
+  --fg:#14262A; --fg-dim:#4B5A5C; --fg-faint:#7C8886;
+  --accent:#A85A1E; --accent-ink:#FBF9F5; --label:#3F6F5E;
+  --crit:#A82014; --warn:#B8860B; --ok:#0F7048;
+  --crit-bg:rgba(168,32,20,.10); --warn-bg:rgba(184,134,11,.13); --ok-bg:rgba(15,112,72,.10);
+  --shadow:0 1px 0 rgba(13,25,27,.04), 0 16px 34px -26px rgba(13,25,27,.45);
+}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0; background:var(--bg); color:var(--fg);
+  font-family:"IBM Plex Sans",ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
+  font-size:16px; line-height:1.62; -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3,h4{text-wrap:balance; margin:0}
+p{margin:0}
+a{color:var(--accent)}
+img{max-width:100%}
+:focus-visible{outline:2px solid var(--accent); outline-offset:3px; border-radius:2px}
+@media (prefers-reduced-motion:reduce){*{animation:none!important; transition:none!important}}
+
+/* ---- primitivas ---- */
+.wrap{max-width:var(--maxw); margin:0 auto; padding:0 28px}
+@media(max-width:640px){.wrap{padding:0 18px}}
+.narrow{max-width:820px}
+
+.lbl{font-family:"IBM Plex Mono",ui-monospace,monospace; font-size:11px; font-weight:500;
+     letter-spacing:.22em; text-transform:uppercase; color:var(--label)}
+.mono{font-family:"IBM Plex Mono",ui-monospace,monospace; font-variant-numeric:tabular-nums}
+.serif{font-family:"Bodoni Moda",Georgia,"Times New Roman",serif}
+
+.h-sec{font-family:"Bodoni Moda",Georgia,serif; font-weight:600; font-size:clamp(30px,4.2vw,46px); line-height:1.08; letter-spacing:-.01em}
+.h-sub{font-family:"Bodoni Moda",Georgia,serif; font-weight:600; font-size:clamp(22px,2.6vw,30px); line-height:1.14}
+.h-min{font-size:15px; font-weight:600}
+.lead{font-size:clamp(16px,1.5vw,18.5px); color:var(--fg-dim); max-width:66ch}
+.small{font-size:13.5px; color:var(--fg-dim)}
+.tiny{font-size:12px; color:var(--fg-faint)}
+
+.band{border-top:1px solid var(--line); padding:clamp(48px,6vw,84px) 0}
+.card{background:var(--surface); border:1px solid var(--line); border-radius:3px; padding:22px 24px; box-shadow:var(--shadow); min-width:0}
+.grid{display:grid; gap:18px}
+.grid>*{min-width:0}
+.g2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.g3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.g4{grid-template-columns:repeat(4,minmax(0,1fr))}
+@media(max-width:900px){.g3,.g4{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:620px){.g2,.g3,.g4{grid-template-columns:minmax(0,1fr)}}
+.stack{display:flex; flex-direction:column; min-width:0}
+.gap8{gap:8px} .gap12{gap:12px} .gap16{gap:16px} .gap24{gap:24px} .gap36{gap:36px} .gap48{gap:48px}
+.row{display:flex; gap:12px; flex-wrap:wrap; align-items:center}
+
+.tblwrap{overflow-x:auto; border:1px solid var(--line); border-radius:3px; background:var(--surface)}
+table{border-collapse:collapse; width:100%; min-width:520px; font-size:14px}
+th{text-align:left; font-family:"IBM Plex Mono",monospace; font-size:10.5px; letter-spacing:.16em;
+   text-transform:uppercase; color:var(--label); font-weight:500; padding:12px 16px; border-bottom:1px solid var(--line-strong)}
+td{padding:12px 16px; border-bottom:1px solid var(--line); vertical-align:top; color:var(--fg-dim)}
+td:first-child{color:var(--fg); font-weight:500}
+tr:last-child td{border-bottom:none}
+td.num,th.num{text-align:right; font-family:"IBM Plex Mono",monospace; font-variant-numeric:tabular-nums; white-space:nowrap}
+
+.chip{display:inline-flex; align-items:center; gap:6px; font-family:"IBM Plex Mono",monospace;
+      font-size:10.5px; letter-spacing:.12em; text-transform:uppercase; padding:3px 9px; border-radius:2px;
+      border:1px solid currentColor; white-space:normal; max-width:100%; line-height:1.5}
+.chip.c{color:var(--crit); background:var(--crit-bg)}
+.chip.w{color:var(--warn); background:var(--warn-bg)}
+.chip.o{color:var(--ok); background:var(--ok-bg)}
+.chip.n{color:var(--fg-faint)}
+td .chip,.carat-h .chip{white-space:nowrap}
+
+.pull{border-left:3px solid var(--ember); padding:6px 0 6px 20px; font-size:17px; color:var(--fg); max-width:62ch}
+.warnnote{border-left:3px solid var(--warn); background:var(--warn-bg); padding:12px 16px; border-radius:0 3px 3px 0; font-size:13.5px; color:var(--fg-dim)}
+
+ul.tick{list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:9px}
+ul.tick li{position:relative; padding-left:20px; font-size:14.5px; color:var(--fg-dim)}
+ul.tick li::before{content:""; position:absolute; left:0; top:9px; width:7px; height:7px; background:var(--ember); border-radius:1px}
+ul.tick li b{color:var(--fg); font-weight:600}
+
+.btn{font-family:"IBM Plex Mono",monospace; font-size:12px; letter-spacing:.14em; text-transform:uppercase; font-weight:600;
+     padding:14px 26px; border-radius:2px; border:1px solid var(--accent); background:var(--accent); color:var(--accent-ink);
+     cursor:pointer; transition:opacity .15s; text-decoration:none; display:inline-block; text-align:center}
+.btn:hover{opacity:.86}
+.btn[disabled]{opacity:.32; cursor:not-allowed}
+.btn.ghost{background:transparent; color:var(--fg-dim); border-color:var(--line-strong)}
+.btn.ghost:hover{color:var(--fg); border-color:var(--fg-dim); opacity:1}
+.btn.big{padding:17px 34px; font-size:13px}
+
+input[type=text],input[type=email],input[type=tel],select,textarea{
+  font-family:inherit; font-size:15px; color:var(--fg); background:var(--bg);
+  border:1px solid var(--line-strong); border-radius:2px; padding:12px 14px; width:100%}
+input::placeholder,textarea::placeholder{color:var(--fg-faint)}
+label{font-family:"IBM Plex Mono",monospace; font-size:10.5px; letter-spacing:.14em;
+      text-transform:uppercase; color:var(--label); display:block; margin-bottom:6px}
+
+/* ---- nav ---- */
+nav{position:sticky; top:0; z-index:60; background:color-mix(in srgb, var(--bg) 88%, transparent);
+    backdrop-filter:blur(12px); border-bottom:1px solid var(--line)}
+.navin{max-width:var(--maxw); margin:0 auto; padding:11px 28px; display:flex; align-items:center; gap:22px; flex-wrap:wrap}
+.navmark{font-family:"IBM Plex Mono",monospace; font-size:12px; letter-spacing:.3em; color:var(--fg); font-weight:600; text-decoration:none}
+.navlinks{display:flex; gap:18px; flex-wrap:wrap; margin-left:auto; align-items:center}
+.navlinks a{font-family:"IBM Plex Mono",monospace; font-size:11px; letter-spacing:.14em; text-transform:uppercase;
+            color:var(--fg-dim); text-decoration:none; padding:3px 0; border-bottom:1px solid transparent}
+.navlinks a:hover{color:var(--fg); border-bottom-color:var(--ember)}
+@media(max-width:640px){.navin{padding:10px 18px; gap:12px} .navlinks{gap:12px; margin-left:0; width:100%}}
+section[id]{scroll-margin-top:76px}
+
+/* ---- hero ---- */
+.hero{background:var(--hero-bg); color:var(--hero-fg); padding:clamp(56px,8vw,104px) 0 clamp(44px,5vw,68px); position:relative; overflow:hidden}
+.hero::after{content:""; position:absolute; inset:0; pointer-events:none;
+  background:radial-gradient(760px 420px at 84% 8%, rgba(217,146,79,.16), transparent 62%)}
+.hero .wrap{position:relative; z-index:1}
+.hero .lbl{color:var(--hero-label)}
+.hero h1{font-family:"Bodoni Moda",Georgia,serif; font-weight:600;
+  font-size:clamp(38px,6.4vw,74px); line-height:1.0; letter-spacing:-.02em; color:var(--hero-fg); margin:18px 0 0}
+.hero h1 em{font-style:italic; color:var(--hero-accent)}
+.hero .lead{color:var(--hero-dim); max-width:58ch; margin-top:20px}
+.hero .small,.hero .tiny{color:var(--hero-dim)}
+
+.metrics{display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); margin-top:clamp(36px,4vw,56px); border-top:1px solid rgba(237,232,223,.16)}
+.metric{padding:20px 22px 4px; border-right:1px solid rgba(237,232,223,.12); min-width:0}
+.metric:last-child{border-right:none}
+.metric .v{font-family:"Bodoni Moda",Georgia,serif; font-size:clamp(26px,3.2vw,38px); font-weight:600; color:var(--hero-fg); line-height:1; font-variant-numeric:tabular-nums}
+.metric .v small{font-family:"IBM Plex Mono",monospace; font-size:12px; letter-spacing:.1em; color:var(--hero-accent); margin-left:6px; font-weight:500}
+.metric .k{font-family:"IBM Plex Mono",monospace; font-size:10.5px; letter-spacing:.16em; text-transform:uppercase; color:var(--hero-dim); margin-top:10px; line-height:1.5}
+@media(max-width:900px){.metrics{grid-template-columns:repeat(2,minmax(0,1fr))} .metric{border-bottom:1px solid rgba(237,232,223,.12)} .metric:nth-child(2){border-right:none}}
+@media(max-width:520px){.metrics{grid-template-columns:minmax(0,1fr)} .metric{border-right:none}}
+
+footer{border-top:1px solid var(--line); padding:40px 0 56px; background:var(--surface)}
+
+/* ═══ DOCUMENTOS IMPRIMIBLES (dictamen, reporte, carátula, propuesta) ═══ */
+.doc{background:#FFFFFF; color:#14262A; font-size:14px; line-height:1.6}
+.doc .page{
+  max-width:820px; margin:0 auto 26px; background:#FFF; padding:56px 62px 64px;
+  border:1px solid #D8D2C6; position:relative; min-height:1040px;
+}
+.doc .page.first{border-top:5px solid var(--ember)}
+.doc h1,.doc h2,.doc h3{font-family:"Bodoni Moda",Georgia,serif; color:#0D191B}
+.doc h1{font-size:34px; font-weight:600; line-height:1.1}
+.doc h2{font-size:23px; font-weight:600; line-height:1.15; margin:0 0 14px}
+.doc h3{font-size:17px; font-weight:600; margin:0 0 8px}
+.doc p{margin:0 0 11px; color:#2C3A3C}
+.doc .lbl{color:#3F6F5E}
+.doc .foot{position:absolute; left:62px; right:62px; bottom:26px; display:flex; justify-content:space-between;
+  font-family:"IBM Plex Mono",monospace; font-size:9.5px; letter-spacing:.12em; text-transform:uppercase; color:#8A938F;
+  border-top:1px solid #E4DED2; padding-top:9px}
+.doc table{min-width:0; font-size:12.5px}
+.doc th{color:#3F6F5E; border-bottom:1px solid #B9B2A3; padding:8px 10px}
+.doc td{color:#2C3A3C; border-bottom:1px solid #E4DED2; padding:8px 10px}
+.doc td:first-child{color:#0D191B}
+.doc .tblwrap{border:1px solid #D8D2C6; background:#FFF}
+.doc .quote{border-left:3px solid #B9B2A3; background:#F7F4EE; padding:12px 16px; font-family:"IBM Plex Mono",monospace;
+  font-size:12px; line-height:1.65; color:#2C3A3C; white-space:pre-wrap; margin:0 0 12px}
+.doc .flag{border-left:3px solid var(--ember); background:#FBF3EA; padding:11px 15px; margin:0 0 12px; font-size:13px}
+.doc .fill{background:#FFF4DC; border-bottom:1px solid #D9A93E; padding:0 3px; font-family:"IBM Plex Mono",monospace; font-size:12px}
+.doc .sev{display:inline-block; font-family:"IBM Plex Mono",monospace; font-size:9.5px; letter-spacing:.12em;
+  text-transform:uppercase; padding:2px 8px; border:1px solid currentColor; border-radius:2px}
+.doc .sev.c{color:#A82014; background:#FBEDEB} .doc .sev.w{color:#8A5F0B; background:#FBF3E0} .doc .sev.o{color:#0F7048; background:#EAF4EE}
+.doc .rule{height:1px; background:#D8D2C6; margin:20px 0}
+.docbar{position:sticky; top:0; z-index:50; background:var(--ink); color:var(--bone); padding:10px 20px;
+  display:flex; gap:14px; align-items:center; flex-wrap:wrap; font-family:"IBM Plex Mono",monospace; font-size:11px; letter-spacing:.12em; text-transform:uppercase}
+.docbar .btn{padding:8px 16px; font-size:10.5px}
+.docbar .btn.ghost{color:#CBD3D0; border-color:rgba(237,232,223,.38)}
+.docbar .btn.ghost:hover{color:#EDE8DF; border-color:#EDE8DF}
+@media(max-width:720px){.doc .page{padding:32px 24px 54px; min-height:0} .doc .foot{left:24px; right:24px}}
+
+@media print{
+  .docbar,nav,.noprint{display:none!important}
+  body{background:#FFF}
+  .doc .page{border:none; margin:0; padding:0; min-height:auto; max-width:none; page-break-after:always}
+  .doc .page:last-child{page-break-after:auto}
+  .doc .foot{position:static; margin-top:24px}
+  @page{size:letter; margin:18mm 16mm}
+}
+
+</style>
+<style>
+body{background:#E8E4DA} .doc{padding:26px 16px 60px}
+.kv td:first-child{width:34%; color:#3F6F5E; font-family:"IBM Plex Mono",monospace; font-size:10.5px; letter-spacing:.1em; text-transform:uppercase}
+figure{margin:0 0 8px}
+figure svg{max-width:100%; height:auto; display:block; color:#14262A}
+figcaption{font-size:12px; color:#6C7573; margin-top:8px; line-height:1.55}
+.dgbox{fill:#FFFFFF; stroke:currentColor; stroke-width:1.4}
+.dgbox.hi{stroke:#C4712F; stroke-width:2}
+.dgt{font-family:"IBM Plex Sans",sans-serif; font-size:12.5px; font-weight:600; fill:currentColor}
+.dgs{font-family:"IBM Plex Mono",monospace; font-size:10px; fill:#6C7573; letter-spacing:.04em}
+.dgl{font-family:"IBM Plex Mono",monospace; font-size:10.5px; fill:currentColor; letter-spacing:.03em}
+.dgl.em{fill:#C4712F; font-weight:600}
+.dgline{stroke:currentColor; stroke-width:1.4; fill:none}
+.dgline.em{stroke:#C4712F; stroke-width:2}
+.dgborder{stroke:#6C7573; stroke-width:1; stroke-dasharray:6 5; fill:none}
+</style>
+</head>
+<body class="doc">
+
+<div class="docbar noprint">
+  <span>SKU B deliverable · $1,290 USD · replace everything highlighted</span>
+  <button class="btn" onclick="window.print()">Print / Save as PDF</button>
+  <button class="btn ghost" id="toggle-fill">Hide highlights</button>
+  <span class="mono" id="fill-count"></span>
+</div>
+
+<div class="page first">
+  <div style="display:flex; flex-direction:column; height:920px">
+    <div class="lbl">Gutiérrez Rodríguez · Hermosillo, Sonora, Mexico</div>
+    <div style="margin-top:auto">
+      <div class="lbl" style="margin-bottom:14px">Confidential · Prepared for the addressee only</div>
+      <h1 style="font-size:42px; line-height:1.06">Cross-Border<br>Vehicle Blueprint</h1>
+      <div class="rule"></div>
+      <table class="kv"><tbody>
+        <tr><td>Prepared for</td><td><span class='fill'>[client / company]</span></td></tr>
+        <tr><td>Project</td><td><span class='fill'>[nearshoring / supply / rental portfolio / services]</span></td></tr>
+        <tr><td>File number</td><td><span class='fill'>[CBV-2026-0000]</span></td></tr>
+        <tr><td>Date of issue</td><td><span class='fill'>[Month DD, YYYY]</span></td></tr>
+        <tr><td>Recommendation</td><td><b><span class='fill'>[Mexican subsidiary / branch / direct contracting]</span></b></td></tr>
+      </tbody></table>
+    </div>
+    <div style="margin-top:auto">
+      <p class="tiny" style="color:#6C7573">This blueprint is a written structuring opinion, not
+      representation and not U.S. tax advice. Its scope and limitations appear on page 2 and form
+      part of it. Mexican notarial instruments are authorized by the notary the parties choose, who
+      is a different professional.</p>
+    </div>
+  </div>
+  <div class="foot"><span>Gilberto Gutiérrez Rodríguez · Corporate &amp; notarial attorney</span><span>Page 1 of 8 · Confidential</span></div>
+</div>
+
+<div class="page">
+  <div class="lbl">Section I</div>
+  <h2>Scope, inputs and limitations</h2>
+  <h3>What you asked</h3>
+  <p><span class='fill'>[Restate the question in the client&#39;s own words. One sentence. If you cannot, you did not understand the engagement.]</span></p>
+  <h3>What I relied on</h3>
+  <div class="tblwrap"><table>
+    <thead><tr><th>Input</th><th>Source</th><th>Date</th></tr></thead>
+    <tbody>
+      <tr><td>U.S. entity formation documents</td><td><span class='fill'>[state, type]</span></td><td><span class='fill'>[date]</span></td></tr>
+      <tr><td>Ownership and control</td><td><span class='fill'>[cap table / statement]</span></td><td><span class='fill'>[date]</span></td></tr>
+      <tr><td>Projected Mexican headcount</td><td><span class='fill'>[client statement]</span></td><td><span class='fill'>[date]</span></td></tr>
+      <tr><td>Projected Mexican spend and revenue</td><td><span class='fill'>[client statement]</span></td><td><span class='fill'>[date]</span></td></tr>
+      <tr><td>Intended activity in Mexico</td><td><span class='fill'>[client statement]</span></td><td><span class='fill'>[date]</span></td></tr>
+      <tr><td>Real property involved</td><td><span class='fill'>[yes / no — if yes, restricted zone?]</span></td><td><span class='fill'>[date]</span></td></tr>
+    </tbody>
+  </table></div>
+  <h3 style="margin-top:16px">Requested and not provided</h3>
+  <p><span class='fill'>[list — each item becomes a limitation and, where it matters, an assumption stated below]</span></p>
+  <h3>Assumptions I had to make</h3>
+  <p><span class='fill'>[State each one plainly and say what changes if it is wrong. An assumption whose failure changes the recommendation is flagged in bold.]</span></p>
+  <h3>Limitations</h3>
+  <p>This blueprint addresses Mexican corporate, foreign-investment and compliance structure. <b>It is not U.S. tax advice</b> and does not opine on U.S. federal or state consequences — your CPA must review it alongside this document. It is not an opinion on Mexican tax computation. It does not verify signatures or registry status. Mexican statutory rates, thresholds and deadlines cited were checked against the text in force on <span class='fill'>[date]</span> and must be confirmed again before any act is executed.</p>
+  <div class="foot"><span>Cross-Border Vehicle Blueprint · <span class='fill'>[CLIENT]</span></span><span>Page 2 of 8 · Confidential</span></div>
+</div>
+
+<div class="page">
+  <div class="lbl">Section II</div>
+  <h2>The recommended structure</h2>
+  
+<figure>
+<svg viewBox="0 0 760 430" role="img" aria-label="Recommended cross-border structure: U.S. customers contract with and pay the U.S. parent in dollars; the parent holds equity in a Mexican operating company, which creates a foreign-investment filing; the Mexican company invoices services back to the parent and carries payroll, leases and suppliers in pesos.">
+<defs>
+  <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <path d="M0,1 L9,5 L0,9 z" fill="currentColor"/></marker>
+  <marker id="arem" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <path d="M0,1 L9,5 L0,9 z" fill="#C4712F"/></marker>
+</defs>
+  <text x="20" y="22" class="dgs">UNITED STATES</text>
+  <rect x="20"  y="40" width="170" height="58" rx="3" class="dgbox"/>
+  <text x="105" y="64" text-anchor="middle" class="dgt">U.S. customers</text>
+  <text x="105" y="82" text-anchor="middle" class="dgs">contract here</text>
+
+  <rect x="330" y="40" width="250" height="58" rx="3" class="dgbox"/>
+  <text x="455" y="64" text-anchor="middle" class="dgt">U.S. Parent</text>
+  <text x="455" y="82" text-anchor="middle" class="dgs">[Delaware / Arizona] entity</text>
+
+  <line x1="192" y1="69" x2="323" y2="69" class="dgline" marker-end="url(#ar)"/>
+  <text x="257" y="58" text-anchor="middle" class="dgl">pays in USD</text>
+
+  <line x1="20" y1="185" x2="740" y2="185" class="dgborder"/>
+  <text x="740" y="179" text-anchor="end" class="dgs">THE BORDER</text>
+  <text x="20" y="208" class="dgs">MEXICO</text>
+
+  <rect x="330" y="228" width="250" height="58" rx="3" class="dgbox hi"/>
+  <text x="455" y="252" text-anchor="middle" class="dgt">Mexican OpCo</text>
+  <text x="455" y="270" text-anchor="middle" class="dgs">S. de R.L. de C.V.</text>
+
+  <rect x="625" y="228" width="115" height="58" rx="3" class="dgbox"/>
+  <text x="682" y="252" text-anchor="middle" class="dgt">Payroll and</text>
+  <text x="682" y="270" text-anchor="middle" class="dgt">suppliers</text>
+
+  <line x1="520" y1="102" x2="520" y2="224" class="dgline em" marker-end="url(#arem)"/>
+  <text x="532" y="126" class="dgl em">equity 99%</text>
+  <text x="532" y="141" class="dgl">creates the foreign-</text>
+  <text x="532" y="156" class="dgl">investment filing</text>
+
+  <line x1="390" y1="224" x2="390" y2="106" class="dgline" marker-end="url(#ar)"/>
+  <text x="378" y="126" text-anchor="end" class="dgl">invoices services</text>
+  <text x="378" y="141" text-anchor="end" class="dgl">cost + [NN]%</text>
+  <text x="378" y="156" text-anchor="end" class="dgl">transfer-pricing</text>
+
+  <line x1="582" y1="257" x2="618" y2="257" class="dgline" marker-end="url(#ar)"/>
+  <text x="600" y="248" text-anchor="middle" class="dgl">MXN</text>
+
+  <text x="455" y="308" text-anchor="middle" class="dgs">Mexican tax ID &#183; beneficial-owner file &#183; employer obligations attach HERE</text>
+
+  <text x="20" y="356" class="dgl">Dollars enter above the line. Cost and employment sit below it.</text>
+  <text x="20" y="373" class="dgl">Two edges cross the border, and each one creates a duty:</text>
+  <text x="20" y="394" class="dgl em">equity &#8594; registration.   services &#8594; a price you must be able to defend.</text>
+</svg>
+<figcaption><b>Figure 1 — The recommended structure and what each border-crossing edge obliges you to file.</b> The boxes are ordinary. The two vertical arrows are the whole engagement: one creates a registration duty in Mexico, the other creates a pricing position you have to be able to defend to two tax authorities at once.</figcaption>
+</figure>
+  <h3 style="margin-top:16px">In one sentence</h3>
+  <p><span class='fill'>[The recommendation, stated so the client could repeat it to their CPA from memory. One sentence.]</span></p>
+  <div class="foot"><span>Cross-Border Vehicle Blueprint · <span class='fill'>[CLIENT]</span></span><span>Page 3 of 8 · Confidential</span></div>
+</div>
+
+<div class="page">
+  <div class="lbl">Section III</div>
+  <h2>What you are choosing between</h2>
+  
+<figure>
+<svg viewBox="0 0 760 250" role="img" aria-label="The difference between a Mexican subsidiary and a branch: with a subsidiary an equity edge joins two separate legal persons and liability stops at the Mexican company; with a branch there is one legal person and liability flows straight through to the U.S. parent.">
+<defs>
+  <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <path d="M0,1 L9,5 L0,9 z" fill="currentColor"/></marker>
+  <marker id="arem" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <path d="M0,1 L9,5 L0,9 z" fill="#C4712F"/></marker>
+</defs>
+  <text x="30" y="20" class="dgs">OPTION A · SUBSIDIARY</text>
+  <rect x="30"  y="34" width="150" height="46" rx="3" class="dgbox"/>
+  <text x="105" y="62" text-anchor="middle" class="dgt">U.S. Parent</text>
+  <line x1="105" y1="82" x2="105" y2="140" class="dgline em" marker-end="url(#arem)"/>
+  <text x="117" y="108" class="dgl em">equity</text>
+  <rect x="30"  y="144" width="150" height="46" rx="3" class="dgbox"/>
+  <text x="105" y="172" text-anchor="middle" class="dgt">Mexican OpCo</text>
+  <text x="30"  y="215" class="dgl">Two legal persons.</text>
+  <text x="30"  y="231" class="dgl em">Liability stops at the box.</text>
+
+  <line x1="330" y1="24" x2="330" y2="236" class="dgborder"/>
+
+  <text x="400" y="20" class="dgs">OPTION B · BRANCH (SUCURSAL)</text>
+  <rect x="400" y="34" width="150" height="46" rx="3" class="dgbox"/>
+  <text x="475" y="62" text-anchor="middle" class="dgt">U.S. Parent</text>
+  <line x1="475" y1="82" x2="475" y2="140" class="dgline" stroke-dasharray="5 4"/>
+  <text x="487" y="103" class="dgl">same legal</text>
+  <text x="487" y="117" class="dgl">person</text>
+  <rect x="400" y="144" width="150" height="46" rx="3" class="dgbox"/>
+  <text x="475" y="172" text-anchor="middle" class="dgt">Mexican branch</text>
+  <text x="400" y="215" class="dgl">One legal person.</text>
+  <text x="400" y="231" class="dgl em">Liability flows through.</text>
+
+  <line x1="600" y1="167" x2="600" y2="60" class="dgline em" marker-end="url(#arem)"/>
+  <text x="612" y="110" class="dgl em">a Mexican claim</text>
+  <text x="612" y="125" class="dgl em">reaches the parent</text>
+</svg>
+<figcaption><b>Figure 2 — The one edge that changes.</b> A branch is cheaper to open and it is the same legal person as the parent. That single difference is what a Mexican labor, tax or contractual claim travels along.</figcaption>
+</figure>
+  <div class="tblwrap" style="margin-top:14px"><table>
+    <thead><tr><th>&nbsp;</th><th>Subsidiary</th><th>Branch</th><th>Direct contracting</th></tr></thead>
+    <tbody>
+      <tr><td>Separate legal person</td><td>Yes</td><td>No</td><td>No Mexican presence</td></tr>
+      <tr><td>Liability containment</td><td>Stops at the Mexican company</td><td>Reaches the U.S. parent</td><td>Depends entirely on the contract</td></tr>
+      <tr><td>Can employ in Mexico</td><td>Yes</td><td>Yes</td><td>No — the biggest trap</td></tr>
+      <tr><td>Setup time</td><td><span class='fill'>[N]</span> weeks</td><td><span class='fill'>[N]</span> weeks</td><td>Immediate</td></tr>
+      <tr><td>Ongoing obligations</td><td>Full corporate calendar</td><td>Filings without the corporate flexibility</td><td>Permanent-establishment risk</td></tr>
+      <tr><td>Fits this client</td><td><span class='fill'>[yes / no + why]</span></td><td><span class='fill'>[yes / no + why]</span></td><td><span class='fill'>[yes / no + why]</span></td></tr>
+    </tbody>
+  </table></div>
+  <div class="flag" style="margin-top:14px">
+    <b>The trap that catches most U.S. operators.</b> Direct contracting looks cheapest until a
+    Mexican worker, supplier or authority argues that the activity itself constitutes a taxable
+    presence. At that point the structure is decided for you, retroactively, by someone else.
+  </div>
+  <div class="foot"><span>Cross-Border Vehicle Blueprint · <span class='fill'>[CLIENT]</span></span><span>Page 4 of 8 · Confidential</span></div>
+</div>
+
+<div class="page">
+  <div class="lbl">Section IV</div>
+  <h2>Why this and not the others</h2>
+  <h3>The reasoning</h3>
+  <p><span class='fill'>[Three or four paragraphs. Tie every argument to a fact from Section I — headcount, spend, real property, exit horizon. A paragraph that would read the same for any client is filler and should be cut.]</span></p>
+  <h3>What would change my recommendation</h3>
+  <p><span class='fill'>[Name the two or three facts that, if different, flip the answer. This paragraph is what makes the document worth what it cost: it tells the client when to come back.]</span></p>
+  <h3>What I would not do</h3>
+  <p><span class='fill'>[The structure someone else may have proposed, and precisely why it does not fit. Only if it applies — never invent an opponent.]</span></p>
+  <div class="foot"><span>Cross-Border Vehicle Blueprint · <span class='fill'>[CLIENT]</span></span><span>Page 5 of 8 · Confidential</span></div>
+</div>
+
+<div class="page">
+  <div class="lbl">Section V</div>
+  <h2>Registration and compliance checklist</h2>
+  <p>Everything the structure obliges, who does it, and by when. <span class="sev w">⚠ deadlines verified against the text in force; confirm before filing</span></p>
+  <div class="tblwrap" style="margin-top:12px"><table>
+    <thead><tr><th>Obligation</th><th>Triggered by</th><th>Who</th><th>When</th></tr></thead>
+    <tbody>
+      <tr><td>Incorporation and registry recording</td><td>Forming the Mexican entity</td><td>Notary + me</td><td><span class='fill'>[week N]</span></td></tr>
+      <tr><td>Mexican tax ID (RFC) and e-signature</td><td>Existence of the entity</td><td>Legal representative</td><td><span class='fill'>[week N]</span></td></tr>
+      <tr><td>Foreign investment registry (RNIE)</td><td><b>The equity edge in Figure 1</b></td><td>Me</td><td><span class='fill'>[within N days]</span></td></tr>
+      <tr><td>Beneficial-owner file</td><td>Existence of the entity</td><td>The entity itself</td><td>From day one, updated on change</td></tr>
+      <tr><td>Corporate books and share/interest records</td><td>Existence of the entity</td><td>Me</td><td><span class='fill'>[week N]</span></td></tr>
+      <tr><td>Employer registration and social security</td><td>First Mexican employee</td><td><span class='fill'>[payroll provider]</span></td><td>Before the first hire</td></tr>
+      <tr><td>Intercompany services agreement</td><td><b>The services edge in Figure 1</b></td><td>Me</td><td>Before the first invoice</td></tr>
+      <tr><td>Transfer-pricing support</td><td>The same edge</td><td><span class='fill'>[tax advisor]</span></td><td><span class='fill'>[annual]</span></td></tr>
+      <tr><td>Powers of attorney with limits</td><td>Anyone signing for the entity</td><td>Notary + me</td><td><span class='fill'>[week N]</span></td></tr>
+      <tr><td>Annual shareholders meeting</td><td>Existence of the entity</td><td>Me</td><td><span class='fill'>[per statute — verify]</span></td></tr>
+    </tbody>
+  </table></div>
+  <div class="foot"><span>Cross-Border Vehicle Blueprint · <span class='fill'>[CLIENT]</span></span><span>Page 6 of 8 · Confidential</span></div>
+</div>
+
+<div class="page">
+  <div class="lbl">Section VI</div>
+  <h2>Sequence and timeline</h2>
+  <p>Order matters. Several of these cannot start until an earlier one has finished, and the dependencies are named.</p>
+  <div class="tblwrap" style="margin-top:12px"><table>
+    <thead><tr><th>Week</th><th>Step</th><th>Cannot start until</th><th>Owner</th></tr></thead>
+    <tbody>
+      <tr><td><span class='fill'>[N]</span></td><td><span class='fill'>[step]</span></td><td><span class='fill'>[dependency]</span></td><td><span class='fill'>[who]</span></td></tr><tr><td><span class='fill'>[N]</span></td><td><span class='fill'>[step]</span></td><td><span class='fill'>[dependency]</span></td><td><span class='fill'>[who]</span></td></tr><tr><td><span class='fill'>[N]</span></td><td><span class='fill'>[step]</span></td><td><span class='fill'>[dependency]</span></td><td><span class='fill'>[who]</span></td></tr><tr><td><span class='fill'>[N]</span></td><td><span class='fill'>[step]</span></td><td><span class='fill'>[dependency]</span></td><td><span class='fill'>[who]</span></td></tr><tr><td><span class='fill'>[N]</span></td><td><span class='fill'>[step]</span></td><td><span class='fill'>[dependency]</span></td><td><span class='fill'>[who]</span></td></tr><tr><td><span class='fill'>[N]</span></td><td><span class='fill'>[step]</span></td><td><span class='fill'>[dependency]</span></td><td><span class='fill'>[who]</span></td></tr><tr><td><span class='fill'>[N]</span></td><td><span class='fill'>[step]</span></td><td><span class='fill'>[dependency]</span></td><td><span class='fill'>[who]</span></td></tr><tr><td><span class='fill'>[N]</span></td><td><span class='fill'>[step]</span></td><td><span class='fill'>[dependency]</span></td><td><span class='fill'>[who]</span></td></tr>
+    </tbody>
+  </table></div>
+  <h3 style="margin-top:16px">What can run in parallel</h3>
+  <p><span class='fill'>[Name it explicitly. Most timelines are long because everything was queued that did not need to be.]</span></p>
+  <h3>Estimated third-party costs</h3>
+  <p><span class='fill'>[Notary fees, registry duties, translations, apostilles, registered agent. Ranges, clearly marked as third-party and not mine.]</span></p>
+  <div class="foot"><span>Cross-Border Vehicle Blueprint · <span class='fill'>[CLIENT]</span></span><span>Page 7 of 8 · Confidential</span></div>
+</div>
+
+<div class="page">
+  <div class="lbl">Section VII</div>
+  <h2>Closing statement</h2>
+  <h3>What this document is</h3>
+  <p>A written structuring opinion on the Mexican corporate, foreign-investment and compliance architecture for this project, prepared by a Mexican attorney licensed since 2014 with eleven years operating with public faith in Sonora.</p>
+  <h3>What it is not</h3>
+  <p>It is not U.S. tax advice and does not opine on U.S. consequences. It is not a Mexican tax computation. It is not representation in any filing or transaction unless separately engaged in writing. It does not bind any authority.</p>
+  <h3>Currency</h3>
+  <p>Conclusions reflect the facts and the law as of the date of issue. A change in headcount, activity, ownership or real property changes them, and the paragraph on page 5 tells you which changes matter.</p>
+  <h3>Mexican notarial practice</h3>
+  <p>Where I am engaged for structuring, the Mexican notary who authorizes any instrument is a different professional, chosen by the parties.</p>
+  <div class="rule" style="margin-top:34px"></div>
+  <div style="margin-top:60px; text-align:center">
+    <div style="border-top:1px solid #0D191B; width:340px; margin:0 auto; padding-top:9px">
+      <b>Gilberto Gutiérrez Rodríguez</b><br>
+      <span class="tiny" style="color:#6C7573">Corporate &amp; notarial attorney · License <span class='fill'>[number]</span><br>
+      Hermosillo, Sonora, Mexico · <span class='fill'>[Month DD, YYYY]</span></span>
+    </div>
+  </div>
+  <div class="foot"><span>Cross-Border Vehicle Blueprint · <span class='fill'>[CLIENT]</span></span><span>Page 8 of 8 · Confidential</span></div>
+</div>
+
+<script>
+(function(){
+  var on=true, btn=document.getElementById("toggle-fill"), c=document.getElementById("fill-count");
+  if(c) c.textContent = document.querySelectorAll(".fill").length + " campos por llenar";
+  if(!btn) return;
+  btn.addEventListener("click", function(){
+    on=!on;
+    document.querySelectorAll(".fill").forEach(function(el){
+      el.style.background = on ? "" : "transparent"; el.style.borderBottom = on ? "" : "none";
+    });
+    btn.textContent = on ? "Ocultar resaltado" : "Mostrar resaltado";
+  });
+})();
+</script>
+</body></html>

@@ -220,6 +220,7 @@ footer{border-top:1px solid var(--line); padding:40px 0 56px; background:var(--s
 .docbar{position:sticky; top:0; z-index:50; background:var(--ink); color:var(--bone); padding:10px 20px;
   display:flex; gap:14px; align-items:center; flex-wrap:wrap; font-family:"IBM Plex Mono",monospace; font-size:11px; letter-spacing:.12em; text-transform:uppercase}
 .docbar .btn{padding:8px 16px; font-size:10.5px}
+@media (pointer:coarse){.docbar .btn{min-height:44px; padding:12px 18px}}
 .docbar .btn.ghost{color:#CBD3D0; border-color:rgba(237,232,223,.38)}
 .docbar .btn.ghost:hover{color:#EDE8DF; border-color:#EDE8DF}
 @media(max-width:720px){.doc .page{padding:32px 24px 54px; min-height:0} .doc .foot{left:24px; right:24px}}
@@ -323,6 +324,35 @@ summary::-webkit-details-marker{display:none}
 summary::after{content:"+"; font-family:"IBM Plex Mono",monospace; color:var(--ember); flex:none}
 details[open] summary::after{content:"–"}
 details p{margin-top:10px; font-size:14px; color:var(--fg-dim); max-width:70ch}
+/* ── medios de pago ── */
+.pago{border:1px solid var(--line-strong); border-radius:3px; overflow:hidden; margin-top:6px}
+.ptabs{display:flex; background:var(--surface-2); border-bottom:1px solid var(--line)}
+.ptab{flex:1; font-family:"IBM Plex Mono",monospace; font-size:11px; letter-spacing:.14em; text-transform:uppercase;
+  padding:13px 10px; min-height:46px; border:none; background:transparent; color:var(--fg-dim); cursor:pointer;
+  border-bottom:2px solid transparent}
+.ptab[aria-selected="true"]{color:var(--fg); border-bottom-color:var(--accent); font-weight:600}
+.ppanel{padding:20px}
+.cuentas{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:14px}
+@media(max-width:700px){.cuentas{grid-template-columns:minmax(0,1fr)}}
+.cuenta{border:1px solid var(--line); border-radius:3px; padding:16px; display:flex; flex-direction:column; gap:8px; min-width:0}
+.cuenta.factura{border-color:var(--accent)}
+.cuenta b{font-size:14.5px; color:var(--fg)}
+.cuenta .quien{font-size:12.5px; color:var(--fg-dim); line-height:1.5}
+.clabe{display:flex; gap:8px; align-items:center; flex-wrap:wrap}
+.clabe code{font-family:"IBM Plex Mono",monospace; font-size:13.5px; letter-spacing:.04em; color:var(--fg);
+  background:var(--bg); border:1px solid var(--line); border-radius:2px; padding:8px 10px; flex:1; min-width:0;
+  overflow-x:auto; white-space:nowrap}
+.copiar{font-family:"IBM Plex Mono",monospace; font-size:10.5px; letter-spacing:.1em; text-transform:uppercase;
+  padding:9px 13px; min-height:44px; border:1px solid var(--line-strong); background:transparent;
+  color:var(--fg-dim); border-radius:2px; cursor:pointer; white-space:nowrap}
+.copiar:hover{border-color:var(--accent); color:var(--fg)}
+.copiar.listo{color:var(--ok); border-color:var(--ok)}
+.fiscal{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; margin-top:4px}
+@media(max-width:560px){.fiscal{grid-template-columns:minmax(0,1fr)}}
+.fiscal .full{grid-column:1/-1}
+.fiscal input,.fiscal select{padding:9px 10px; font-size:13.5px; min-height:44px}
+.fiscal label{font-size:9.5px; margin-bottom:4px}
+
 </style>
 </head>
 <body>
@@ -469,11 +499,79 @@ details p{margin-top:10px; font-size:14px; color:var(--fg-dim); max-width:70ch}
               <li>Resumen ejecutivo de dos páginas para llevar a la asamblea</li>
             </ul>
           </div>
-          <div class="stack gap12" style="align-items:flex-start">
+          <div class="stack gap12" style="align-items:flex-start; min-width:min(100%,320px)">
             <div class="price">$6,900<small>MXN</small></div>
-            <a class="btn" id="btn-pago" href="#" target="_blank" rel="noopener">Contratar el dictamen</a>
-            <a class="btn ghost" id="btn-wa" href="#" target="_blank" rel="noopener">Preguntar por WhatsApp</a>
-            <span class="tiny">Entrega en 72 h hábiles · Factura con IVA<br>Se paga en línea, sin junta previa</span>
+
+            <div class="pago" style="width:100%">
+              <div class="ptabs" role="tablist">
+                <button class="ptab" id="tab-tarjeta" role="tab" aria-selected="true" aria-controls="p-tarjeta">Tarjeta</button>
+                <button class="ptab" id="tab-transfer" role="tab" aria-selected="false" aria-controls="p-transfer">Transferencia</button>
+              </div>
+
+              <div class="ppanel" id="p-tarjeta" role="tabpanel" aria-labelledby="tab-tarjeta">
+                <div class="stack gap12">
+                  <a class="btn" id="btn-pago" href="#" target="_blank" rel="noopener" style="width:100%">Pagar con tarjeta</a>
+                  <span class="tiny">Confirmación inmediata. Empiezo el mismo día.</span>
+                </div>
+              </div>
+
+              <div class="ppanel" id="p-transfer" role="tabpanel" aria-labelledby="tab-transfer" hidden>
+                <div class="stack gap14">
+                  <p class="small">Transferencia SPEI desde tu banca en línea. Elige a dónde:</p>
+                  <div class="cuentas">
+                    <div class="cuenta">
+                      <b>Honorarios profesionales</b>
+                      <span class="quien">GILBERTO GUTIERREZ RODRIGUEZ<br>BANREGIO · Cuenta 850896380013</span>
+                      <div class="clabe">
+                        <code id="clabe-1">058760000148957666</code>
+                        <button type="button" class="copiar" data-copiar="clabe-1">Copiar</button>
+                      </div>
+                      <span class="tiny">Sin comprobante fiscal.</span>
+                    </div>
+                    <div class="cuenta factura">
+                      <b>Notaría 81 — con factura</b>
+                      <span class="quien">GTZ NOTARIOS, SC<br>BBVA · Cuenta 0125565723</span>
+                      <div class="clabe">
+                        <code id="clabe-2">012760001255657234</code>
+                        <button type="button" class="copiar" data-copiar="clabe-2">Copiar</button>
+                      </div>
+                      <span class="tiny">Con comprobante fiscal. Llena tus datos abajo.</span>
+                    </div>
+                  </div>
+
+                  <div class="stack gap8" id="bloque-fiscal">
+                    <div class="lbl">Datos para tu factura</div>
+                    <form class="fiscal" id="form-fiscal" novalidate>
+                      <div><label for="f-rfc">RFC</label><input type="text" id="f-rfc" placeholder="AAA010101AAA" maxlength="13"></div>
+                      <div><label for="f-razon">Razón social</label><input type="text" id="f-razon" placeholder="Como aparece en tu constancia"></div>
+                      <div><label for="f-uso">Uso del comprobante</label>
+                        <select id="f-uso">
+                          <option value="G03">G03 · Gastos en general</option>
+                          <option value="G01">G01 · Adquisición de mercancías</option>
+                          <option value="P01">P01 · Por definir</option>
+                        </select></div>
+                      <div><label for="f-regimen">Régimen fiscal</label>
+                        <select id="f-regimen">
+                          <option value="601">601 · General de Ley Personas Morales</option>
+                          <option value="603">603 · Personas Morales con Fines no Lucrativos</option>
+                          <option value="612">612 · Actividades Empresariales y Profesionales</option>
+                          <option value="626">626 · RESICO</option>
+                          <option value="621">621 · Incorporación Fiscal</option>
+                        </select></div>
+                      <div class="full"><label for="f-cp">Código postal fiscal</label><input type="text" id="f-cp" placeholder="83000" maxlength="5"></div>
+                      <div class="full"><label for="f-correo-f">Correo para la factura</label><input type="email" id="f-correo-f" placeholder="facturas@empresa.com"></div>
+                      <div class="full row">
+                        <button class="btn" type="submit" style="width:100%">Enviar datos y avisar del pago</button>
+                      </div>
+                    </form>
+                    <p class="tiny" id="msg-fiscal" role="status" aria-live="polite">Manda el comprobante de la transferencia al mismo correo. Confirmo de recibido el mismo día hábil.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <a class="btn ghost" id="btn-wa" href="#" target="_blank" rel="noopener" style="width:100%">Preguntar por WhatsApp</a>
+            <span class="tiny">Entrega en 72 h hábiles contadas desde<br>que llega el último documento.</span>
           </div>
         </div>
       </div>
@@ -497,7 +595,6 @@ details p{margin-top:10px; font-size:14px; color:var(--fg-dim); max-width:70ch}
       <details><summary>¿Qué documentos tengo que subir?</summary><p>Cuatro: acta constitutiva con sus reformas, última acta de asamblea, los poderes vigentes que conserves, y el expediente de beneficiario controlador si lo tienes integrado. Si falta alguno, el dictamen se entrega igual y la ausencia se convierte en un hallazgo, porque lo es.</p></details>
       <details><summary>¿Me van a querer vender algo después?</summary><p>El dictamen termina con un Plan de Remediación que sí trae honorarios estimados por documento. Es información, no una obligación: puedes llevarlo con el abogado que quieras. La mayoría de los documentos que aparecen ahí los puede redactar cualquier abogado corporativo competente.</p></details>
       <details><summary>¿Quién va a ver mis documentos?</summary><p>Solo yo. No se comparten con terceros, no se usan como ejemplo, no aparecen en contenido. Se conservan el tiempo que indica el aviso de privacidad y se destruyen a petición.</p></details>
-      <details><summary>¿Ustedes protocolizan lo que salga del dictamen?</summary><p>No. Este servicio es de estructuración y diagnóstico. Donde se cobra estructuración, la fe pública la autoriza otro notario. Es una separación deliberada y no se negocia.</p></details>
       <details><summary>¿Sirve si mi empresa es chica?</summary><p>Sirve más. Los siete factores se rompen igual en una sociedad de dos socios que en un grupo de ocho empresas, y en la chica el daño es proporcionalmente mayor porque no hay estructura que lo absorba.</p></details>
     </div>
   </div>
@@ -515,6 +612,7 @@ details p{margin-top:10px; font-size:14px; color:var(--fg-dim); max-width:70ch}
       que corresponda. Aviso de privacidad disponible en <span class="mono">comun/aviso-privacidad.md</span>
     </p>
   
+      
       
       
       
@@ -768,6 +866,68 @@ const CONFIG = {
   document.getElementById("btn-pago").href = CONFIG.ligaPago;
   document.getElementById("btn-wa").href =
     "https://wa.me/" + CONFIG.whatsapp + "?text=" + encodeURIComponent("Hola. Hice el diagnóstico IFS y quiero el Dictamen de Fragilidad Societaria.");
+
+  /* ---- medios de pago ---- */
+  var tabs = {tarjeta:document.getElementById("tab-tarjeta"), transfer:document.getElementById("tab-transfer")};
+  function verPanel(cual){
+    for (var k in tabs){
+      var activo = k === cual;
+      tabs[k].setAttribute("aria-selected", activo ? "true" : "false");
+      document.getElementById("p-" + k).hidden = !activo;
+    }
+  }
+  tabs.tarjeta.addEventListener("click", function(){ verPanel("tarjeta"); });
+  tabs.transfer.addEventListener("click", function(){ verPanel("transfer"); });
+
+  document.addEventListener("click", function(e){
+    var b = e.target.closest("[data-copiar]");
+    if (!b) return;
+    var txt = document.getElementById(b.dataset.copiar).textContent.trim();
+    var listo = function(){
+      b.textContent = "Copiada"; b.classList.add("listo");
+      setTimeout(function(){ b.textContent = "Copiar"; b.classList.remove("listo"); }, 2000);
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(txt).then(listo, function(){ seleccionar(b.dataset.copiar); });
+    } else { seleccionar(b.dataset.copiar); }
+  });
+  function seleccionar(id){
+    var r = document.createRange(); r.selectNodeContents(document.getElementById(id));
+    var sel = window.getSelection(); sel.removeAllRanges(); sel.addRange(r);
+  }
+
+  /* Los datos fiscales solo se piden en la ruta de la notaría, que es la que factura. */
+  document.getElementById("form-fiscal").addEventListener("submit", function(e){
+    e.preventDefault();
+    var g = function(id){ return document.getElementById(id).value.trim(); };
+    var msg = document.getElementById("msg-fiscal");
+    var rfc = g("f-rfc").toUpperCase();
+    if (!/^[A-ZÑ&]{3,4}\d{6}[A-Z0-9]{3}$/.test(rfc)){
+      msg.textContent = "El RFC no tiene el formato correcto. Son 12 dígitos para persona moral y 13 para persona física.";
+      msg.style.color = "var(--crit)"; return;
+    }
+    if (!g("f-razon") || !/^\d{5}$/.test(g("f-cp")) || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(g("f-correo-f"))){
+      msg.textContent = "Faltan la razón social, el código postal de cinco dígitos o un correo válido.";
+      msg.style.color = "var(--crit)"; return;
+    }
+    var datos = {tipo:"pago por transferencia a Notaría 81", rfc:rfc, razon:g("f-razon"),
+                 uso:g("f-uso"), regimen:g("f-regimen"), cp:g("f-cp"), correo:g("f-correo-f"),
+                 ifs: ultimo ? ultimo.global : null, fecha:new Date().toISOString()};
+    if (CONFIG.endpoint){
+      fetch(CONFIG.endpoint,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(datos)})
+        .then(function(){ ok(); }).catch(function(){ correoManual(datos); });
+    } else { correoManual(datos); }
+    function ok(){
+      msg.textContent = "Recibido. Manda el comprobante de la transferencia a " + CONFIG.correo + " y confirmo el mismo día hábil.";
+      msg.style.color = "var(--ok)";
+    }
+    function correoManual(d){
+      var cuerpo = Object.keys(d).map(function(k){ return k + ": " + d[k]; }).join("%0D%0A");
+      window.location.href = "mailto:" + CONFIG.correo + "?subject=" +
+        encodeURIComponent("Datos de facturación - " + d.razon) + "&body=" + cuerpo;
+      ok();
+    }
+  });
   document.getElementById("foot-mail").textContent = CONFIG.correo;
   document.querySelectorAll(".price").forEach(function(p){
     p.innerHTML = "$" + CONFIG.precio.toLocaleString("es-MX") + "<small>MXN</small>";

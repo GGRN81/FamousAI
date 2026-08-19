@@ -1,7 +1,10 @@
 # Playbook de venta — Expediente Corporativo Vivo
 
-Para la conversación de 25 a 40 minutos con un contacto de tu red que dirige o controla un
-grupo de sociedades. Es el canal más rápido a las primeras cuatro cuentas.
+Para la conversación de 25 a 40 minutos con quien dirige o controla un **grupo que opera
+varias unidades**: cafeterías, restaurantes, farmacias, gasolineras, supermercados regionales,
+autotransporte, distribución. Es el perfil que los datos del INEGI señalan como el mercado
+real de este producto —241 grupos en Hermosillo— y el canal más rápido a las primeras cuatro
+cuentas.
 
 **La regla que gobierna todo: sin tesis comercial, la persuasión es ruido.** Aquí la tesis ya
 está fijada. Lo que sigue es cómo se instala.
@@ -13,6 +16,7 @@ está fijada. Lo que sigue es cómo se instala.
 | Casilla | Cómo se resuelve aquí |
 |---|---|
 | Autoridad real | ¿Decide, o refiere y sube? Si es contralor o CFO, el objetivo no es cerrar: es que él proponga la prueba de 30 días a su jefe. |
+| Perfil | Operador multiunidad: cuántas unidades, cuántas sociedades, cuántas aperturas al año. Los tres números gobiernan la conversación. |
 | Historia previa | Quién buscó a quién. Si tú lo buscaste, la deuda psicológica está en tu contra y hay que abrir entregando. |
 | Deuda psicológica | Nunca se cobra verbalmente. Se explota pidiendo poco. |
 | Marco correcto | El que ha leído cientos de expedientes desde adentro y sabe dónde se rompen. |
@@ -25,32 +29,40 @@ está fijada. Lo que sigue es cómo se instala.
 
 ## 2 · Tesis comercial
 
-**De qué vive.** De operar. Cobra cuando la operación fluye: crédito que se firma, contrato
-que se cierra, activo que se transmite. El expediente corporativo no le genera ingreso; le
-genera fricción cuando falta.
+**De qué vive.** De abrir unidades y mantenerlas operando. Cobra por volumen y por punto de
+venta, no por margen unitario. Cada unidad nueva trae un arrendamiento, un gerente que necesita
+firmar, permisos, y a veces una sociedad más. El expediente corporativo no le genera ingreso;
+le genera fricción cuando falta, y la fricción se multiplica por el número de unidades.
 
 **Sus dolores, en el orden en que el cerebro compra** —el orden importa más que la lista:
 
-1. La operación que se detiene por un papel. Es el único dolor que ya vivió y recuerda.
-2. La sensación de no saber quién puede firmar por él.
-3. La diligencia de un comprador o un banco que abre el expediente y encuentra huecos.
-4. La sucesión que no ha querido enfrentar.
-5. El cumplimiento que le dijeron que existía y nunca se integró.
-6. La multa. Va al final, aunque el abogado promedio empiece por ahí.
+1. **La apertura que se detiene por un papel.** Es el único dolor que ya vivió y recuerda, y
+   en un operador multiunidad ocurre varias veces al año.
+2. **No saber cuántos gerentes pueden firmar por él hoy.** En un grupo de veinte unidades esta
+   pregunta no tiene respuesta, y él lo sabe.
+3. La diligencia de un banco, un franquiciante o un comprador que abre el expediente y
+   encuentra huecos.
+4. El arrendamiento o el contrato de suministro firmado por quien no debía.
+5. La sucesión que no ha querido enfrentar.
+6. El cumplimiento que le dijeron que existía y nunca se integró.
+7. La multa. Va al final, aunque el abogado promedio empiece por ahí.
 
 **Los productos que le pones enfrente:**
 
 | Producto | Cobro | Rango |
 |---|---|---|
 | Expediente Vivo — Vigilancia / Grupo / Corredor | Suscripción mensual o anual | $2,900 – $7,900 al mes |
+| Inventario y revocación de poderes de gerencias | Por documento | $18,000 – $60,000 |
 | Alta inicial del expediente | Único, se perdona con plan anual | $6,900 por sociedad |
 | Dictamen de Fragilidad Societaria | Único | $6,900 |
 | Estructuración derivada | Por documento | $40,000 – $180,000 |
 
 **La jugada oculta** — el ángulo que casi nadie tiene presente y que instala autoridad en
-cuarenta segundos: *un poder no caduca porque la relación se acabe.* Casi ningún empresario
-sabe que el ex director de finanzas que salió peleado sigue pudiendo obligar a su sociedad
-frente a un tercero de buena fe. **Un solo golpe técnico. Dos convierten la llamada en clase
+cuarenta segundos: *un poder no caduca porque la relación se acabe.* En un operador
+multiunidad esto pega más fuerte que en cualquier otro perfil, porque **la rotación de
+gerentes de sucursal es alta y los poderes se otorgan de uno en uno y no se revocan nunca**.
+Un grupo de veinte unidades con cinco años de operación puede tener a una docena de ex
+empleados con facultades vivas. **Un solo golpe técnico. Dos convierten la llamada en clase
 magistral, y las clases humillan.**
 
 **Tu activo asimétrico.** Once años verificando personalidad, facultades y cadena de
@@ -130,14 +142,17 @@ vacío, y él lo llena con el peor.
 ### 0:45 – 8:00 · Él habla. Preguntas de menor a mayor sensibilidad
 
 **[GUION]**
-- "¿Cuántas sociedades trae el grupo hoy?"
+- "¿Cuántas unidades traen hoy y cuántas sociedades hay detrás?"
+- "¿Cuántas abrieron el año pasado?"
 - "¿Quién lleva el libro de actas — contador, abogado externo, alguien adentro?"
-- "¿Cuándo fue la última asamblea que se protocolizó?"
+- "Cuando abres una unidad nueva, ¿quién firma el arrendamiento?"
 - "Si mañana el banco te pide acreditar personalidad para firmar, ¿en cuánto lo tienes?"
-- "¿Cuántas personas pueden firmar por la sociedad ahorita?"
+- "¿Cuántos gerentes pueden firmar por la sociedad ahorita?"
 
-**[MECANISMO]** La última es la trampa amable. Casi nadie puede contestarla en menos de una
-semana, y **la incomodidad la produce su propia respuesta, no tú**.
+**[MECANISMO]** La última es la trampa amable. En un operador multiunidad nadie puede
+contestarla, y **la incomodidad la produce su propia respuesta, no tú**. La penúltima prepara
+el terreno: si el arrendamiento de la unidad nueva lo firma un gerente con poder amplio, ya
+identificó el problema solo.
 
 **[ERROR]** Explicar por qué preguntas. Pregunta y calla. Habla él el 70%.
 
@@ -146,7 +161,9 @@ semana, y **la incomodidad la produce su propia respuesta, no tú**.
 **[GUION]** — "Te digo una cosa que casi nadie tiene presente. Un poder no caduca porque la
 relación se acabe. Sobrevive a la renuncia, al despido y al pleito. Mientras no se revoque por
 instrumento y esa revocación no se notifique, el apoderado puede seguir obligando a la
-sociedad frente a un tercero de buena fe. La empresa paga primero y repite después, si puede."
+sociedad frente a un tercero de buena fe. Con la rotación que hay en gerencias de sucursal,
+casi siempre hay más gente con facultades vivas de la que uno cree. La empresa paga primero y
+repite después, si puede."
 
 *(Pausa. No llenes el silencio.)*
 

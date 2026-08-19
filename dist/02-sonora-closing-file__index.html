@@ -220,6 +220,7 @@ footer{border-top:1px solid var(--line); padding:40px 0 56px; background:var(--s
 .docbar{position:sticky; top:0; z-index:50; background:var(--ink); color:var(--bone); padding:10px 20px;
   display:flex; gap:14px; align-items:center; flex-wrap:wrap; font-family:"IBM Plex Mono",monospace; font-size:11px; letter-spacing:.12em; text-transform:uppercase}
 .docbar .btn{padding:8px 16px; font-size:10.5px}
+@media (pointer:coarse){.docbar .btn{min-height:44px; padding:12px 18px}}
 .docbar .btn.ghost{color:#CBD3D0; border-color:rgba(237,232,223,.38)}
 .docbar .btn.ghost:hover{color:#EDE8DF; border-color:#EDE8DF}
 @media(max-width:720px){.doc .page{padding:32px 24px 54px; min-height:0} .doc .foot{left:24px; right:24px}}
@@ -520,6 +521,24 @@ details p{margin-top:10px; font-size:14px; color:var(--fg-dim); max-width:70ch}
         <button class="btn big" type="submit">Send it</button>
         <span class="tiny" id="o-msg" role="status" aria-live="polite">No charge until fees are confirmed in writing.</span>
       </div>
+      <div class="full" style="border-top:1px solid var(--line); padding-top:16px; margin-top:4px">
+        <div class="lbl" style="margin-bottom:10px">How you can pay</div>
+        <div class="grid g3 gap12">
+          <div class="card stack gap6" style="padding:14px 16px">
+            <b style="font-size:14px">Card</b>
+            <span class="small">Visa, Mastercard, Amex. Flat fee in U.S. dollars, charged once, before work starts.</span>
+          </div>
+          <div class="card stack gap6" style="padding:14px 16px">
+            <b style="font-size:14px">PayPal</b>
+            <span class="small">If you would rather pay cross-border through a name you already use. Same fee to you.</span>
+          </div>
+          <div class="card stack gap6" style="padding:14px 16px">
+            <b style="font-size:14px">Bank transfer</b>
+            <span class="small">Wire instructions on request. Slower to confirm; I will not start until it clears.</span>
+          </div>
+        </div>
+        <p class="tiny" style="margin-top:10px">An invoice with my name, professional license and the description of the service is issued for every engagement, for your own accounting.</p>
+      </div>
     </form>
   </div>
 </section>
@@ -535,7 +554,7 @@ details p{margin-top:10px; font-size:14px; color:var(--fg-dim); max-width:70ch}
       <details><summary>Can you guarantee the title is clean?</summary><p>No, and nobody honest can. I tell you what the documents you gave me show, what they do not show, and what I could not verify. A large part of the value is the second list.</p></details>
       <details><summary>My realtor says everything is fine.</summary><p>It usually is, in the sense that the transaction will close. The failures in this practice are not closing failures; they are exit failures and inheritance failures, and they surface five to fifteen years later when the person who assured you is no longer involved.</p></details>
       <details><summary>What documents do you need?</summary><p>Whatever you have: the trust agreement, the deed or draft deed, the registry certificate, the purchase agreement, the closing statement, HOA documents. If you have nothing yet because you are still considering, order anyway — the pre-offer version is the cheapest moment to ask these questions.</p></details>
-      <details><summary>Do you handle the closing itself?</summary><p>No. In Mexico a notary — a specially licensed attorney holding public faith — authorizes the instrument. I do the review and the structuring. That separation is deliberate: where I am paid to structure, a different notary certifies.</p></details>
+      <details><summary>Do you handle the closing itself?</summary><p>In Mexico a notary — a specially licensed attorney holding public faith — authorizes the instrument that transfers property. My work is the review and the structuring that comes before it.</p></details>
       <details><summary>How do I pay?</summary><p>Card, in U.S. dollars, on a flat fee confirmed in writing before work starts. Invoice provided.</p></details>
     </div>
   </div>
@@ -552,6 +571,7 @@ details p{margin-top:10px; font-size:14px; color:var(--fg-dim); max-width:70ch}
       the parties' choosing. Nothing on this page is advice on your specific facts.
     </p>
   
+      
       
       
       

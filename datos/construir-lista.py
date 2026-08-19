@@ -57,11 +57,14 @@ def main(ruta):
             correo=correo, telefono=tel, web=web,
             colonia=v[0]["nomb_asent"].strip(), cp=v[0]["cod_postal"].strip(),
             producto="03 Expediente Vivo" if len(v)>=2 else "01 Dictamen IFS",
+            multiunidad="sí" if (len(v)>=2 and SEC.get(v[0]["codigo_act"][:2],"") in
+                        ("Hospedaje y alimentos","Comercio menudeo","Salud","Transportes",
+                         "Otros servicios","Esparcimiento")) else "no",
             correo_nominal="sí" if re.match(r'^[a-z]+[._][a-z]+@', correo.lower()) else "no"))
     salida.sort(key=lambda x:-x["prioridad"])
     os.makedirs("datos", exist_ok=True)
-    campos=["prioridad","producto","razon_social","establecimientos","tamano","sector","actividad",
-            "correo","correo_nominal","telefono","web","colonia","cp"]
+    campos=["prioridad","producto","multiunidad","razon_social","establecimientos","tamano","sector",
+            "actividad","correo","correo_nominal","telefono","web","colonia","cp"]
     with io.open("datos/lista-prospeccion-hermosillo.csv","w",encoding="utf-8-sig",newline="") as f:
         w=csv.DictWriter(f, fieldnames=campos); w.writeheader()
         for r in salida: w.writerow({k:r[k] for k in campos})
@@ -69,6 +72,7 @@ def main(ruta):
     print(f"empresas objetivo            {len(salida):>6,}")
     print(f"  con correo                 {len(con):>6,}")
     print(f"  candidatas al MVP 03       {sum(1 for r in salida if r['establecimientos']>=2):>6,}")
+    print(f"    operador multiunidad     {sum(1 for r in salida if r['multiunidad']=='sí'):>6,}  ← el perfil objetivo")
     print(f"  correo con nombre de persona {sum(1 for r in con if r['correo_nominal']=='sí'):>4,}  ← aviso de privacidad obligatorio")
     print(f"\nprimeras 50 por prioridad: {sum(1 for r in salida[:50] if r['correo']):,} traen correo")
     print("archivo: datos/lista-prospeccion-hermosillo.csv")

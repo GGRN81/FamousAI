@@ -8,7 +8,6 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,600;1,6..96,600&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap">
 <style>
-/* comun/ggr.css incrustado */
 /* ═══════════════════════════════════════════════════════════════
    GGR — Hoja de estilos común de los tres productos digitales
    EDITA LOS TOKENS DE ABAJO Y CAMBIA LOS TRES PRODUCTOS A LA VEZ.
@@ -219,6 +218,7 @@ footer{border-top:1px solid var(--line); padding:40px 0 56px; background:var(--s
 .docbar{position:sticky; top:0; z-index:50; background:var(--ink); color:var(--bone); padding:10px 20px;
   display:flex; gap:14px; align-items:center; flex-wrap:wrap; font-family:"IBM Plex Mono",monospace; font-size:11px; letter-spacing:.12em; text-transform:uppercase}
 .docbar .btn{padding:8px 16px; font-size:10.5px}
+@media (pointer:coarse){.docbar .btn{min-height:44px; padding:12px 18px}}
 .docbar .btn.ghost{color:#CBD3D0; border-color:rgba(237,232,223,.38)}
 .docbar .btn.ghost:hover{color:#EDE8DF; border-color:#EDE8DF}
 @media(max-width:720px){.doc .page{padding:32px 24px 54px; min-height:0} .doc .foot{left:24px; right:24px}}
@@ -377,12 +377,12 @@ footer{border-top:1px solid var(--line); padding:40px 0 56px; background:var(--s
       <div class="hall">
         <div class="hall-h"><span class="hall-n">H-03</span>
           <span class="hall-t">El cliente ideal del MVP 03 no es el que imaginábamos</span>
-          <span class="est tuya">Decisión tuya</span></div>
+          <span class="est hecho">Aceptado e implementado</span></div>
         <div class="hall-b">
           <p>Ordenados por número de establecimientos, los grupos privados locales son operadores multi-unidad: cafeterías, restaurantes, farmacias, gasolineras, supermercados regionales, autotransporte. Caffenio con 44 unidades, un grupo restaurantero con 17, una cadena de gasolineras con 15.</p>
           <p><b>Es el perfil perfecto y no lo habíamos nombrado.</b> Muchas sociedades, poderes dispersos entre gerentes de sucursal, contratos de franquicia o suministro, arrendamientos por unidad, y casi nunca un área jurídica interna. Es exactamente lo que el Expediente Vivo vigila. Y tu experiencia con grupos gasolineros —CRE, ASEA— cae encima de un clúster que aparece solo en los datos.</p>
-          <p class="qh">Lo que hay que decidir</p>
-          <p>Si aceptas este perfil, el guion de venta cambia: no se abre hablando de sucesión familiar, se abre preguntando cuántos gerentes de sucursal pueden firmar hoy por la sociedad. Es la misma pregunta con otra ropa, y en un operador de veinte unidades la respuesta da miedo sola.</p>
+          <p class="qh">Qué hice, ya aceptado el perfil</p>
+          <p>El guion de venta se reorientó: ya no abre hablando de sucesión familiar, abre preguntando cuántas unidades traen, cuántas abrieron el año pasado y cuántos gerentes pueden firmar hoy. El golpe técnico se ancló a la rotación de gerencias de sucursal, que es donde más pega en este perfil. La propuesta de honorarios habla de unidades y aperturas. Y la lista de prospección marca ahora <b>109 operadores multiunidad</b> en los giros de franquicia, restaurante, farmacia, gasolinera y transporte.</p>
         </div>
       </div>
 
@@ -518,14 +518,13 @@ footer{border-top:1px solid var(--line); padding:40px 0 56px; background:var(--s
       <div class="hall">
         <div class="hall-h"><span class="hall-n">H-12</span>
           <span class="hall-t">El expediente de dieciséis clientes vive en la memoria de un navegador</span>
-          <span class="est tuya">Grave · decisión tuya</span></div>
+          <span class="est hecho">Resuelto</span></div>
         <div class="hall-b">
           <p>El panel guarda en el almacenamiento local del navegador. Funciona, es privado, y no depende de nadie. Pero significa que <b>si limpias el navegador, cambias de computadora o se corrompe el perfil, se pierde el expediente completo de todas las cuentas</b>, y el servicio que vendiste se llama precisamente «vigilancia documental».</p>
           <p>No es un defecto de programación —está construido así a propósito, para que arranques sin infraestructura— pero deja de ser aceptable a partir de la cuenta tres. El riesgo no es técnico: es que el modo de falla de tu producto sea exactamente aquello contra lo que el producto protege.</p>
-          <p class="qh">Las tres salidas, de menor a mayor esfuerzo</p>
-          <p><b>Disciplina.</b> Exportar el respaldo cada viernes y guardarlo en tu unidad de nube. Cuesta cero y depende de que no se te olvide, que es exactamente el supuesto que no deberíamos hacer.<br>
-          <b>Recordatorio.</b> Que el panel te avise si pasaron siete días sin exportar. Media hora de trabajo y elimina el olvido.<br>
-          <b>Sincronización real.</b> Que el expediente viva fuera del navegador. Es la respuesta correcta a partir de la cuenta ocho, y es la única que además permite lo siguiente.</p>
+          <p class="qh">Qué hice</p>
+          <p>El panel ahora lleva la cuenta de cuándo respaldaste por última vez. Si nunca lo has hecho, un aviso lo explica en dos líneas. A los siete días recuerda; a los veintiuno el aviso se vuelve rojo y dice cuántas cuentas están en riesgo. El botón de exportar baja un archivo que puedes volver a cargar con «Importar», y guarda el registro en el momento, sin retraso.</p>
+          <p>Con eso el olvido deja de ser el modo de falla. Lo que sigue pendiente para el mes seis es que el expediente viva fuera del navegador, que es además lo que permite darle acceso al cliente.</p>
         </div>
       </div>
 
@@ -667,12 +666,11 @@ footer{border-top:1px solid var(--line); padding:40px 0 56px; background:var(--s
 
       <div class="hall">
         <div class="hall-h"><span class="hall-n">H-19</span>
-          <span class="hall-t">Mezclar la cuenta de la notaría con la tuya contradice tu propia regla</span>
-          <span class="est abierto">Anotado</span></div>
+          <span class="hall-t">Las dos cuentas van juntas en el QR de pago</span>
+          <span class="est hecho">Resuelto</span></div>
         <div class="hall-b">
-          <p>Puse las dos cuentas en el QR de pago, como pediste. Pero vale la pena decirlo: tu regla de operación —«donde el despacho cobra estructuración, la fe pública la autoriza otro notario»— es una separación que hemos cuidado en cada línea de texto de los tres MVPs.</p>
-          <p><b>Poner las dos cuentas en el mismo código la debilita en el lugar donde más se nota, que es el dinero.</b> Un cliente que ve las dos juntas concluye razonablemente que es la misma operación con dos bolsillos.</p>
-          <p>Alternativa: dejar el QR de pago con la cuenta de honorarios profesionales, y que la cuenta de la notaría aparezca donde corresponde —en el documento que emite la notaría, por sus propios derechos. Es un cambio de una línea en el generador y sostiene la separación que tanto trabajo nos ha costado construir.</p>
+          <p>El QR de pago lleva la cuenta de honorarios profesionales y la de la notaría, con el nombre del beneficiario en cada una y la advertencia de verificarlo antes de transferir.</p>
+          <p>El comprobante fiscal se emite <b>cuando el pago entra a la cuenta de la notaría</b>, y por eso los formularios capturan RFC, razón social, uso y régimen únicamente en esa ruta de pago. La ruta de honorarios profesionales no los pide y no interrumpe la compra con campos que no va a usar.</p>
         </div>
       </div>
     </div>
@@ -789,6 +787,7 @@ footer{border-top:1px solid var(--line); padding:40px 0 56px; background:var(--s
       cotejo contra texto vigente o con tu contador.
     </p>
   
+      
       
     <!-- bloque-qr -->
 <div class="qrblock">

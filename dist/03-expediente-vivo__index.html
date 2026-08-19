@@ -219,6 +219,7 @@ footer{border-top:1px solid var(--line); padding:40px 0 56px; background:var(--s
 .docbar{position:sticky; top:0; z-index:50; background:var(--ink); color:var(--bone); padding:10px 20px;
   display:flex; gap:14px; align-items:center; flex-wrap:wrap; font-family:"IBM Plex Mono",monospace; font-size:11px; letter-spacing:.12em; text-transform:uppercase}
 .docbar .btn{padding:8px 16px; font-size:10.5px}
+@media (pointer:coarse){.docbar .btn{min-height:44px; padding:12px 18px}}
 .docbar .btn.ghost{color:#CBD3D0; border-color:rgba(237,232,223,.38)}
 .docbar .btn.ghost:hover{color:#EDE8DF; border-color:#EDE8DF}
 @media(max-width:720px){.doc .page{padding:32px 24px 54px; min-height:0} .doc .foot{left:24px; right:24px}}
@@ -301,6 +302,17 @@ footer{border-top:1px solid var(--line); padding:40px 0 56px; background:var(--s
 .hdr{display:grid; gap:8px; padding-bottom:7px; border-bottom:1px solid var(--line-strong)}
 .hdr span{font-family:"IBM Plex Mono",monospace; font-size:9.5px; letter-spacing:.14em; text-transform:uppercase; color:var(--label)}
 @media(max-width:900px){.hdr{display:none}}
+/* El panel es una herramienta de escritorio, pero se abre en tableta y en el
+   teléfono cuando un cliente pregunta algo. 44px es el mínimo operable con el dedo. */
+@media (pointer:coarse){
+  .rowgrid input,.rowgrid select{min-height:44px; font-size:14px; padding:9px 10px}
+  .rowgrid .del{width:44px; height:44px; font-size:18px}
+  .caratbox .cf input{min-height:44px}
+  .head .meta input,.head .meta select{min-height:44px}
+  .appbar .btn,.panel-h .btn,.aviso .btn{min-height:44px}
+  .appbar select,.head input.t{min-height:44px}
+  .rowgrid{padding:12px 0}
+}
 
 .spark{position:relative}
 .spark svg{display:block; width:100%; height:110px; overflow:visible}
@@ -317,6 +329,13 @@ footer{border-top:1px solid var(--line); padding:40px 0 56px; background:var(--s
 .cf b{display:block; font-family:"IBM Plex Mono",monospace; font-size:9.5px; letter-spacing:.14em; text-transform:uppercase; color:var(--label); font-weight:500; margin-bottom:3px}
 .cf input{padding:5px 0; border:none; background:none; font-size:13.5px}
 
+.aviso{display:flex; gap:12px; align-items:center; flex-wrap:wrap; padding:12px 16px; border-radius:3px;
+  border:1px solid var(--warn); background:var(--warn-bg); margin-bottom:18px; font-size:13.5px; color:var(--fg)}
+.aviso.urgente{border-color:var(--crit); background:var(--crit-bg)}
+.aviso b{color:var(--fg)}
+.aviso .btn{padding:9px 16px; font-size:10.5px; margin-left:auto}
+.respaldo-edad{font-family:"IBM Plex Mono",monospace; font-size:10.5px; letter-spacing:.1em;
+  text-transform:uppercase; color:var(--fg-faint)}
 .toast{position:fixed; left:50%; bottom:26px; transform:translateX(-50%) translateY(20px); background:var(--ink); color:var(--bone);
   border:1px solid rgba(237,232,223,.3); padding:11px 20px; border-radius:2px; font-family:"IBM Plex Mono",monospace;
   font-size:11.5px; letter-spacing:.1em; opacity:0; transition:all .22s; z-index:200}
@@ -341,7 +360,7 @@ footer{border-top:1px solid var(--line); padding:40px 0 56px; background:var(--s
     <select id="sel-cuenta" aria-label="Cuenta"></select>
     <button class="btn ghost" id="b-nueva">Nueva cuenta</button>
     <div style="margin-left:auto; display:flex; gap:9px; flex-wrap:wrap">
-      <button class="btn ghost" id="b-export">Exportar</button>
+      <button class="btn ghost" id="b-export">Exportar respaldo</button>
       <button class="btn ghost" id="b-import">Importar</button>
       <button class="btn ghost" id="b-print">PDF mensual</button>
       <button class="btn" id="b-carat">Generar carátula</button>
@@ -351,6 +370,8 @@ footer{border-top:1px solid var(--line); padding:40px 0 56px; background:var(--s
 </div>
 
 <div class="shell">
+
+  <div id="aviso-respaldo"></div>
 
   <div class="head">
     <div class="stack gap8" style="flex:1; min-width:240px">
@@ -431,6 +452,7 @@ footer{border-top:1px solid var(--line); padding:40px 0 56px; background:var(--s
       </div>
     </div>
   
+      
       
       
       
@@ -536,6 +558,46 @@ function guardar(){
   }, 220);
 }
 function C(){ return S.cuentas[S.activa]; }
+
+/* El expediente vive en el almacenamiento de ESTE navegador. Si se limpia el
+   navegador, se cambia de equipo o se corrompe el perfil, se pierde todo.
+   No se puede confiar en que alguien se acuerde de exportar: hay que recordárselo. */
+var DIAS_AVISO = 7, DIAS_URGENTE = 21;
+
+function diasDesdeRespaldo(){
+  if (!S.ultimoRespaldo) return null;
+  return Math.floor((Date.now() - new Date(S.ultimoRespaldo).getTime()) / 86400000);
+}
+
+function pintarAviso(){
+  var caja = document.getElementById("aviso-respaldo");
+  var d = diasDesdeRespaldo();
+  var cuentas = S.cuentas.length;
+  var vacio = cuentas === 1 && (S.cuentas[0].poderes || []).length === 0;
+  if (vacio){ caja.innerHTML = ""; return; }
+
+  if (d === null){
+    caja.innerHTML = '<div class="aviso noprint"><span><b>Nunca has respaldado este expediente.</b> '
+      + 'Vive solo en el almacenamiento de este navegador: si lo limpias o cambias de equipo, se pierde. '
+      + 'Exportar baja un archivo que puedes volver a cargar.</span>'
+      + '<button class="btn" id="b-aviso">Exportar ahora</button></div>';
+  } else if (d >= DIAS_URGENTE){
+    caja.innerHTML = '<div class="aviso urgente noprint"><span><b>Han pasado ' + d + ' días sin respaldo.</b> '
+      + cuentas + ' cuenta' + (cuentas > 1 ? 's' : '') + ' en riesgo.</span>'
+      + '<button class="btn" id="b-aviso">Exportar ahora</button></div>';
+  } else if (d >= DIAS_AVISO){
+    caja.innerHTML = '<div class="aviso noprint"><span>Último respaldo hace <b>' + d + ' días</b>.</span>'
+      + '<button class="btn" id="b-aviso">Exportar</button></div>';
+  } else {
+    caja.innerHTML = "";
+  }
+  var b = document.getElementById("b-aviso");
+  if (b) b.addEventListener("click", function(){ document.getElementById("b-export").click(); });
+
+  var et = document.getElementById("b-export");
+  et.title = d === null ? "Nunca respaldado"
+           : (d === 0 ? "Respaldado hoy" : "Último respaldo hace " + d + " día" + (d > 1 ? "s" : ""));
+}
 
 function toast(t){
   var el = document.getElementById("toast");
@@ -712,7 +774,7 @@ function pintarCaratula(){
 
 function pintar(){
   pintarSelector(); pintarCabecera(); pintarKPIs();
-  pintarPoderes(); pintarCalendario(); pintarIFS(); pintarCaratula();
+  pintarPoderes(); pintarCalendario(); pintarIFS(); pintarCaratula(); pintarAviso();
 }
 
 /* ───────── eventos ───────── */
@@ -792,7 +854,8 @@ document.getElementById("b-export").addEventListener("click", async function(){
   try { if (typeof claude !== "undefined" && claude.use) dl = await claude.use("downloads"); } catch(e){}
   if (dl){
     try { await dl.save({filename:nombre, data:json}); toast("Respaldo guardado"); }
-    catch(err){ toast(err && err.code === "declined" ? "Descarga cancelada" : "No se pudo guardar el respaldo"); }
+    catch(err){ toast(err && err.code === "declined" ? "Descarga cancelada" : "No se pudo guardar el respaldo"); return; }
+    marcarRespaldo();
     return;
   }
 
@@ -802,8 +865,15 @@ document.getElementById("b-export").addEventListener("click", async function(){
   a.href = URL.createObjectURL(blob);
   a.download = nombre;
   a.click(); URL.revokeObjectURL(a.href);
+  marcarRespaldo();
   toast("Respaldo descargado");
 });
+
+function marcarRespaldo(){
+  S.ultimoRespaldo = new Date().toISOString();
+  try{ localStorage.setItem(CLAVE, JSON.stringify(S)); }catch(e){}   // sin debounce: es el registro que protege
+  pintarAviso();
+}
 document.getElementById("b-import").addEventListener("click", function(){ document.getElementById("file-import").click(); });
 document.getElementById("file-import").addEventListener("change", function(e){
   var f = e.target.files[0]; if (!f) return;

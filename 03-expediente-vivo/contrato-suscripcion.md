@@ -23,10 +23,8 @@ Dirección General de Profesiones, con experiencia en derecho corporativo y prá
 c) Que cuenta con los conocimientos, la organización y los elementos propios suficientes para
 prestar los servicios objeto de este contrato.
 
-d) **Que los servicios objeto de este contrato se prestan en su carácter de abogado
-corporativo, y no comprenden el ejercicio de la fe pública.** La instrumentación notarial que
-llegue a requerirse será autorizada por el fedatario que el Cliente elija, distinto del
-Prestador.
+d) Que los servicios objeto de este contrato consisten en vigilancia y mantenimiento
+documental del expediente corporativo, en los términos de la Cláusula Segunda.
 
 **II. Declara el Cliente:**
 
@@ -120,31 +118,26 @@ beneficiario controlador, y a actualizarla cuando cambie. ⚠ *Cotejar contra te
 por su alcance el servicio actualiza alguno de los supuestos del artículo 17 de la LFPIORPI y
 sus obligaciones de identificación y aviso.*
 
-**DÉCIMA CUARTA — Independencia de la función notarial.** Se reitera lo declarado por el
-Prestador: los servicios se prestan en carácter de abogado corporativo. **La fe pública que
-requiera cualquier acto será otorgada por el fedatario que el Cliente elija, distinto del
-Prestador.** El Cliente conserva plena libertad de elección de fedatario.
-
-**DÉCIMA QUINTA — Conflicto de interés.** El Prestador declara no tener conflicto de interés
+**DÉCIMA CUARTA — Conflicto de interés.** El Prestador declara no tener conflicto de interés
 conocido respecto del Cliente. De surgir alguno, lo notificará por escrito dentro de los **5
 días hábiles** siguientes a que tenga conocimiento, y el Cliente podrá terminar el contrato de
 inmediato sin responsabilidad.
 
-**DÉCIMA SEXTA — Relación entre las partes.** No existe relación laboral, de subordinación ni
+**DÉCIMA QUINTA — Relación entre las partes.** No existe relación laboral, de subordinación ni
 de asociación entre las partes ni con el personal de cada una. Cada parte responde de sus
 propias obligaciones fiscales, laborales y de seguridad social.
 
-**DÉCIMA SÉPTIMA — Propiedad de los entregables.** Los entregables producidos son propiedad
+**DÉCIMA SEXTA — Propiedad de los entregables.** Los entregables producidos son propiedad
 del Cliente. Las plantillas, metodologías e instrumentos de trabajo del Prestador —incluido el
 **Índice de Fragilidad Societaria**— son de su propiedad y no se transfieren.
 
-**DÉCIMA OCTAVA — Cesión.** Ninguna parte podrá ceder sus derechos u obligaciones sin
+**DÉCIMA SÉPTIMA — Cesión.** Ninguna parte podrá ceder sus derechos u obligaciones sin
 consentimiento escrito de la otra.
 
-**DÉCIMA NOVENA — Notificaciones.** Se harán por correo electrónico a: Prestador **[____]** ·
+**DÉCIMA OCTAVA — Notificaciones.** Se harán por correo electrónico a: Prestador **[____]** ·
 Cliente **[____]**. Todo cambio se avisará por escrito.
 
-**VIGÉSIMA — Ley aplicable y jurisdicción.** Este contrato se rige por las leyes de los Estados
+**DÉCIMA NOVENA — Ley aplicable y jurisdicción.** Este contrato se rige por las leyes de los Estados
 Unidos Mexicanos. Para su interpretación y cumplimiento, las partes se someten a la
 jurisdicción de los tribunales de **[Hermosillo, Sonora]**, renunciando a cualquier otra que
 pudiera corresponderles.

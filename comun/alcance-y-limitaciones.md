@@ -87,22 +87,6 @@ consentimiento escrito.
 
 ---
 
-## Bloque E — independencia de la función notarial
-
-**Va en los cuatro niveles. Sin excepción.**
-
-> Los servicios se prestan en carácter de abogado corporativo. La fe pública que requiera la
-> instrumentación de cualquier acto será otorgada por el fedatario que las partes elijan,
-> distinto del prestador. **Donde el despacho cobra estructuración, la fe pública la autoriza
-> otro notario. Donde la notaría da fe, no hay honorario de éxito.**
-
-**English:**
-
-> These services are provided in the capacity of a corporate attorney. Any Mexican notarial
-> instrument is authorized by the notary the parties choose, who is a different professional.
-
----
-
 ## Reglas de redacción que hacen cumplible todo lo anterior
 
 1. **Nunca escribas que un título está limpio.** Escribe qué muestran los documentos y qué no

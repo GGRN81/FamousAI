@@ -5,7 +5,7 @@ del entregable lista para imprimir a PDF, prompt maestro que la produce, intake,
 correos y contenido que genera el tráfico.
 
 Meta de diseño: **$10,000 MXN netos por semana** (≈ $12,800 brutos, factor neto 0.78–0.82).
-Ninguno vende actos notariales. Los tres viven en la capa pre-notarial.
+Los tres venden diagnóstico, estructuración y vigilancia documental.
 
 | # | Producto | Tipo | Precio | Primer cobro |
 |---|----------|------|--------|--------------|

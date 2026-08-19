@@ -220,3 +220,28 @@ footer{border-top:1px solid var(--line); padding:40px 0 56px; background:var(--s
   .doc .foot{position:static; margin-top:24px}
   @page{size:letter; margin:18mm 16mm}
 }
+
+/* ═══ BLOQUE DE IDENTIDAD Y QR ═══
+   Dos QR con propósitos distintos: el de contacto va en todo; el de pago
+   solo en documentos nominativos entregados a un cliente identificado. */
+.qrblock{display:flex; gap:clamp(18px,3vw,34px); align-items:flex-start; flex-wrap:wrap;
+  padding-top:16px; border-top:1px solid var(--line); margin-top:22px}
+.qrone{display:flex; gap:14px; align-items:center; min-width:0}
+.qrsvg{width:92px; height:92px; flex:none; color:var(--fg)}
+.qrsvg svg{width:100%; height:100%; display:block; shape-rendering:crispEdges}
+.qrtxt{min-width:0; display:flex; flex-direction:column; gap:2px}
+.qrtxt b{font-size:13.5px; color:var(--fg); font-weight:600; line-height:1.35}
+.qrtxt span{font-size:11.5px; color:var(--fg-dim); line-height:1.5}
+.qrhint{font-family:"IBM Plex Mono",monospace; font-size:9.5px; letter-spacing:.14em;
+  text-transform:uppercase; color:var(--label); margin-top:3px}
+.doc .qrblock{border-top:1px solid #D8D2C6}
+.doc .qrsvg{color:#0D191B}
+.doc .qrtxt b{color:#0D191B}
+.doc .qrtxt span{color:#4A5658}
+.doc .qrhint{color:#3F6F5E}
+@media print{
+  /* un QR por debajo de 25 mm falla con cámaras de teléfono a distancia normal */
+  .qrsvg{width:26mm; height:26mm}
+  .qrsvg.grande{width:30mm; height:30mm}
+  .qrblock{break-inside:avoid; page-break-inside:avoid}
+}
